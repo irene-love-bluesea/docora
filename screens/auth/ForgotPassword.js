@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
-import CustomButton from "../components/Buttons/CustomButton";
+import CustomButton from "../../components/Buttons/CustomButton";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
