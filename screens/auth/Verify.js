@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TextInput,TouchableOpacity } from "react-native";
-import CustomButton from '../components/Buttons/CustomButton';
+import CustomButton from '../../components/Buttons/CustomButton';
 
 export default function VerifyScreen({ navigation }) {
   const [fullName, setFullName] = React.useState("");

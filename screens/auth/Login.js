@@ -1,7 +1,7 @@
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import CustomButton from "../components/Buttons/CustomButton";
+import CustomButton from "../../components/Buttons/CustomButton";
 import { Link } from "@react-navigation/native";
 
 const LoginScreen = ({navigation}) => {
@@ -51,10 +51,10 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       </View>
-      <CustomButton  variant="primary" title="Log In" className=" m-0" />
-      <View className="flex-row items-center justify-center">
-        <Text className="text-base font-semibold underline my-3 ml-2">
-          Don't have an account? <Text className="text-primary" onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
+      <CustomButton  variant="primary" title="Log In" className="m-0" />
+      <View className="flex-row items-center justify-center gap-3 my-3">
+        <Text className="text-base font-semibold">
+          Don't have an account? <Text className="text-primary underline" onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
         </Text>
       </View>
     </View>

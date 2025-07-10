@@ -5,15 +5,16 @@ import { View, TouchableOpacity, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import AuthScreen from "../screens/AuthScreen";
-import HomeScreen from "../screens/doctor/HomeScreen";
-import SignUpScreen from "../screens/SignUpScreen";
-import LoginScreen from "../screens/LoginScreen";
-import VerifyScreen from "../screens/VerifyScreen";
-import DoctorScheduleScreen from "../screens/doctor/ScheduleScreen";
-import DoctorChatScreen from "../screens/doctor/ChatScreen";
-import ProfileScreen from "../screens/doctor/ProfileScreen";
+import AuthScreen from "../screens/auth/Auth";
+import HomeScreen from "../screens/doctor/Home";
+import SignUpScreen from "../screens/auth/SignUp";
+import LoginScreen from "../screens/auth/Login";
+import VerifyScreen from "../screens/auth/Verify";
+import DoctorScheduleScreen from "../screens/doctor/Schedule";
+import DoctorChatScreen from "../screens/doctor/Chat";
+import ProfileScreen from "../screens/doctor/Profile";
 import PatientProfile from "../screens/doctor/PatientProfile";
+import ForgotPasswordScreen from "../screens/auth/ForgotPassword";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -38,7 +39,9 @@ const CustomHeader = ({
       >
         <Ionicons name="chevron-back-sharp" size={30} color="black" />
       </TouchableOpacity>
-      <Text className="font-alata" style={styles.headerTitle}>{title}</Text>
+      <Text className="font-alata" style={styles.headerTitle}>
+        {title}
+      </Text>
     </View>
   );
 };
@@ -65,8 +68,8 @@ function BottomTabs() {
         tabBarActiveTintColor: "#023E8A",
         tabBarInactiveTintColor: "#023E8A",
         tabBarStyle: {
-          backgroundColor: '#E6F2FF'
-        }
+          backgroundColor: "#E6F2FF",
+        },
       })}
     >
       <Tab.Screen
@@ -130,6 +133,19 @@ export default function AppNavigator() {
       <Stack.Screen
         name="Verify"
         component={VerifyScreen}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomHeader
+              title="Verification"
+              navigation={navigation}
+              backgroundColor="#E6F2FF"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
         options={({ navigation }) => ({
           header: () => (
             <CustomHeader

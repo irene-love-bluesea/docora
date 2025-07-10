@@ -1,6 +1,6 @@
 import { Image, Text, View } from 'react-native';
-import CustomButton from '../components/Buttons/CustomButton';
-import Logo from  '../assets/logo/docora_hospital.svg';
+import CustomButton from '../../components/Buttons/CustomButton';
+import Logo from  '../../assets/logo/docora_hospital.svg';
 
 export default function AuthScreen({ navigation }) {
   return (
