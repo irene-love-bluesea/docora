@@ -8,6 +8,10 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ['Inter-VariableFont', 'sans-serif'],
+        alata: ['Alata-Regular', 'sans-serif'],
+      },
       colors:{
         primary: {
           DEFAULT: '#023E8A', // Example: Blue
