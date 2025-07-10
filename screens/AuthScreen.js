@@ -4,7 +4,7 @@ import Logo from  '../assets/logo/docora_hospital.svg';
 
 export default function AuthScreen({ navigation }) {
   return (
-    <View className="flex-1 justify-center items-center p-5 bg-background">
+    <View className="font-inter flex-1 justify-center items-center p-5 bg-background">
       <Logo width={150} height={130}  />
       <View className=" justify-center items-center mt-5">
         <Text className="text-[16px] mb-6 text-center text-grey-500">
