@@ -13,7 +13,7 @@ export default function AuthScreen({ navigation }) {
       </View>
       <CustomButton
         title="Sign Up"
-        variant='primary'
+        variant='primary' onPress={() => navigation.navigate('SignUp')}
       />
       <CustomButton variant="secondary" title="Log In" 
        onPress={() => navigation.navigate('Home')} />
