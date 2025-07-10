@@ -13,9 +13,9 @@ export default function AuthScreen({ navigation }) {
       </View>
       <CustomButton
         title="Sign Up"
-        className="mb-4 w-full" 
+        variant='primary'
       />
-      <CustomButton variant="secondary" className="w-full" title="Log In" 
+      <CustomButton variant="secondary" title="Log In" 
        onPress={() => navigation.navigate('Home')} />
       
     </View>
