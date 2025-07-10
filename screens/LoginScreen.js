@@ -1,8 +1,10 @@
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
+import CustomButton from "../components/Buttons/CustomButton";
+import { Link } from "@react-navigation/native";
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
   const [password , setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
@@ -31,8 +33,29 @@ const LoginScreen = () => {
         />
       </View>
 
-      <View>
-        <Checkbox style={styles.checkbox} value={isChecked} className=" " onValueChange={setChecked}/>
+      <View className="mb-3 flex-row items-center justify-between ">
+        <View className="flex-row items-center">
+          <Checkbox
+            value={isChecked}
+            onValueChange={setChecked}
+            color={isChecked ? "#2563EB" : undefined}
+            style={{ borderRadius: 4 }}
+          />
+          <Text className="text-base  my-3 ml-2">
+            Remember me
+          </Text>
+        </View>
+        <View>
+          <Text className="text-base  font-semibold underline my-3 ml-2">
+            Forgot Password?
+          </Text>
+        </View>
+      </View>
+      <CustomButton  variant="primary" title="Log In" className=" m-0" />
+      <View className="flex-row items-center justify-center">
+        <Text className="text-base font-semibold underline my-3 ml-2">
+          Don't have an account? <Text className="text-primary" onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
+        </Text>
       </View>
     </View>
   );
