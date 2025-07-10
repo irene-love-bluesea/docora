@@ -18,7 +18,7 @@ const CustomButton = ({ icon, title, onPress, disabled, variant = 'primary', cla
   return (
   <TouchableOpacity
     onPress={onPress} disabled={disabled}
-    className={`${baseButtonClasses} ${buttonVariantClasses[variant]} ${className} ${disabled ? "bg-gray-400": 'bg-primary'}`}
+    className={`${baseButtonClasses} ${className}  ${disabled ? 'bg-gray-500' : buttonVariantClasses[variant]}`}
     activeOpacity={0.8}
   >
     <Text className={`${baseTextClasses} ${textVariantClasses[variant]} ${textClassName}`}>
