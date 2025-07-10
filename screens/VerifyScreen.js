@@ -20,7 +20,7 @@ export default function VerifyScreen({ navigation }) {
       />
        <CustomButton
         title="Verify"
-        variant='primary' onPress={() => navigation.navigate('Verify')}
+        variant='primary' onPress={() => navigation.navigate('BottomTabs')}
       />
     <View className="flex-row justify-center items-center my-3">
     <Text className="text-md text-center font-normal text-gray-500 my-2 mr-2">Didn't recieve the code?</Text>
