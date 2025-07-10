@@ -20,7 +20,7 @@ const insets = useSafeAreaInsets();
         style={styles.backButton}>
     <Ionicons name="chevron-back-sharp" size={30} color="black" />
       </TouchableOpacity>
-      <Text style={styles.headerTitle}>{title}</Text>
+      <Text className="font-alata" style={styles.headerTitle}>{title}</Text>
     </View>
   );
 };
