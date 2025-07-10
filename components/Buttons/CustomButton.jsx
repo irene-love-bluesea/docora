@@ -1,7 +1,7 @@
 import {  Text, TouchableOpacity } from 'react-native'
 
 const CustomButton = ({ icon, title, onPress, variant = 'primary', className = '', textClassName = '' }) => {
-  const baseButtonClasses = "m-2 w-full py-3 px-6 rounded-md items-center justify-center  focus:outline-none focus:ring-2 focus:ring-opacity-75 transition-transform transform active:scale-95";
+  const baseButtonClasses = "m-2 w-full py-3 px-6 rounded-xl items-center justify-center focus:outline-none focus:ring-2 focus:ring-opacity-75 transition-transform transform active:scale-95";
   const baseTextClasses = "text-lg font-bold  border-gray-500";
 
   // --- Variant-specific classes ---
