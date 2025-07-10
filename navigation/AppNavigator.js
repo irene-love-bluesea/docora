@@ -8,6 +8,7 @@ import HomeScreen from '../screens/HomeScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import LoginScreen from '../screens/LoginScreen';
 import VerifyScreen from '../screens/VerifyScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,9 @@ export default function AppNavigator() {
       <Stack.Screen name="Verify" component={VerifyScreen} options={({navigation}) => ({
           header: () => ( <CustomHeader title="Verification" navigation={navigation}
           backgroundColor="#E6F2FF" />   ),  })} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={({navigation}) => ({
+      header: () => ( <CustomHeader title="Reset Password" navigation={navigation}
+      backgroundColor="#E6F2FF" />   ),  })} />
       <Stack.Screen name="Home" component={HomeScreen} />
     </Stack.Navigator>
   );

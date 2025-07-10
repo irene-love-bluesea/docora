@@ -45,8 +45,8 @@ const LoginScreen = ({navigation}) => {
             Remember me
           </Text>
         </View>
-        <View>
-          <Text className="text-base  font-semibold underline my-3 ml-2">
+        <View >
+          <Text onPress={() => navigation.navigate('ForgotPassword')} className="text-base  font-semibold underline my-3 ml-2">
             Forgot Password?
           </Text>
         </View>
