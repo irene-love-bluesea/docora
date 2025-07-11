@@ -17,6 +17,8 @@ import PatientProfile from "../screens/doctor/PatientProfile";
 import ForgotPasswordScreen from "../screens/auth/ForgotPassword";
 import RoleSelector from "../screens/auth/RoleSelector";
 import PatientInfo from "../screens/auth/PatientInfo";
+import VerifyIdentity from "../screens/auth/VerifyIdentity";
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -190,6 +192,19 @@ export default function AppNavigator() {
           header: () => (
             <CustomHeader
               title="Patient Profile"
+              navigation={navigation}
+              backgroundColor="#E6F2FF"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="VerifyIdentity"
+        component={VerifyIdentity}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomHeader
+              title="Verify Identity"
               navigation={navigation}
               backgroundColor="#E6F2FF"
             />
