@@ -5,6 +5,8 @@ import CustomButton from '../../components/Buttons/CustomButton';
 export default function VerifyScreen({ navigation }) {
   const [fullName, setFullName] = React.useState("");
 
+  const isVerify = fullName !== "";
+
   return (
     <View className="flex-1 justify-start items-center px-5 bg-background">
       <View className="w-full">
@@ -19,8 +21,8 @@ export default function VerifyScreen({ navigation }) {
         onChangeText={setFullName}
       />
        <CustomButton
-        title="Verify"
-        variant='primary' onPress={() => navigation.navigate('BottomTabs')}
+        title="Verify" disabled={!isVerify}
+        variant='primary' onPress={() => navigation.navigate('RoleSelector')}
       />
     <View className="flex-row justify-center items-center my-3">
     <Text className="text-md text-center font-normal text-gray-500 my-2 mr-2">Didn't recieve the code?</Text>

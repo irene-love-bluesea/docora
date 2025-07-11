@@ -15,6 +15,8 @@ import DoctorChatScreen from "../screens/doctor/Chat";
 import ProfileScreen from "../screens/doctor/Profile";
 import PatientProfile from "../screens/doctor/PatientProfile";
 import ForgotPasswordScreen from "../screens/auth/ForgotPassword";
+import RoleSelector from "../screens/auth/RoleSelector";
+import PatientInfo from "../screens/auth/PatientInfo";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -137,6 +139,26 @@ export default function AppNavigator() {
           header: () => (
             <CustomHeader
               title="Verification"
+              navigation={navigation}
+              backgroundColor="#E6F2FF"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="RoleSelector"
+        component={RoleSelector}
+        options={({ navigation }) => ({
+          headerShown: false,
+        })}
+      />
+      <Stack.Screen
+        name="PatientInfo"
+        component={PatientInfo}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomHeader
+              title="Detail Information"
               navigation={navigation}
               backgroundColor="#E6F2FF"
             />

@@ -20,6 +20,11 @@ export default function AuthScreen({ navigation }) {
         title="Log In"
         onPress={() => navigation.navigate('Login')}
       />
+      <CustomButton
+        variant="primary"
+        title="Go to Role Selector"
+        onPress={() => navigation.navigate('RoleSelector')}
+      />
     </View>
   );
 }
