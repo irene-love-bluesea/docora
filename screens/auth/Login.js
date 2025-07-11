@@ -9,6 +9,8 @@ const LoginScreen = ({navigation}) => {
   const [password , setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
 
+  const isFormValid = email !== "" && password !== "" && isChecked === true;
+
   return (
     <View className=" font-inter flex-1 justify-top items-left p-5 bg-background">
       <View className="mb-3">
@@ -51,7 +53,7 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       </View>
-      <CustomButton  variant="primary" title="Log In" className="m-0" />
+      <CustomButton  variant="primary" title="Log In" disabled={!isFormValid} className="m-0" />
       <View className="flex-row items-center justify-center gap-3 my-3">
         <Text className="text-base font-semibold">
           Don't have an account? <Text className="text-primary underline" onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
