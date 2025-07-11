@@ -31,6 +31,14 @@ const VerifyIdentity = () => {
   const [specialtyOpen, setSpecialtyOpen] = useState(false);
   const [experienceOpen, setExperienceOpen] = useState(false);
 
+  const isFormValid =
+    licenceNo !== "" &&
+    countryValue !== null &&
+    specialtyValue !== null &&
+    yearOfExperience !== null &&
+    medicalCertificate !== null &&
+    governmentId !== null;
+
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {
       case "country":
@@ -204,7 +212,7 @@ const VerifyIdentity = () => {
             </View>
           )}
         </View>
-        <CustomButton title="Submit" variant="primary" onPress={handleSubmit} />
+        <CustomButton title="Submit" variant="primary" onPress={handleSubmit} disabled={!isFormValid} />
       </View>
     </ScrollView>
   );
