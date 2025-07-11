@@ -3,7 +3,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 
-export default function Dropdown({data , value , setValue , placeholder , zIndex , open, setOpen, onOpen}) {
+export default function Dropdown({data , value , setValue ,mode,multiple=false, placeholder , zIndex , open, setOpen, onOpen}) {
   const [items, setItems] = useState(data);
 
   const handleSetOpen = (openState) => {
@@ -23,7 +23,8 @@ export default function Dropdown({data , value , setValue , placeholder , zIndex
       setValue={setValue}
       setItems={setItems}
       placeholder={placeholder}
-
+      mode={mode}
+      multiple={multiple}
       style={styles.dropdown}
       dropDownContainerStyle={styles.dropdownContainer}
       textStyle={styles.dropdownText}
@@ -34,9 +35,10 @@ export default function Dropdown({data , value , setValue , placeholder , zIndex
       selectedItemLabelStyle={styles.selectedItemLabel}
       arrowIconStyle={styles.arrowIcon}
       tickIconStyle={styles.tickIcon}
-      // dropDownDirection="DOWN"
       zIndex={zIndex}
       zIndexInverse={3000}
+      badgeColors="#E6F2FF"
+      badgeDotColors={["#1bdb0d", "#00b4d8", "#ed4a18", "#4a4a48", "#8ac926", "#1648de", "#e9c46a"]}
     />
   );
 }

@@ -13,7 +13,7 @@ export default function RoleSelector({ navigation }) {
 
   function navigateNext() {
     if(role === "Doctor"){
-        navigation.navigate("Verify")
+        navigation.navigate("VerifyIdentity")
     }else if(role === "Patient"){
         navigation.navigate("PatientInfo")
     }
