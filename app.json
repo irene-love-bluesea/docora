@@ -32,6 +32,11 @@
           "mimeType": "Production"
         }
       ]
+    ],
+    "permissions": [
+      "CAMERA",
+      "CAMERA_ROLL",
+      "READ_EXTERNAL_STORAGE"
     ]
   }
 }

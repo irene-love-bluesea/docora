@@ -15,6 +15,7 @@ export default function Dropdown({data , value , setValue , placeholder , zIndex
 
   return (
     <DropDownPicker
+      listMode="SCROLLVIEW"
       open={open}
       value={value}
       items={items}
