@@ -8,6 +8,9 @@ import {
   experienceYears,
   specialityRole,
 } from "../../constant/data/doctorDetails";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import * as DocumentPicker from 'expo-document-picker';
 
 const VerifyIdentity = () => {
   const [licenceNo, setLicenceNo] = useState("");
@@ -101,11 +104,23 @@ const VerifyIdentity = () => {
       </View>
       <View className="mb-3 w-full">
         <Text className="text-xl font-normal mb-2">Medical Certificate *</Text>
-        
+        <View className=" flex-row items-center  px-5 py-8 gap-5 border-dashed rounded-xl border-gray-300 border-2">
+          <Ionicons name="cloud-upload-outline" className="" size={60} color="#5C738A" />
+          <View  className="flex-col w-2/3 gap-2 ">
+            <Text className="text-xl text-center text-gray-500">Tap to upload  your medical certificate</Text>
+            <Text className="text-md text-center text-gray-500">PDF , JPG , PNG (Max 5MB)</Text>
+          </View>
+        </View>
       </View>
       <View className="mb-3 w-full">
         <Text className="text-xl font-normal mb-2">Goverment ID *</Text>
-        
+        <View className=" flex-row items-center  px-5 py-8 gap-5 border-dashed rounded-xl border-gray-300 border-2">
+          <FontAwesome name="drivers-license-o" className="" size={50} color="#5C738A" />
+          <View  className="flex-col w-2/3 gap-2 ">
+            <Text className="text-xl text-center text-gray-500">Tap to upload  your Government ID</Text>
+            <Text className="text-md text-center text-gray-500">PDF , JPG , PNG (Max 5MB)</Text>
+          </View>
+        </View>
       </View>
       <CustomButton title="Submit" variant="primary" onPress={handleSubmit} />
     </View>
