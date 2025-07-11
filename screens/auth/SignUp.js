@@ -8,7 +8,7 @@ export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isChecked, setChecked] = React.useState(false);
-  const isFormVaild =
+  const isFormValid =
     fullName !== "" && email !== "" && password !== "" && isChecked === true;
 
   return (
@@ -57,7 +57,7 @@ export default function SignUpScreen({ navigation }) {
       <CustomButton
         title="Sign Up" 
         variant="primary"
-        disabled={!isFormVaild}
+        disabled={!isFormValid}
         onPress={() => navigation.navigate("Verify")}
       />
       <View className="flex-row items-center justify-center gap-3 my-3">
