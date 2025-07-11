@@ -20,6 +20,11 @@ export default function AuthScreen({ navigation }) {
         title="Log In"
         onPress={() => navigation.navigate('Login')}
       />
+      <CustomButton
+        variant="secondary"
+        title=" Go to verify "
+        onPress={() => navigation.navigate('VerifyIdentity')}
+      />
     </View>
   );
 }

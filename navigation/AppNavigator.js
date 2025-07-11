@@ -15,6 +15,7 @@ import DoctorChatScreen from "../screens/doctor/Chat";
 import ProfileScreen from "../screens/doctor/Profile";
 import PatientProfile from "../screens/doctor/PatientProfile";
 import ForgotPasswordScreen from "../screens/auth/ForgotPassword";
+import VerifyIdentity from "../screens/auth/VerifyIdentity";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -168,6 +169,19 @@ export default function AppNavigator() {
           header: () => (
             <CustomHeader
               title="Patient Profile"
+              navigation={navigation}
+              backgroundColor="#E6F2FF"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="VerifyIdentity"
+        component={VerifyIdentity}
+        options={({ navigation }) => ({
+          header: () => (
+            <CustomHeader
+              title="Verify Identity"
               navigation={navigation}
               backgroundColor="#E6F2FF"
             />
