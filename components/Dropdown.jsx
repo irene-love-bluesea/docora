@@ -3,15 +3,27 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 
-export default function Dropdown({data , value , setValue ,mode,multiple=false, placeholder , zIndex , open, setOpen, onOpen}) {
+export default function Dropdown({
+  data,
+  value,
+  setValue,
+  mode,
+  multiple = false,
+  disabled = false,
+  placeholder,
+  zIndex,
+  open,
+  setOpen,
+  onOpen,
+}) {
   const [items, setItems] = useState(data);
 
   const handleSetOpen = (openState) => {
     if (openState && onOpen) {
-      onOpen(); 
+      onOpen();
     }
     setOpen(openState);
-  }
+  };
 
   return (
     <DropDownPicker
@@ -24,6 +36,7 @@ export default function Dropdown({data , value , setValue ,mode,multiple=false, 
       setItems={setItems}
       placeholder={placeholder}
       mode={mode}
+      disabled={disabled}
       multiple={multiple}
       style={styles.dropdown}
       dropDownContainerStyle={styles.dropdownContainer}
@@ -36,9 +49,21 @@ export default function Dropdown({data , value , setValue ,mode,multiple=false, 
       arrowIconStyle={styles.arrowIcon}
       tickIconStyle={styles.tickIcon}
       zIndex={zIndex}
+      disabledStyle={{
+        opacity: 0.4,
+        borderColor: 'grey',
+      }}
       zIndexInverse={3000}
       badgeColors="#E6F2FF"
-      badgeDotColors={["#1bdb0d", "#00b4d8", "#ed4a18", "#4a4a48", "#8ac926", "#1648de", "#e9c46a"]}
+      badgeDotColors={[
+        "#1bdb0d",
+        "#00b4d8",
+        "#ed4a18",
+        "#4a4a48",
+        "#8ac926",
+        "#1648de",
+        "#e9c46a",
+      ]}
     />
   );
 }
