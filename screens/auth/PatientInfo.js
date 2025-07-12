@@ -11,6 +11,7 @@ import {
 import CustomButton from "../../components/Buttons/CustomButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Dropdown from "../../components/Dropdown";
+import { RadioButton } from "react-native-paper";
 
 const gender = [
   { label: "Male", value: "Male" },
@@ -35,7 +36,6 @@ const allergy = [
   { label: "Dairy", value: "Dairy" },
   { label: "Iodine", value: "Iodine" },
   { label: "InsectStings", value: "InsectStings" },
-  { label: "None", value: "None" },
 ];
 const chronical = [
   { label: "Asthma", value: "Asthma" },
@@ -46,7 +46,6 @@ const chronical = [
   { label: "Alzheimers", value: "Alzheimers" },
   { label: "Heart Disease", value: "Heart Disease" },
   { label: "Liver Disease", value: "Liver Disease" },
-  { label: "None", value: "None" },
 ];
 
 export default function PatientInfo({ navigation }) {
@@ -60,6 +59,14 @@ export default function PatientInfo({ navigation }) {
   const [allergyOpen, setAllergyOpen] = React.useState(false);
   const [chronic, setChronic] = React.useState([]);
   const [chronicOpen, setChronicOpen] = React.useState(false);
+  const [allergyValue, setAllergyValue] = React.useState("No");
+  const [chronicValue, setChronicValue] = React.useState("No");
+
+  const haveAllergy = allergyValue === "Yes";
+  const haveChronic = chronicValue === "Yes";
+  const isVaildAge = new Date().getFullYear() - bd.getFullYear() >= 15;
+  const isDetailCompleted =
+    genderValue !== "" && bloodTypeValue !== "" && isVaildAge;
 
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {
@@ -113,7 +120,7 @@ export default function PatientInfo({ navigation }) {
           setChronicOpen(false);
         }}
       >
-        <View className="flex-1 justify-start items-center p-5 bg-background">
+        <View className="flex-1 justify-start items-center px-5 bg-background">
           <View className="mb-3 w-full">
             <Text className="text-lg font-medium mb-2">Gender *</Text>
             <Dropdown
@@ -158,6 +165,11 @@ export default function PatientInfo({ navigation }) {
                 maximumDate={new Date()}
               />
             )}
+            {!isVaildAge && (
+              <Text className="text-md text-red-500 mt-2">
+                * You should be at least 15 years old to use this app.
+              </Text>
+            )}
           </View>
 
           <View className="mb-3 w-full">
@@ -175,14 +187,31 @@ export default function PatientInfo({ navigation }) {
           </View>
 
           <View className="mb-3 w-full">
-            <Text className="text-lg font-medium mb-2">Allergy</Text>
-            {/* <MultiDropDown/> */}
+            <Text className="text-lg font-medium mb-2">
+              Do you have an allergy?
+            </Text>
+            <RadioButton.Group
+              onValueChange={(newValue) => setAllergyValue(newValue)}
+              value={allergyValue}
+            >
+              <View className="flex-row items-center gap-4 mb-2">
+                <View className="flex-row items-center">
+                  <RadioButton value="Yes" />
+                  <Text>Yes</Text>
+                </View>
+                <View className="flex-row items-center">
+                  <RadioButton value="No" />
+                  <Text>No</Text>
+                </View>
+              </View>
+            </RadioButton.Group>
             <Dropdown
               data={allergy}
               open={allergyOpen}
               setOpen={setAllergyOpen}
               value={allergies}
               mode="BADGE"
+              disabled={!haveAllergy}
               multiple={true}
               zIndex={1000}
               setValue={setAllergies}
@@ -192,8 +221,24 @@ export default function PatientInfo({ navigation }) {
           </View>
 
           <View className="mb-3 w-full">
-            <Text className="text-lg font-medium mb-2">Chronic Condition</Text>
-            {/* <MultiDropDown/> */}
+            <Text className="text-lg font-medium mb-2">
+              Do you have any chronic condition?
+            </Text>
+            <RadioButton.Group
+              onValueChange={(newValue) => setChronicValue(newValue)}
+              value={chronicValue}
+            >
+              <View className="flex-row items-center gap-4 mb-2">
+                <View className="flex-row items-center">
+                  <RadioButton value="Yes" />
+                  <Text>Yes</Text>
+                </View>
+                <View className="flex-row items-center">
+                  <RadioButton value="No" />
+                  <Text>No</Text>
+                </View>
+              </View>
+            </RadioButton.Group>
             <Dropdown
               data={chronical}
               open={chronicOpen}
@@ -201,6 +246,7 @@ export default function PatientInfo({ navigation }) {
               value={chronic}
               mode="BADGE"
               multiple={true}
+              disabled={!haveChronic}
               zIndex={100}
               setValue={setChronic}
               placeholder="Select your Chronic Conditions"
@@ -211,6 +257,7 @@ export default function PatientInfo({ navigation }) {
           <CustomButton
             title="Go to Patient Profile"
             variant="primary"
+            disabled={!isDetailCompleted}
             onPress={() => navigation.navigate("PatientProfile")}
           />
         </View>
