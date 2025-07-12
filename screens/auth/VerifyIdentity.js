@@ -23,7 +23,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as DocumentPicker from "expo-document-picker";
 
-const VerifyIdentity = ({navigation}) => {
+const VerifyIdentity = ({ navigation }) => {
   const [licenceNo, setLicenceNo] = useState("");
   const [countryValue, setCountryValue] = useState(null);
   const [specialtyValue, setSpecialtyValue] = useState(null);
@@ -103,23 +103,24 @@ const VerifyIdentity = ({navigation}) => {
       medicalCertificate,
       governmentId
     );
-    navigation.navigate("BottomTabs", { userType: 'doctor' });
+    navigation.navigate("BottomTabs", { userType: "doctor" });
   };
 
   return (
-    <ScrollView className="flex-1 bg-background">
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "android" ? "padding" : "height"}
-        style={{ flex: 1 }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "android" ? "padding" : "height"}
+      style={{ flex: 1 }}
+      className=" bg-background"
+    >
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+          setCountryOpen(false);
+          setSpecialtyOpen(false);
+          setExperienceOpen(false);
+        }}
       >
-        <TouchableWithoutFeedback
-          onPress={() => {
-            Keyboard.dismiss();
-            setCountryOpen(false);
-            setSpecialtyOpen(false);
-            setExperienceOpen(false);
-          }}
-        >
+        <ScrollView className="flex-1 bg-background">
           <View className=" justify-start items-center px-5 ">
             <View className="mb-3 w-full">
               <Text className="text-lg font-medium mb-2">
@@ -286,9 +287,9 @@ const VerifyIdentity = ({navigation}) => {
               className=" mt-5"
             />
           </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </ScrollView>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

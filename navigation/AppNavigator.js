@@ -19,7 +19,8 @@ import PatientHome from "../screens/patient/PatientHome";
 import Profile from "../screens/patient/PatientProfile";
 import PatientSchedule from "../screens/patient/PatientSchedule";
 import PatientChat from "../screens/patient/PatientChat";
-import { CustomHeader, PatientHomeHeader } from "../components/Header";
+import { CustomHeader } from "../components/Header";
+import SearchDoctor from "../screens/patient/SearchDoctor";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,31 +70,9 @@ function BottomTabs({ route }) {
       })}
     >
       {/* Map over the selected array to create the screens */}
-      {tabsToRender.map((tab) =>
-        tab.name === "Home" && userType === "patient" ? ( // condition rendering
-          <Tab.Screen
-            key={tab.name}
-            name={tab.name}
-            component={tab.component}
-            options={{
-              headerShown: true,
-              header: ({ navigation }) => (
-                <PatientHomeHeader
-                  title="Sign Up"
-                  navigation={navigation}
-                  backgroundColor="#E6F2FF"
-                />
-              ),
-            }}
-          />
-        ) : (
-          <Tab.Screen
-            key={tab.name}
-            name={tab.name}
-            component={tab.component}
-          />
-        )
-      )}
+      {tabsToRender.map((tab) => (
+        <Tab.Screen key={tab.name} name={tab.name} component={tab.component} />
+      ))}
     </Tab.Navigator>
   );
 }
@@ -200,6 +179,20 @@ export default function AppNavigator() {
         name="VerifyIdentity"
         component={VerifyIdentity}
         options={({ navigation }) => ({
+          header: () => (
+            <CustomHeader
+              title="Verify Identity"
+              navigation={navigation}
+              backgroundColor="#E6F2FF"
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="SearchDoctor"
+        component={SearchDoctor}
+        options={({ navigation }) => ({
+          headerShown: false,
           header: () => (
             <CustomHeader
               title="Verify Identity"
