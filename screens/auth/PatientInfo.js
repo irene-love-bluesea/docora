@@ -55,6 +55,8 @@ export default function PatientInfo({ navigation }) {
   const [bloodTypeOpen, setBloodTypeOpen] = React.useState(false);
   const [bd, setBd] = React.useState(new Date());
   const [birthOpen, setBirthOpen] = React.useState(false);
+    const [birthDateSelected, setBirthDateSelected] = React.useState(false); // Track if user selected a date
+
   const [allergies, setAllergies] = React.useState([]);
   const [allergyOpen, setAllergyOpen] = React.useState(false);
   const [chronic, setChronic] = React.useState([]);
@@ -146,7 +148,7 @@ export default function PatientInfo({ navigation }) {
             >
               <View className="p-5 bg-white rounded-xl">
                 <Text>
-                  {bd && bd.toDateString() !== new Date().toDateString()
+                  {birthDateSelected
                     ? formatDate(bd)
                     : "mm/dd/yyyy"}
                 </Text>
@@ -160,12 +162,13 @@ export default function PatientInfo({ navigation }) {
                   setBirthOpen(Platform.OS === "ios");
                   if (selectedDate) {
                     setBd(selectedDate);
+                    setBirthDateSelected(true);
                   }
                 }}
                 maximumDate={new Date()}
               />
             )}
-            {!isVaildAge && (
+            {(!isVaildAge && birthDateSelected )&& (
               <Text className="text-md text-red-500 mt-2">
                 * You should be at least 15 years old to use this app.
               </Text>
