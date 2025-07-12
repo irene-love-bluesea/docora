@@ -1,7 +1,7 @@
-import {  Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 
-const CustomButton = ({ icon, title, onPress, disabled, variant = 'primary', className = '', textClassName = '' }) => {
-  const baseButtonClasses = "m-2 w-full py-3 px-6 rounded-xl items-center justify-center focus:outline-none focus:ring-2 focus:ring-opacity-75 transition-transform transform active:scale-95";
+const CustomButton = ({ icon, title, onPress, disabled, width= 'w-full', variant = 'primary', className = '', textClassName = '' }) => {
+  const baseButtonClasses = "my-2 py-3 px-6 rounded-xl items-center justify-center focus:outline-none focus:ring-2 focus:ring-opacity-75 transition-transform transform active:scale-95";
   const baseTextClasses = "text-lg font-bold  border-gray-500";
 
   // --- Variant-specific classes ---
@@ -18,12 +18,16 @@ const CustomButton = ({ icon, title, onPress, disabled, variant = 'primary', cla
   return (
   <TouchableOpacity
     onPress={onPress} disabled={disabled}
-    className={`${baseButtonClasses} ${className}  ${disabled ? 'bg-gray-500' : buttonVariantClasses[variant]}`}
+    className={`${baseButtonClasses} ${className} ${width} ${disabled ? 'bg-gray-500' : buttonVariantClasses[variant]}`}
     activeOpacity={0.8}
   >
+    <View className="flex-row items-center gap-3">
+      {icon}
     <Text className={`${baseTextClasses} ${textVariantClasses[variant]} ${textClassName}`}>
-      {icon} {title}
+       {title}
     </Text>
+    </View>
+    
   </TouchableOpacity>
   )
 }
