@@ -50,19 +50,27 @@ export default function SignUpScreen({ navigation }) {
           color={isChecked ? "#2563EB" : undefined}
           style={{ borderRadius: 4 }}
         />
-        <Text className="text-base my-1 ml-2">
-          I agree to the Terms of Service and Privacy Policy
-        </Text>
+        <TouchableOpacity onPress={() => setChecked(!isChecked)}>
+          <Text className="text-base my-1 ml-2">
+            I agree to the Terms of Service and Privacy Policy
+          </Text>
+        </TouchableOpacity>
       </View>
       <CustomButton
-        title="Sign Up" 
+        title="Sign Up"
         variant="primary"
         disabled={!isFormValid}
         onPress={() => navigation.navigate("Verify")}
       />
       <View className="flex-row items-center justify-center gap-3 my-3">
         <Text className="text-base font-semibold">
-          Already have an account? <Text className="text-primary underline" onPress={() => navigation.navigate('Login')}>Log In</Text>
+          Already have an account?{" "}
+          <Text
+            className="text-primary underline"
+            onPress={() => navigation.navigate("Login")}
+          >
+            Log In
+          </Text>
         </Text>
       </View>
     </View>

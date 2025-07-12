@@ -267,7 +267,7 @@ const VerifyIdentity = () => {
                     />
                     <View className="flex-col w-2/3 gap-2 ">
                       <Text className="text-xl text-center text-gray-500">
-                        Tap to upload your Goverment ID
+                        Tap to upload your Government ID
                       </Text>
                       <Text className="text-md text-center text-gray-500">
                         PDF , JPG , PNG (Max 5MB)

@@ -1,6 +1,6 @@
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
 import { Link } from "@react-navigation/native";
 
@@ -43,9 +43,11 @@ const LoginScreen = ({navigation}) => {
             color={isChecked ? "#2563EB" : undefined}
             style={{ borderRadius: 4 }}
           />
-          <Text className="text-base  my-3 ml-2">
-            Remember me
-          </Text>
+          <TouchableOpacity onPress={() => setChecked(!isChecked)}>
+            <Text className="text-base my-3 ml-2">
+              Remember me
+            </Text>
+          </TouchableOpacity>
         </View>
         <View >
           <Text onPress={() => navigation.navigate('ForgotPassword')} className="text-base  font-semibold underline my-3 ml-2">
