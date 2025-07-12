@@ -1,27 +1,46 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { View, TouchableOpacity, Text } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AuthScreen from "../screens/auth/Auth";
-import HomeScreen from "../screens/doctor/Home";
-import SignUpScreen from "../screens/auth/SignUp";
-import LoginScreen from "../screens/auth/Login";
-import VerifyScreen from "../screens/auth/Verify";
-import DoctorScheduleScreen from "../screens/doctor/Schedule";
-import DoctorChatScreen from "../screens/doctor/Chat";
-import ProfileScreen from "../screens/doctor/Profile";
-import PatientProfile from "../screens/doctor/PatientProfile";
 import ForgotPasswordScreen from "../screens/auth/ForgotPassword";
-import RoleSelector from "../screens/auth/RoleSelector";
+import LoginScreen from "../screens/auth/Login";
 import PatientInfo from "../screens/auth/PatientInfo";
+import RoleSelector from "../screens/auth/RoleSelector";
+import SignUpScreen from "../screens/auth/SignUp";
+import VerifyScreen from "../screens/auth/Verify";
 import VerifyIdentity from "../screens/auth/VerifyIdentity";
+import DoctorChatScreen from "../screens/doctor/Chat";
+import HomeScreen from "../screens/doctor/Home";
+import PatientProfile from "../screens/doctor/PatientProfile";
+import ProfileScreen from "../screens/doctor/Profile";
+import DoctorScheduleScreen from "../screens/doctor/Schedule";
+import PatientHome from "../screens/patient/PatientHome";
+import Profile from "../screens/patient/PatientProfile";
+import PatientSchedule from "../screens/patient/PatientSchedule";
+import PatientChat from "../screens/patient/PatientChat";
 
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+// Screens for a doctor
+const doctorTabs = [
+  { name: "Home", component: HomeScreen, icon: "home" },
+  { name: "Schedule", component: DoctorScheduleScreen, icon: "calendar" },
+  { name: "Chat", component: DoctorChatScreen, icon: "chatbox" },
+  { name: "Profile", component: ProfileScreen, icon: "person" },
+];
+
+// Screens for a patient (you'll need to create these screens)
+const patientTabs = [
+  { name: "Home", component: PatientHome, icon: "home" },
+  { name: "Schedule", component: PatientSchedule, icon: "calendar" },
+  { name: "Chat", component: PatientChat, icon: "chatbox" },
+  { name: "Profile", component: Profile, icon: "person" },
+];
 
 const CustomHeader = ({
   title,
@@ -50,23 +69,21 @@ const CustomHeader = ({
   );
 };
 
-function BottomTabs() {
+function BottomTabs({ route }) {
+  // Get userType from the route params
+  const { userType } = route.params;
+
+  // Select the correct set of tabs based on the user type
+  const tabsToRender = userType === 'doctor' ? doctorTabs : patientTabs;
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color }) => {
-          let iconName;
-
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "DoctorSchedule") {
-            iconName = focused ? "calendar-sharp" : "calendar-outline";
-          } else if (route.name === "DoctorChat") {
-            iconName = focused ? "chatbox" : "chatbox-outline";
-          } else if (route.name === "DoctorProfile") {
-            iconName = focused ? "person" : "person-outline";
-          }
-          // You can return any component that you like here!
+          // Find the current tab's configuration to get the icon name
+          const tabConfig = tabsToRender.find(tab => tab.name === route.name);
+          const iconName = focused ? tabConfig.icon : `${tabConfig.icon}-outline`;
+          
           return <Ionicons name={iconName} size={24} color={color} />;
         },
         tabBarActiveTintColor: "#023E8A",
@@ -74,28 +91,18 @@ function BottomTabs() {
         tabBarStyle: {
           backgroundColor: "#E6F2FF",
         },
+        headerShown: false, // Apply headerShown to all screens in the navigator
+        // tabBarShowLabel: false,
       })}
     >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="DoctorSchedule"
-        component={DoctorScheduleScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="DoctorChat"
-        component={DoctorChatScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="DoctorProfile"
-        component={ProfileScreen}
-        options={{ headerShown: false }}
-      />
+      {/* Map over the selected array to create the screens */}
+      {tabsToRender.map((tab) => (
+        <Tab.Screen
+          key={tab.name}
+          name={tab.name}
+          component={tab.component}
+        />
+      ))}
     </Tab.Navigator>
   );
 }

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Icon from "../../assets/icon/person.svg";
+import { useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import Doctor from "../../assets/icon/doctor.svg";
 import Health from "../../assets/icon/health.svg";
+import Icon from "../../assets/icon/person.svg";
 import CustomButton from "../../components/Buttons/CustomButton";
 
 export default function RoleSelector({ navigation }) {
@@ -11,11 +11,13 @@ export default function RoleSelector({ navigation }) {
 
   const isSelected = role !== "";
 
+  // In screens/auth/RoleSelector.js
+
   function navigateNext() {
-    if(role === "Doctor"){
-        navigation.navigate("VerifyIdentity")
-    }else if(role === "Patient"){
-        navigation.navigate("PatientInfo")
+    if (role === "Doctor") {
+      navigation.navigate("BottomTabs", { userType: 'doctor' });
+    } else if (role === "Patient") {
+      navigation.navigate("BottomTabs", { userType: 'patient' });
     }
   }
 
