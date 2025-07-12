@@ -23,7 +23,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as DocumentPicker from "expo-document-picker";
 
-const VerifyIdentity = () => {
+const VerifyIdentity = ({navigation}) => {
   const [licenceNo, setLicenceNo] = useState("");
   const [countryValue, setCountryValue] = useState(null);
   const [specialtyValue, setSpecialtyValue] = useState(null);
@@ -103,10 +103,11 @@ const VerifyIdentity = () => {
       medicalCertificate,
       governmentId
     );
+    navigation.navigate("BottomTabs", { userType: 'doctor' });
   };
 
   return (
-    <ScrollView className="flex-1  bg-background">
+    <ScrollView className="flex-1 bg-background">
       <KeyboardAvoidingView
         behavior={Platform.OS === "android" ? "padding" : "height"}
         style={{ flex: 1 }}
