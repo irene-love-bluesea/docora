@@ -41,10 +41,11 @@ export const PatientHomeHeader = ({
     <View
       style={[
         styles.headerContainer,
-        { backgroundColor, paddingTop: insets.top + 20 },
+        { backgroundColor, paddingTop: insets.top + 20 , justifyContent: "space-between"},
       ]}
     >
-    <Logo width={150} height={130} />
+      <Logo width={60} height={50} />
+      <Ionicons name="notifications-outline" size={24} color="#023E8A" />
     </View>
   );
 };

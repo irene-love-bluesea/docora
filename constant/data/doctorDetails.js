@@ -18,3 +18,63 @@ export const experienceYears = [
   { label: "15-20 years", value: "15-20" },
   { label: "More than 20 years", value: "20+" },
 ];
+
+
+export const popularDrs = [
+  {
+    id: 1,
+    name: "Dr. John Doe",
+    image: require("../../assets/profile/profile_m.png"),
+    speciality: "General Physician",
+    rating: 4.5,
+  },
+  {
+    id: 2,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Cardiologist",
+    rating: 4.5,
+  },
+  {
+    id: 3,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Psychiatrist",
+    rating: 4.5,
+  },
+  {
+    id: 4,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Psychiatrist",
+    rating: 4.5,
+  },
+  {
+    id: 5,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Psychiatrist",
+    rating: 4.5,
+  },
+  {
+    id: 6,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Psychiatrist",
+    rating: 4.5,
+  },
+  {
+    id: 7,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Psychiatrist",
+    rating: 4.5,
+  },
+  {
+    id: 8,
+    name: "Dr. Irene",
+    image: require("../../assets/profile/profile_f.png"),
+    speciality: "Psychiatrist",
+    rating: 4.5,
+  },
+];
