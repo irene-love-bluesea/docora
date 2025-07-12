@@ -1,8 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Text, TouchableOpacity, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import AuthScreen from "../screens/auth/Auth";
 import ForgotPasswordScreen from "../screens/auth/ForgotPassword";
@@ -21,7 +19,7 @@ import PatientHome from "../screens/patient/PatientHome";
 import Profile from "../screens/patient/PatientProfile";
 import PatientSchedule from "../screens/patient/PatientSchedule";
 import PatientChat from "../screens/patient/PatientChat";
-
+import { CustomHeader, PatientHomeHeader } from "../components/Header";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,48 +40,23 @@ const patientTabs = [
   { name: "Profile", component: Profile, icon: "person" },
 ];
 
-const CustomHeader = ({
-  title,
-  navigation,
-  backgroundColor = "transparent",
-}) => {
-  const insets = useSafeAreaInsets();
-
-  return (
-    <View
-      style={[
-        styles.headerContainer,
-        { backgroundColor, paddingTop: insets.top + 20 },
-      ]}
-    >
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <Ionicons name="chevron-back-sharp" size={30} color="black" />
-      </TouchableOpacity>
-      <Text className="font-alata" style={styles.headerTitle}>
-        {title}
-      </Text>
-    </View>
-  );
-};
-
 function BottomTabs({ route }) {
   // Get userType from the route params
   const { userType } = route.params;
 
   // Select the correct set of tabs based on the user type
-  const tabsToRender = userType === 'doctor' ? doctorTabs : patientTabs;
+  const tabsToRender = userType === "doctor" ? doctorTabs : patientTabs;
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color }) => {
           // Find the current tab's configuration to get the icon name
-          const tabConfig = tabsToRender.find(tab => tab.name === route.name);
-          const iconName = focused ? tabConfig.icon : `${tabConfig.icon}-outline`;
-          
+          const tabConfig = tabsToRender.find((tab) => tab.name === route.name);
+          const iconName = focused
+            ? tabConfig.icon
+            : `${tabConfig.icon}-outline`;
+
           return <Ionicons name={iconName} size={24} color={color} />;
         },
         tabBarActiveTintColor: "#023E8A",
@@ -96,13 +69,31 @@ function BottomTabs({ route }) {
       })}
     >
       {/* Map over the selected array to create the screens */}
-      {tabsToRender.map((tab) => (
-        <Tab.Screen
-          key={tab.name}
-          name={tab.name}
-          component={tab.component}
-        />
-      ))}
+      {tabsToRender.map((tab) =>
+        tab.name === "Home" && userType === "patient" ? ( // condition rendering
+          <Tab.Screen
+            key={tab.name}
+            name={tab.name}
+            component={tab.component}
+            options={{
+              headerShown: true,
+              header: ({ navigation }) => (
+                <PatientHomeHeader
+                  title="Sign Up"
+                  navigation={navigation}
+                  backgroundColor="#E6F2FF"
+                />
+              ),
+            }}
+          />
+        ) : (
+          <Tab.Screen
+            key={tab.name}
+            name={tab.name}
+            component={tab.component}
+          />
+        )
+      )}
     </Tab.Navigator>
   );
 }
@@ -221,24 +212,3 @@ export default function AppNavigator() {
     </Stack.Navigator>
   );
 }
-
-const styles = {
-  headerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    paddingHorizontal: 15,
-    paddingBottom: 20,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "black",
-  },
-  backButton: {
-    position: "absolute",
-    left: 10,
-    bottom: 20,
-  },
-};

@@ -26,6 +26,11 @@ export default function AuthScreen({ navigation }) {
         title="Go to Role Selector"
         onPress={() => navigation.navigate("RoleSelector")}
       />
+      <CustomButton
+        variant="primary"
+        title="Go to Patient home"
+        onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
+      />
     </View>
   );
 }
