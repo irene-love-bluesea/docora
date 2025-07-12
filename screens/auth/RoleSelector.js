@@ -13,11 +13,18 @@ export default function RoleSelector({ navigation }) {
 
   // In screens/auth/RoleSelector.js
 
-  function navigateNext() {
+  // function navigateNext() {
+  //   if (role === "Doctor") {
+  //     navigation.navigate("BottomTabs", { userType: 'doctor' });
+  //   } else if (role === "Patient") {
+  //     navigation.navigate("BottomTabs", { userType: 'patient' });
+  //   }
+  // }
+function navigateNext() {
     if (role === "Doctor") {
-      navigation.navigate("BottomTabs", { userType: 'doctor' });
+      navigation.navigate("VerifyIdentity",);
     } else if (role === "Patient") {
-      navigation.navigate("BottomTabs", { userType: 'patient' });
+      navigation.navigate("PatientInfo");
     }
   }
 

@@ -260,8 +260,8 @@ export default function PatientInfo({ navigation }) {
           <CustomButton
             title="Go to Patient Profile"
             variant="primary"
-            disabled={!isDetailCompleted}
-            onPress={() => navigation.navigate("PatientProfile")}
+            disabled={!isDetailCompleted} 
+            onPress={() => navigation.navigate("BottomTabs",{userType: 'patient'})}
           />
         </View>
       </TouchableWithoutFeedback>
