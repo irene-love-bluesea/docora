@@ -59,7 +59,7 @@ export default function PatientHome({ navigation }) {
   const [popularDoctors, setPopularDoctors] = useState(popularDrs);
   const [search, setSearch] = useState("");
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} className="bg-background ">
       <View className=" flex-row justify-between items-center px-5 py-5 bg-background ">
         <Logo width={60} height={50} />
         <Ionicons name="notifications-outline" size={26} color="#023E8A" />

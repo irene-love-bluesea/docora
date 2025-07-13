@@ -194,7 +194,7 @@ export default function HomeScreen({ navigation }) {
               </Text>
             </View>
             <View className="flex items-center justify-center gap-1 h-[100px] w-[48%] bg-white border border-blue-200 rounded-xl">
-              <AntDesign name="star" size={25} color="#023E8A" />{" "}
+              <AntDesign name="star" size={25} color="#023E8A" />
               <Text className="text-primary text-lg  text-center font-semibold">
                 View{"\n"}Feedback
               </Text>
