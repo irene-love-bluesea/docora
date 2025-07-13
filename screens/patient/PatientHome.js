@@ -9,17 +9,11 @@ import {
   View,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import GeneralPhysician from "../../assets/icon/speciality/general.svg";
-import Dermatologist from "../../assets/icon/speciality/dermatologist.svg";
-import Pediatrician from "../../assets/icon/speciality/pediatrician.svg";
-import Cardiologist from "../../assets/icon/speciality/cardiologist.svg";
-import Psychiatrist from "../../assets/icon/speciality/psychiatrist.svg";
-import Dentist from "../../assets/icon/speciality/dentist.svg";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
 import Logo from "../../assets/logo/docora_hospital.svg";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { popularDrs } from "../../constant/data/doctorDetails";
+import { Cardiologist, Dentist, Dermatologist, GeneralPhysician, Pediatrician, popularDrs, Psychiatrist } from "../../constant/data/doctorDetails";
 
 export default function PatientHome({ navigation }) {
   const specialityR = [
