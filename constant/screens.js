@@ -19,6 +19,7 @@ import PatientChat from "../screens/patient/PatientChat";
 import SearchDoctor from "../screens/patient/SearchDoctor";
 import { CustomHeader } from "../components/Header";
 import DoctorProfile from "../screens/patient/DoctorProfile";
+import DoctorReview from "../screens/patient/DoctorReview";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -157,5 +158,18 @@ export const stackScreens = [
         />
       ),
     })
-  } 
+  },
+   {
+    name: "DoctorReview",
+    component: DoctorReview,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Reviews"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    })
+  },
 ];
