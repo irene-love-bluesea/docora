@@ -1,3 +1,13 @@
+import GeneralPhysician from "../../assets/icon/speciality/general.svg";
+import Dermatologist from "../../assets/icon/speciality/dermatologist.svg";
+import Pediatrician from "../../assets/icon/speciality/pediatrician.svg";
+import Cardiologist from "../../assets/icon/speciality/cardiologist.svg";
+import Psychiatrist from "../../assets/icon/speciality/psychiatrist.svg";
+import Dentist from "../../assets/icon/speciality/dentist.svg";
+
+//export svg icons for doctor specialities
+export {GeneralPhysician, Dermatologist, Pediatrician, Cardiologist, Psychiatrist, Dentist};
+
 export const specialityRole = [
   { label: "Cardiology", value: "Cardiology" },
   { label: "General Practitioner", value: "General Practitioner" },

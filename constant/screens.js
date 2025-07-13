@@ -149,7 +149,13 @@ export const stackScreens = [
     name: "DoctorProfile",
     component: DoctorProfile,
     options: ({ navigation }) => ({
-      headerShown: false,
+      header: () => (
+        <CustomHeader
+          title="Doctor Profile"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
     })
   } 
 ];
