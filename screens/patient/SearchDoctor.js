@@ -11,12 +11,12 @@ export default function SearchDoctor({ navigation }) {
   const [popularDoctors, setPopularDoctors] = useState(popularDrs);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View className=" flex-row items-center justify-between bg-background py-4  ">
-        <TouchableOpacity onPress={() => navigation.goBack()} className="">
+    <SafeAreaView style={{ flex: 1 }} className="bg-background">
+      <View className=" flex-row gap-0  items-center justify-between  py-4  ">
+        <TouchableOpacity onPress={() => navigation.goBack()} className=" mx-2 ">
           <Ionicons name="chevron-back-sharp" size={30} color="black" />
         </TouchableOpacity>
-        <View className=" flex-row items-center h-[50px] bg-white rounded-lg px-5 mx-5 w-3/4 ">
+        <View className=" flex-row items-center h-[50px] bg-white rounded-lg px-5  w-3/4 me-3">
           <Ionicons name="search" size={20} color="#999" className="" />
           <TextInput
             className="border border-white h-full tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black "
@@ -26,7 +26,7 @@ export default function SearchDoctor({ navigation }) {
           />
         </View>
         <TouchableOpacity className="w-[50px] ">
-          <AntDesign name="filter" size={28} color="black" />
+          <AntDesign name="filter" size={28} color="#023E8A" />
         </TouchableOpacity>
       </View>
 
