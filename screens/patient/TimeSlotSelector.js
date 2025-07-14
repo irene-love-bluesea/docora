@@ -1,31 +1,33 @@
-import { useState } from "react";
-import { Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import {
-  afternoonTimeSlots,
-  eveningTimeSlots,
-  morningTimeSlots,
+  allTimeSlots,
 } from "../../constant/data/timeSlot";
 import TimeSelection from "../../components/TimeSelection";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomButton from "../../components/Buttons/CustomButton";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { addMinutesToTimeString, getUpcomingDays } from "../../utils/helper";
 
 export default function TimeSlotSelector() {
   const [selectedTime, setSelectedTime] = useState(null);
-  const allTimeSlots = {
-    Morning: morningTimeSlots,
-    Afternoon: afternoonTimeSlots,
-    Evening: eveningTimeSlots,
-  };
   const [timeSlots, setTimeSlots] = useState(allTimeSlots);
+
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [upComingDays, setUpComingDays] = useState([]);
+  const [updatedSlots, setUpdatedSlots] = useState(allTimeSlots);
+
+  useEffect(() => {
+    const upComingDays = getUpcomingDays();
+    setUpComingDays(upComingDays);
+    setSelectedDate(upComingDays[0]);
+  }, []);
 
   const handleTime = (selectedSlot) => {
     setSelectedTime(selectedSlot);
 
-    // Update all time slots to reflect the selection
     setTimeSlots((prevTimeSlots) => {
-      const updatedSlots = {};
-
       Object.keys(prevTimeSlots).forEach((period) => {
         updatedSlots[period] = prevTimeSlots[period].map((slot) => ({
           ...slot,
@@ -38,38 +40,106 @@ export default function TimeSlotSelector() {
   };
 
   return (
-    <View className="flex-1 p-5 bg-background">
-      {Object.keys(timeSlots).map((period) => (
-        <TimeSelection
-          key={period}
-          title={period}
-          timeSlots={timeSlots[period]}
-          handleTime={handleTime}
-        />
-      ))}
-
-      {/* Display selected time */}
-      {/* {selectedTime && (
-        <View className="mt-4 p-4 bg-green-50 rounded-lg">
-          <Text className="text-green-800 font-semibold">
-            Selected Time: {selectedTime.value}
-          </Text>
+    <SafeAreaView className=" flex-1 bg-background px-5">
+      <ScrollView
+        className=""
+        // contentContainerStyle={{
+        //   flexGrow: 1,
+        // }}
+        // showsVerticalScrollIndicator={false}
+      >
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+        >
+          <View className=" flex-row items-start gap-3">
+            {upComingDays.map(
+              (day) =>
+                !day?.disabled && (
+                  <TouchableOpacity
+                    className={` flex-col items-center  py-2 px-3 border-secondary border rounded-2xl w-[55px]  ${
+                      selectedDate.value === day?.value
+                        ? "bg-primary"
+                        : " bg-white"
+                    }`}
+                    key={day?.id}
+                    onPress={() => setSelectedDate(day)}
+                  >
+                    <Text
+                      className={`text-lg  ${
+                        selectedDate?.value === day?.value
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      {day?.value}
+                    </Text>
+                    <Text
+                      className={` ${
+                        selectedDate?.value === day?.value
+                          ? "text-white"
+                          : "text-black"
+                      } text-2xl font-bold `}
+                    >
+                      {day?.dateFormat.substring(0, 2)}
+                    </Text>
+                    <Text
+                      className={`text-lg  ${
+                        selectedDate?.value === day?.value
+                          ? "text-white"
+                          : "text-black"
+                      }`}
+                    >
+                      {day?.dateFormat.substring(3, 6)}
+                    </Text>
+                  </TouchableOpacity>
+                )
+            )}
+          </View>
+        </ScrollView>
+        <View className=" mt-10">
+          {Object.keys(timeSlots).map((period) => (
+            <TimeSelection
+              key={period}
+              title={period}
+              timeSlots={timeSlots[period]}
+              handleTime={handleTime}
+            />
+          ))}
         </View>
-      )} */}
-
-      <View className="flex-row items-center justify-center  mt-5 ">
+      </ScrollView>
+      <View className="flex-row items-center justify-center mb-5 border-t border-t-gray-300 pt-3">
         <View className=" flex-col gap-3 w-[50%]">
-          <View className=" flex-row  items-center  gap-3 "> 
+          <View className=" flex-row  items-center  gap-3 ">
             <Ionicons name="calendar-outline" size={24} color={"#023E8A"} />
-            <Text className=" text-lg  font-semibold text-primary">09 June 2025</Text>
+            <Text className=" text-lg  font-semibold text-primary">
+              {selectedDate?.dateFormat}
+            </Text>
           </View>
-          <View className=" flex-row  items-center  gap-3 "> 
+          <View className=" flex-row  items-center  gap-3 ">
             <AntDesign name="clockcircleo" size={24} color={"#023E8A"} />
-            <Text className=" text-lg  font-semibold text-primary">9:00 AM - 9:15 AM</Text>
+            {selectedTime ? (
+              <Text className=" text-lg  font-semibold text-primary">
+                {selectedTime?.value} -{" "}
+                {addMinutesToTimeString(selectedTime?.value, 15)}
+              </Text>
+            ) : (
+              <Text className=" text-lg  font-semibold text-primary">
+                Select Time
+              </Text>
+            )}
           </View>
         </View>
-        <CustomButton variant="primary" title="Confirm" onPress={() => {}} className=" !w-[50%]" />
+        <CustomButton
+          variant="primary"
+          title="Confirm"
+          onPress={() => {}}
+          className=" !w-[50%]"
+        />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
