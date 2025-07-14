@@ -182,6 +182,13 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Your Health Concern"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
     name: "TimeSlotSelector",
     component: TimeSlotSelector,
     options: ({ navigation }) => ({
