@@ -13,7 +13,7 @@ import PatientProfile from "../screens/doctor/PatientProfile";
 import ProfileScreen from "../screens/doctor/Profile";
 import DoctorScheduleScreen from "../screens/doctor/Schedule";
 import PatientHome from "../screens/patient/PatientHome";
-import Profile from "../screens/patient/PatientProfile";
+import PatientOwnProfile from "../screens/patient/PatientOwnProfile";
 import PatientSchedule from "../screens/patient/PatientSchedule";
 import PatientChat from "../screens/patient/PatientChat";
 import SearchDoctor from "../screens/patient/SearchDoctor";
@@ -36,7 +36,7 @@ export const patientTabs = [
   { name: "Home", component: PatientHome, icon: "home" },
   { name: "Schedule", component: PatientSchedule, icon: "calendar" },
   { name: "Chat", component: PatientChat, icon: "chatbox" },
-  { name: "Profile", component: Profile, icon: "person" },
+  { name: "Profile", component: PatientOwnProfile, icon: "person" },
 ];
 
 // Stack screen configurations
