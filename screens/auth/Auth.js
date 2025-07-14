@@ -23,30 +23,8 @@ export default function AuthScreen({ navigation }) {
       />
       <CustomButton
         variant="primary"
-        title="Go to Health Concern"
-        onPress={() => navigation.navigate("HealthConcern")}
-      />
-      <CustomButton
-        variant="primary"
-        title="Go to Doctor profile"
-        onPress={() => navigation.navigate("DoctorProfile")}
-      />
-
-      <CustomButton
-                variant="secondary"
-                title="Go to Doctor review"
-                onPress={() => navigation.navigate("DoctorReview")}
-              />
-
-      <CustomButton
-        variant="primary"
-        title="Go to Time slot selector"
-        onPress={() => navigation.navigate("TimeSlotSelector")}
-      />
-      <CustomButton
-        variant="primary"
-        title="Go to Patient home"
-        onPress={() => navigation.navigate("BottomTabs", { userType: "patient" })}
+        title="Go to Patient Profile"
+        onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
       />
     </View>
   );
