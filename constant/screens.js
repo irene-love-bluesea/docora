@@ -22,6 +22,8 @@ import DoctorProfile from "../screens/patient/DoctorProfile";
 import DoctorReview from "../screens/patient/DoctorReview";
 import HealthConcern from "../screens/patient/HealthConcern";
 
+import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
+
 // Tab screen configurations
 export const doctorTabs = [
   { name: "Home", component: HomeScreen, icon: "home" },
@@ -180,6 +182,12 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Your Health Concern"
+    name: "TimeSlotSelector",
+    component: TimeSlotSelector,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Available Time Slots"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />

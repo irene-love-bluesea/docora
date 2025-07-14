@@ -76,7 +76,7 @@ export default function DoctorProfile() {
       </View>
 
       {/* go to bottom footer  */}
-      <View className=" absolute bottom-0 left-0 right-0 p-5">
+      <View className=" absolute bottom-0 left-0 right-0 px-5 py-3">
         <View className="flex-row items-center gap-3 justify-center">
           <CustomButton
             variant="secondary"
@@ -84,7 +84,7 @@ export default function DoctorProfile() {
             icon={
               <Ionicons name="chatbox-outline" size={24} color={"#023E8A"} />
             }
-            className="border border-primary !bg-background w-1/2"
+            className="border border-primary !bg-background w-[50%]"
           />
           <CustomButton
             variant="primary"
@@ -92,7 +92,7 @@ export default function DoctorProfile() {
             icon={
               <Ionicons name="calendar-outline" size={24} color={"white"} />
             }
-            className=" w-1/2"
+            className=" w-[50%]"
           />
         </View>
       </View>
