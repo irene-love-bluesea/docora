@@ -18,6 +18,9 @@ module.exports = {
           // light: '#66b3ff', // Example: Light blue
           // dark: '#0056b3', // Example: Dark blue
         },
+        secondary: {
+          DEFAULT: '#BCDAFF',
+        },
         background: {
           DEFAULT: '#E6F2FF', 
         },

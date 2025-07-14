@@ -20,6 +20,7 @@ import SearchDoctor from "../screens/patient/SearchDoctor";
 import { CustomHeader } from "../components/Header";
 import DoctorProfile from "../screens/patient/DoctorProfile";
 import DoctorReview from "../screens/patient/DoctorReview";
+import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -166,6 +167,19 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Reviews"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    })
+  },
+  {
+    name: "TimeSlotSelector",
+    component: TimeSlotSelector,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Available Time Slots"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
