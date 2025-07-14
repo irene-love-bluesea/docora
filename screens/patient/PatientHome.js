@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  FlatList,
   Image,
   Platform,
   StatusBar,
@@ -13,7 +14,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
 import Logo from "../../assets/logo/docora_hospital.svg";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Cardiologist, Dentist, Dermatologist, GeneralPhysician, Pediatrician, popularDrs, Psychiatrist } from "../../constant/data/doctorDetails";
+import {
+  Cardiologist,
+  Dentist,
+  Dermatologist,
+  GeneralPhysician,
+  Pediatrician,
+  popularDrs,
+  Psychiatrist,
+} from "../../constant/data/doctorDetails";
 
 export default function PatientHome({ navigation }) {
   const specialityR = [
@@ -67,7 +76,6 @@ export default function PatientHome({ navigation }) {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        
         <View className=" bg-background">
           {/* search bar  */}
           <View className=" flex-row items-center bg-white rounded-lg px-5 mx-5 ">
@@ -81,18 +89,21 @@ export default function PatientHome({ navigation }) {
           </View>
 
           {/* speciality box  */}
-          <View className="flex-row  justify-center items-center flex-wrap gap-2  mt-4 mx-5">
+          <View className="flex-row justify-center items-center flex-wrap gap-2 mt-4 mx-5">
             {specialityData?.map((item) => (
               <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('SearchDoctor', { speciality: item.name });
-              }}
+                onPress={() => {
+                  navigation.navigate("SearchDoctor", {
+                    speciality: item.name,
+                  });
+                }}
                 key={item.id}
-                style={{ width: "49%" }}
-                className="flex-col justify-center items-center gap-5 py-3  rounded-lg border border-white  bg-white mt-1 "
+                className="flex-col justify-center items-center gap-5 py-3 rounded-lg border border-white bg-white mt-1 flex-1 min-w-[140px] max-w-[48%]"
               >
                 {item.icon}
-                <Text className="text-lg font-semibold ">{item.name}</Text>
+                <Text className="text-lg font-semibold text-center">
+                  {item.name}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -105,7 +116,10 @@ export default function PatientHome({ navigation }) {
 
             <View className="mt-4">
               {popularDoctors?.map((item) => (
-                <View key={item.id} className="flex-row  items-center my-2 gap-5 bg-white p-5 rounded-lg shadow-sm elevation-sm">
+                <View
+                  key={item.id}
+                  className="flex-row  items-center my-2 gap-5 bg-white p-5 rounded-lg shadow-sm elevation-sm"
+                >
                   <Image
                     source={item?.image}
                     className="w-[60px] h-[60px] rounded-full border-primary border "
