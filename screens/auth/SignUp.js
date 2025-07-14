@@ -13,7 +13,7 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View className="flex-1 justify-start items-center px-5 bg-background">
-      <View className="w-full">
+      <View className="w-full mt-3">
         <Text className="text-lg text-left font-medium mb-2">Full Name</Text>
       </View>
       <TextInput
