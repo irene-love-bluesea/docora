@@ -24,9 +24,6 @@ module.exports = {
         background: {
           DEFAULT: '#E6F2FF', 
         },
-        customGreen: {
-          DEFAULT: '#00C32D',
-        }
       }
     },
   },

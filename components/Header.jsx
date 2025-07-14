@@ -16,6 +16,7 @@ export const CustomHeader = ({
         styles.headerContainer,
         { backgroundColor, paddingTop: insets.top + 20 },
       ]}
+
     >
       <TouchableOpacity
         onPress={() => navigation.goBack()}
@@ -57,7 +58,7 @@ const styles = {
     justifyContent: "center",
     width: "100%",
     paddingHorizontal: 15,
-    paddingBottom: 20,
+    paddingBottom: 0,
   },
   headerTitle: {
     fontSize: 20,
@@ -67,6 +68,6 @@ const styles = {
   backButton: {
     position: "absolute",
     left: 10,
-    bottom: 20,
+    bottom: 0,
   },
 };

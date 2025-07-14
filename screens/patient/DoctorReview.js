@@ -3,13 +3,14 @@ import { View, ScrollView, Text, Image } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomProgressBar from "../../components/ProgressBar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Cardiologist } from "../../constant/data/doctorDetails";
 
 export default function DoctorReview({ navigation }) {
   const reviewsData = [
     {
       id: 1,
       name: "Michale R",
-      rating: 5.0,
+      rating: "5.0",
       timeAgo: "2 days ago",
       profileImage: require("../../assets/profile/patient_m.png"),
       review:
@@ -19,7 +20,7 @@ export default function DoctorReview({ navigation }) {
     {
       id: 2,
       name: "Sophia J",
-      rating: 4.9,
+      rating: "4.9",
       timeAgo: "4 days ago",
       profileImage: require("../../assets/profile/patient_f.png"),
       review:
@@ -29,7 +30,7 @@ export default function DoctorReview({ navigation }) {
     {
       id: 3,
       name: "Robert C",
-      rating: 4.8,
+      rating: "4.8",
       timeAgo: "2 week ago",
       profileImage: require("../../assets/profile/patient_m.png"),
       review:
@@ -58,9 +59,12 @@ export default function DoctorReview({ navigation }) {
               <Text className="text-2xl text-center font-medium">
                 Dr. Ethan Carter
               </Text>
-              <Text className="text-lg text-gray-500 font-medium">
-                Cardiologist
-              </Text>
+              <View className="flex-row items-center gap-1">
+                <Cardiologist width={20} height={20} />
+                <Text className="text-lg text-gray-500 font-medium">
+                  Cardiologist
+                </Text>
+              </View>
             </View>
           </View>
 

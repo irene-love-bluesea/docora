@@ -20,6 +20,8 @@ import SearchDoctor from "../screens/patient/SearchDoctor";
 import { CustomHeader } from "../components/Header";
 import DoctorProfile from "../screens/patient/DoctorProfile";
 import DoctorReview from "../screens/patient/DoctorReview";
+import HealthConcern from "../screens/patient/HealthConcern";
+
 import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 
 // Tab screen configurations
@@ -42,7 +44,7 @@ export const stackScreens = [
   {
     name: "Auth",
     component: AuthScreen,
-    options: { headerShown: false }
+    options: { headerShown: false },
   },
   {
     name: "SignUp",
@@ -55,7 +57,7 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "Login",
@@ -68,7 +70,7 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "Verify",
@@ -81,12 +83,12 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "RoleSelector",
     component: RoleSelector,
-    options: { headerShown: false }
+    options: { headerShown: false },
   },
   {
     name: "PatientInfo",
@@ -99,7 +101,7 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "ForgotPassword",
@@ -112,7 +114,7 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "PatientProfile",
@@ -125,7 +127,7 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "VerifyIdentity",
@@ -138,14 +140,14 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
     name: "SearchDoctor",
     component: SearchDoctor,
     options: ({ navigation }) => ({
       headerShown: false,
-    })
+    }),
   },
   {
     name: "DoctorProfile",
@@ -158,9 +160,9 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
-   {
+  {
     name: "DoctorReview",
     component: DoctorReview,
     options: ({ navigation }) => ({
@@ -171,9 +173,15 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
   {
+    name: "HealthConcern",
+    component: HealthConcern,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Your Health Concern"
     name: "TimeSlotSelector",
     component: TimeSlotSelector,
     options: ({ navigation }) => ({
@@ -184,6 +192,6 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-    })
+    }),
   },
 ];

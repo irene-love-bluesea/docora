@@ -13,6 +13,8 @@ export default function Dropdown({
   placeholder,
   zIndex,
   open,
+  containerWidth="100%",
+  width = "100%",
   setOpen,
   onOpen,
 }) {
@@ -38,8 +40,9 @@ export default function Dropdown({
       mode={mode}
       disabled={disabled}
       multiple={multiple}
-      style={styles.dropdown}
-      dropDownContainerStyle={styles.dropdownContainer}
+       containerStyle={{width: containerWidth}}
+      style={[styles.dropdown, { width: width}]}
+      dropDownContainerStyle={[styles.dropdownContainer, { width:width }]}
       textStyle={styles.dropdownText}
       placeholderStyle={styles.placeholder}
       listItemContainerStyle={styles.listItemContainer}
@@ -51,7 +54,7 @@ export default function Dropdown({
       zIndex={zIndex}
       disabledStyle={{
         opacity: 0.4,
-        borderColor: 'grey',
+        borderColor: "grey",
       }}
       zIndexInverse={3000}
       badgeColors="#E6F2FF"
@@ -92,14 +95,14 @@ const styles = StyleSheet.create({
 
   // Selected text styling
   dropdownText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "black",
     fontWeight: "400",
   },
 
   // Placeholder text styling
   placeholder: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#999",
     fontWeight: "400",
   },

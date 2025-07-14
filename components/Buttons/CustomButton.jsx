@@ -8,17 +8,19 @@ const CustomButton = ({ icon, title, onPress, disabled, width= 'w-full', variant
   const buttonVariantClasses = {
     primary: 'bg-primary focus:ring-blue-400',
     secondary: 'bg-white  border-gray-100 border-2 ',
+    green: 'bg-green-700 border-green-800',
   };
 
   const textVariantClasses = {
     primary: 'text-white',
     secondary: 'text-primary',
+    green: 'text-white'
   };
 
   return (
   <TouchableOpacity
     onPress={onPress} disabled={disabled}
-    className={`${baseButtonClasses} ${className} ${width} ${disabled ? 'bg-gray-500' : buttonVariantClasses[variant]}`}
+    className={`${baseButtonClasses} ${className} ${width} ${disabled ? 'bg-gray-400' : buttonVariantClasses[variant]}`}
     activeOpacity={0.8}
   >
     <View className="flex-row items-center gap-3">
