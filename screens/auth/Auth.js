@@ -26,6 +26,11 @@ export default function AuthScreen({ navigation }) {
         title="Go to Patient Profile"
         onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
       />
+      <CustomButton
+        variant="primary"
+        title="Go to Time slot selector"
+        onPress={() => navigation.navigate("TimeSlotSelector")}
+      />
     </View>
   );
 }

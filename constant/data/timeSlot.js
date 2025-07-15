@@ -274,3 +274,35 @@ export const allTimeSlots = {
 
 
 
+export const consultationChannels = [
+  {
+    id: 1,
+    title: "Audio Call ",
+    iconLibrary: "Ionicons",
+    iconName: "call-outline",
+    description: "Audio Call Consultation",
+    iconColor: "#023E8A",
+    cost: "Free",
+    disabled: false
+  },
+  {
+    id: 2,
+    title: "Video Call ",
+    iconLibrary: "Ionicons",
+    iconName: "videocam-outline",
+    description: "Video Call Consultation",
+    iconColor: "#023E8A",
+    cost: "Free",
+    disabled: false
+  },
+  {
+    id: 3,
+    title: "Chat ",
+    iconLibrary: "MaterialCommunityIcons",
+    iconName: "message-text-outline",
+    description: "Chat consultation",
+    iconColor: "#023E8A",
+    cost: "Free",
+    disabled: false
+  },
+];
