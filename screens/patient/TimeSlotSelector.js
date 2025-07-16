@@ -1,14 +1,5 @@
-import { use, useEffect, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Modal,
-  Pressable,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { useEffect, useState } from "react";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { allTimeSlots } from "../../constant/data/timeSlot";
 import TimeSelection from "../../components/TimeSelection";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -17,7 +8,6 @@ import CustomButton from "../../components/Buttons/CustomButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { addMinutesToTimeString, getUpcomingDays } from "../../utils/helper";
 import ModalChannel from "../../components/ModalChannel";
-import { se } from "date-fns/locale";
 
 export default function TimeSlotSelector() {
   const [selectedTime, setSelectedTime] = useState(null);
@@ -26,46 +16,50 @@ export default function TimeSlotSelector() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [upComingDays, setUpComingDays] = useState([]);
   const [updatedSlots, setUpdatedSlots] = useState(allTimeSlots);
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState(null);
 
-  const isValid = selectedTime && selectedDate ;
+  const isValid = selectedTime && selectedDate;
 
   useEffect(() => {
     const upComingDays = getUpcomingDays();
     setUpComingDays(upComingDays);
-    setSelectedDate(upComingDays[0]);
+    if (upComingDays && upComingDays.length > 0) {
+      setSelectedDate(upComingDays[0]);
+    }
   }, []);
 
   const handleTime = (selectedSlot) => {
     setSelectedTime(selectedSlot);
+    // setTimeSlots((prevTimeSlots) => {
+    //   Object.keys(prevTimeSlots).forEach((period) => {
+    //     updatedSlots[period] = prevTimeSlots[period].map((slot) => ({
+    //       ...slot,
+    //       selected: slot.id === selectedSlot.id,
+    //     }));
+    //   });
+
+    //   return updatedSlots;
+    // });
 
     setTimeSlots((prevTimeSlots) => {
-      Object.keys(prevTimeSlots).forEach((period) => {
-        updatedSlots[period] = prevTimeSlots[period].map((slot) => ({
+      const newTimeSlots = {};
+      for (const period in prevTimeSlots) {
+        newTimeSlots[period] = prevTimeSlots[period].map((slot) => ({
           ...slot,
           selected: slot.id === selectedSlot.id,
         }));
-      });
-
-      return updatedSlots;
+      }
+      return newTimeSlots;
     });
   };
 
-  useEffect(() => {
-    console.log(modalVisible);
-    
-  })
   const confirmHandler = () => {
-    // if(!isValid) return;
-    console.log(selectedDate, selectedTime);
+    if (!isValid) return;
+    setSelectedChannel(null);
     setModalVisible(true);
   };
 
-  // const closeModal = () => {
-  //   setModalVisible(false);
-  //   setSelectedChannel(null);
-  // };
 
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">
@@ -173,14 +167,21 @@ export default function TimeSlotSelector() {
 
       {/* Consultation Channel Selection Modal */}
 
-      <ModalChannel
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        selectedDate={selectedDate}
-        selectedTime={selectedTime}
-        selectedChannel={selectedChannel}
-        setSelectedChannel={setSelectedChannel}
-      />
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <ModalChannel
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          selectedDate={selectedDate}
+          selectedTime={selectedTime}
+          selectedChannel={selectedChannel}
+          setSelectedChannel={setSelectedChannel}
+        />
+      </Modal>
     </SafeAreaView>
   );
 }

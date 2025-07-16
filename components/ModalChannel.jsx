@@ -1,5 +1,5 @@
 import {
-  StyleSheet,
+  Modal,
   Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -13,7 +13,6 @@ import { useState } from "react";
 import { addMinutesToTimeString } from "../utils/helper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import CustomButton from "./Buttons/CustomButton";
-import Modal from "react-native-modal";
 
 export default function ModalChannel({
   modalVisible,
@@ -36,7 +35,6 @@ export default function ModalChannel({
     // Close modal and reset
     setModalVisible(false);
     setSelectedChannel(null);
-    // You can add navigation or success message here
   };
 
   const renderIcon = (iconName, iconLibrary, iconColor) => {
@@ -58,95 +56,92 @@ export default function ModalChannel({
   };
 
   return (
-    // <Modal
-    //   animationType="fade"
-    //   transparent={true}
-    //   visible={modalVisible}
-    //   onRequestClose={closeModal}
-    // >
-    //   <TouchableWithoutFeedback onPress={closeModal}>
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={closeModal}
+    >
+      <TouchableWithoutFeedback onPress={closeModal} >
+        <View style={{ flex: 1 }}>
+          <View className="flex-1 justify-center items-center bg-black/50">
+            <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
+              <View className="bg-background p-8 w-[90%] max-w-md rounded-2xl">
+                <Text className="text-2xl font-medium text-center">
+                  Choose Channels
+                </Text>
+                <View className="text-xl font-medium text-center flex-row items-center justify-center gap-2 mt-3">
+                  <AntDesign name="clockcircleo" size={24} color="black" />
+                  <Text>15 mins</Text>
+                </View>
 
-    //   </TouchableWithoutFeedback>
-    // </Modal>
-
-    <Modal isVisible={modalVisible}>
-      <View style={{ flex: 1 }}>
-        <View className="flex-1 justify-center items-center bg-black/50">
-          <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
-            <View className="bg-background p-8 w-[90%] max-w-md rounded-2xl">
-              <Text className="text-2xl font-medium text-center">
-                Choose Channels
-              </Text>
-              <View className="text-xl font-medium text-center flex-row items-center justify-center gap-2 mt-3">
-                <AntDesign name="clockcircleo" size={24} color="black" />
-                <Text>15 mins</Text>
-              </View>
-
-              <View className="mt-4 flex-col gap-4 rounded-xl">
-                {consultationChannels.map((channel) => (
-                  <TouchableOpacity
-                    key={channel.id}
-                    onPress={() => setSelectedChannel(channel)}
-                    className={`flex-row items-center justify-between p-3 border border-secondary rounded-xl ${
-                      selectedChannel?.id === channel.id
-                        ? "bg-primary text-white"
-                        : "bg-white text-gray-700"
-                    }`}
-                  >
-                    <View className="flex-row items-center gap-3 p-3 rounded-lg">
-                      {renderIcon(
-                        channel.iconName,
-                        channel.iconLibrary,
+                <View className="mt-4 flex-col gap-4 rounded-xl">
+                  {consultationChannels.map((channel) => (
+                    <TouchableOpacity
+                      key={channel.id}
+                      onPress={() => setSelectedChannel(channel)}
+                      className={`flex-row items-center justify-between p-3 border border-secondary rounded-xl ${
                         selectedChannel?.id === channel.id
-                          ? "#ffff"
-                          : channel.iconColor
-                      )}
+                          ? "bg-primary text-white"
+                          : "bg-white text-gray-700"
+                      }`}
+                    >
+                      <View className="flex-row items-center gap-3 p-3 rounded-lg">
+                        {renderIcon(
+                          channel.iconName,
+                          channel.iconLibrary,
+                          selectedChannel?.id === channel.id
+                            ? "#ffff"
+                            : channel.iconColor
+                        )}
+                        <Text
+                          className={`text-lg ${
+                            selectedChannel?.id === channel.id
+                              ? "text-white"
+                              : "text-gray-700"
+                          }`}
+                        >
+                          {channel.title}
+                        </Text>
+                      </View>
                       <Text
-                        className={`text-lg ${
+                        className={`text-lg font-semibold ${
                           selectedChannel?.id === channel.id
                             ? "text-white"
                             : "text-gray-700"
                         }`}
                       >
-                        {channel.title}
+                        {channel.cost}
                       </Text>
-                    </View>
-                    <Text
-                      className={`text-lg font-semibold ${
-                        selectedChannel?.id === channel.id
-                          ? "text-white"
-                          : "text-gray-700"
-                      }`}
-                    >
-                      {channel.cost}
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                {/* Bottom Action Buttons */}
+                <View className="flex-row items-center gap-3 mt-6">
+                  <TouchableOpacity
+                    onPress={closeModal}
+                    className="flex-1 py-3 px-4 border border-gray-300 rounded-lg"
+                  >
+                    <Text className="text-center text-gray-700 font-medium">
+                      Cancel
                     </Text>
                   </TouchableOpacity>
-                ))}
-              </View>
 
-              {/* Bottom Action Buttons */}
-              <View className="flex-row items-center gap-3 mt-6">
-                <TouchableOpacity
-                  onPress={closeModal}
-                  className="flex-1 py-3 px-4 border border-gray-300 rounded-lg"
-                >
-                  <Text className="text-center text-gray-700 font-medium">
-                    Cancel
-                  </Text>
-                </TouchableOpacity>
-
-                <CustomButton
-                  variant="primary"
-                  title="Confirm"
-                  onPress={handleConfirmConsultation}
-                  className="!w-[50%]"
-                  disabled={!selectedChannel}
-                />
+                  <CustomButton
+                    variant="primary"
+                    title="Confirm"
+                    onPress={handleConfirmConsultation}
+                    className="!w-[50%]"
+                    disabled={!selectedChannel}
+                  />
+                </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
+
   );
 }
