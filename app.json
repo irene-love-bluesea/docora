@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/logo/docora_hospital.png",
+      "image": "./assets/logo/docora.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/docora_hospital.png",
+        "foregroundImage": "./assets/logo/docora.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true
