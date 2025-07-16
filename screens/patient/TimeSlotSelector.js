@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import {
-  allTimeSlots,
-} from "../../constant/data/timeSlot";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { allTimeSlots } from "../../constant/data/timeSlot";
 import TimeSelection from "../../components/TimeSelection";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomButton from "../../components/Buttons/CustomButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { addMinutesToTimeString, getUpcomingDays } from "../../utils/helper";
+import ModalChannel from "../../components/ModalChannel";
 
 export default function TimeSlotSelector() {
   const [selectedTime, setSelectedTime] = useState(null);
@@ -17,27 +16,50 @@ export default function TimeSlotSelector() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [upComingDays, setUpComingDays] = useState([]);
   const [updatedSlots, setUpdatedSlots] = useState(allTimeSlots);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedChannel, setSelectedChannel] = useState(null);
+
+  const isValid = selectedTime && selectedDate;
 
   useEffect(() => {
     const upComingDays = getUpcomingDays();
     setUpComingDays(upComingDays);
-    setSelectedDate(upComingDays[0]);
+    if (upComingDays && upComingDays.length > 0) {
+      setSelectedDate(upComingDays[0]);
+    }
   }, []);
 
   const handleTime = (selectedSlot) => {
     setSelectedTime(selectedSlot);
+    // setTimeSlots((prevTimeSlots) => {
+    //   Object.keys(prevTimeSlots).forEach((period) => {
+    //     updatedSlots[period] = prevTimeSlots[period].map((slot) => ({
+    //       ...slot,
+    //       selected: slot.id === selectedSlot.id,
+    //     }));
+    //   });
+
+    //   return updatedSlots;
+    // });
 
     setTimeSlots((prevTimeSlots) => {
-      Object.keys(prevTimeSlots).forEach((period) => {
-        updatedSlots[period] = prevTimeSlots[period].map((slot) => ({
+      const newTimeSlots = {};
+      for (const period in prevTimeSlots) {
+        newTimeSlots[period] = prevTimeSlots[period].map((slot) => ({
           ...slot,
           selected: slot.id === selectedSlot.id,
         }));
-      });
-
-      return updatedSlots;
+      }
+      return newTimeSlots;
     });
   };
+
+  const confirmHandler = () => {
+    if (!isValid) return;
+    setSelectedChannel(null);
+    setModalVisible(true);
+  };
+
 
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">
@@ -46,7 +68,7 @@ export default function TimeSlotSelector() {
         // contentContainerStyle={{
         //   flexGrow: 1,
         // }}
-        // showsVerticalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       >
         <ScrollView
           horizontal={true}
@@ -111,8 +133,8 @@ export default function TimeSlotSelector() {
           ))}
         </View>
       </ScrollView>
-      <View className="flex-row items-center justify-center mb-5 border-t border-t-gray-300 pt-3">
-        <View className=" flex-col gap-3 w-[50%]">
+      <View className="flex-row items-center gap-5 justify-center mb-5 border-t border-t-gray-300 pt-3">
+        <View className=" flex-col gap-3 w-[45%] ">
           <View className=" flex-row  items-center  gap-3 ">
             <Ionicons name="calendar-outline" size={24} color={"#023E8A"} />
             <Text className=" text-lg  font-semibold text-primary">
@@ -133,13 +155,33 @@ export default function TimeSlotSelector() {
             )}
           </View>
         </View>
+
         <CustomButton
           variant="primary"
           title="Confirm"
-          onPress={() => {}}
-          className=" !w-[50%]"
+          onPress={() => confirmHandler()}
+          className=" !w-[45%]"
+          disabled={!isValid}
         />
       </View>
+
+      {/* Consultation Channel Selection Modal */}
+
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <ModalChannel
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          selectedDate={selectedDate}
+          selectedTime={selectedTime}
+          selectedChannel={selectedChannel}
+          setSelectedChannel={setSelectedChannel}
+        />
+      </Modal>
     </SafeAreaView>
   );
 }
