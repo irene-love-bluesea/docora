@@ -1,11 +1,4 @@
-import {
-  Image,
-  ScrollView,
-  Text,
-  Touchable,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Cardiologist } from "../../constant/data/doctorDetails";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -100,14 +93,15 @@ export default function DoctorProfile({ navigation }) {
       </ScrollView>
       {/* go to bottom footer  */}
       <View className=" absolute bottom-0 left-0 right-0 mb-4">
-        <View className="flex-row items-center gap-10 justify-center mx-3">
+        <View className="flex-row items-center gap-5 justify-center ">
           <CustomButton
             variant="secondary"
             title="Chat Now"
             icon={
               <Ionicons name="chatbox-outline" size={24} color={"#023E8A"} />
             }
-            className="border border-primary !bg-background w-48"
+            className="border border-primary !bg-background !w-[45%]"
+            // onPress={() => navigation.navigate("TimeSlotSelector")}
           />
           <CustomButton
             variant="primary"
@@ -115,7 +109,8 @@ export default function DoctorProfile({ navigation }) {
             icon={
               <Ionicons name="calendar-outline" size={24} color={"white"} />
             }
-            className=" w-48"
+            onPress={() => navigation.navigate("TimeSlotSelector")}
+            className=" !w-[45%]"
           />
         </View>
       </View>

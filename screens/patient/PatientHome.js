@@ -68,7 +68,7 @@ export default function PatientHome({ navigation }) {
         <Ionicons name="notifications-outline" size={26} color="#023E8A" />
       </View>
       <ScrollView
-        className=" bg-background pt-3"
+        className=" bg-background pt-3 "
         style={{
           flex: 1,
           // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
@@ -76,7 +76,7 @@ export default function PatientHome({ navigation }) {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className=" bg-background">
+        <View className="">
           {/* search bar  */}
           <View className=" flex-row items-center bg-white rounded-lg px-5 mx-5 ">
             <Ionicons name="search" size={20} color="#999" className="" />
@@ -109,7 +109,7 @@ export default function PatientHome({ navigation }) {
           </View>
 
           {/* most popular doctor  */}
-          <View className=" mx-5">
+          <View className=" mx-5 mb-5">
             <Text className=" text-xl font-semibold mt-5">
               Most Popular Doctors
             </Text>

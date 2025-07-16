@@ -9,10 +9,9 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { consultationChannels } from "../constant/data/timeSlot";
-import { useState } from "react";
-import { addMinutesToTimeString } from "../utils/helper";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import CustomButton from "./Buttons/CustomButton";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ModalChannel({
   modalVisible,
@@ -22,6 +21,7 @@ export default function ModalChannel({
   selectedChannel,
   setSelectedChannel,
 }) {
+  const navigtion = useNavigation();
   const handleConfirmConsultation = () => {
     if (!selectedChannel) return;
 
@@ -31,10 +31,16 @@ export default function ModalChannel({
       time: selectedTime,
       channel: selectedChannel,
     });
+    
+    const bookingDetails = {
+      date: selectedDate, 
+      time: selectedTime,
+      channel: selectedChannel,
+    };
 
-    // Close modal and reset
     setModalVisible(false);
     setSelectedChannel(null);
+    navigtion.navigate("HealthConcern", bookingDetails)
   };
 
   const renderIcon = (iconName, iconLibrary, iconColor) => {
@@ -130,7 +136,7 @@ export default function ModalChannel({
 
                   <CustomButton
                     variant="primary"
-                    title="Confirm"
+                    title="Next"
                     onPress={handleConfirmConsultation}
                     className="!w-[50%]"
                     disabled={!selectedChannel}

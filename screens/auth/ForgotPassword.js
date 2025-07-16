@@ -7,7 +7,7 @@ const ForgotPasswordScreen = () => {
 
   return (
     <View className=" font-inter flex-1 justify-start items-center px-5 bg-background">
-      <Text className="text-xl font-normal text-gray-600 mb-2">
+      <Text className="text-xl font-normal text-gray-600 mb-2 mt-5">
         We will send a verification code to your email address. Please enter it
         below.
       </Text>
