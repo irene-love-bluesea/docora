@@ -20,7 +20,7 @@ export default function SearchDoctor({ navigation }) {
           <Ionicons name="search" size={20} color="#999" className="" />
           <TextInput
             className="border border-white h-full tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black "
-            placeholder="Search  by specialty or doctor name"
+            placeholder="Search  by specialty or name"
             value={search}
             onChangeText={setSearch}
           />
@@ -42,7 +42,9 @@ export default function SearchDoctor({ navigation }) {
         <View className=" mb-5">
           <View className="mt-4 mx-5">
             {popularDoctors?.map((item) => (
-              <View
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => navigation.navigate("DoctorProfile")}
                 key={item.id}
                 className="flex-row  items-center my-2 gap-5 bg-white p-5 rounded-lg shadow-sm elevation-sm"
               >
@@ -60,7 +62,7 @@ export default function SearchDoctor({ navigation }) {
                     </View>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             ))}
           </View>
         </View>
