@@ -111,7 +111,7 @@ export default function ModalChannel({
                         </Text>
                       </View>
                       <Text
-                        className={`text-lg font-semibold ${
+                        className={`text-lg font-semibold mr-3 ${
                           selectedChannel?.id === channel.id
                             ? "text-white"
                             : "text-gray-700"
