@@ -23,6 +23,7 @@ import DoctorReview from "../screens/patient/DoctorReview";
 import HealthConcern from "../screens/patient/HealthConcern";
 
 import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
+import RateDoctor from "../screens/patient/RateDoctor";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -195,6 +196,19 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Available Time Slots"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "RateDoctor",
+    component: RateDoctor,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Share Your Feedback"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
