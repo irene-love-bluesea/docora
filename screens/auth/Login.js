@@ -12,7 +12,7 @@ const LoginScreen = ({navigation}) => {
   const isFormValid = email !== "" && password !== "" && isChecked === true;
 
   return (
-    <View className=" font-inter flex-1 justify-start items-center  px-5 bg-background">
+    <View className="  flex-1 justify-start items-center  px-5 bg-background ">
       <View className="mb-3 w-full mt-3">
         <Text className="text-lg font-medium mb-2">Email</Text>
         <TextInput

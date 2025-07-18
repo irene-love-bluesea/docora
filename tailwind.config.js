@@ -9,8 +9,12 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ['Inter-VariableFont', 'sans-serif'],
-        alata: ['Alata-Regular', 'sans-serif'],
+        sans: [
+          'Inter-Regular',
+          'Inter-SemiBold',
+          'Inter-Bold',
+        ],
+        'alata': ['Alata-Regular'],
       },
       colors:{
         primary: {
