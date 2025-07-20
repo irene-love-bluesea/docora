@@ -15,7 +15,7 @@ import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import MedicalEditModal from "../../components/modals/MedicalEditModal";
 import EmergencyContactModal from "../../components/modals/EmergencyContactModal";
-import {ProfileEditCard, SettingCard} from "../../components/ProfileEditCard";
+import { ProfileEditCard, SettingCard } from "../../components/Card/ProfileEditCard";
 import {
   gender,
   bloodType,
@@ -180,7 +180,7 @@ export default function PatientOwnProfile() {
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-background">
-      <Text className="text-2xl font-bold mt-6 mb-2 mx-5">Profile</Text>
+      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">Profile</Text>
 
       <ScrollView
         className="bg-background"

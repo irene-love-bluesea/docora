@@ -14,7 +14,7 @@ import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import ProfessionalModal from "../../components/modals/ProfessionalModal";
-import { ProfileEditCard, SettingCard } from "../../components/ProfileEditCard";
+import { ProfileEditCard, SettingCard } from "../../components/Card/ProfileEditCard";
 import { gender } from "./../../constant/data/patientDetails";
 import {
   experienceYears,
@@ -161,8 +161,7 @@ export default function DoctorOwnProfile() {
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-background">
-      <Text className="text-2xl font-bold mt-6 mb-2 mx-5">Profile</Text>
-
+      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">Profile</Text>
       <ScrollView
         className="bg-background"
         style={{ flex: 1 }}
