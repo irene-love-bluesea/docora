@@ -5,7 +5,7 @@ export const appointmentForPatient = [
     drName: "Dr. John Smith",
     speciality: "Cardiologist",
     date: "2025-07-20",
-    time: "06:00 PM",
+    time: "08:00 PM",
     channelType: "Video",
     status: "upcoming",
   },
@@ -27,7 +27,7 @@ export const appointmentForPatient = [
     date: "2025-08-20",
     time: "11:00 AM",
     channelType: "Chat",
-    status: "past",
+    status: "upcoming",
   },
   {
     id: "4",

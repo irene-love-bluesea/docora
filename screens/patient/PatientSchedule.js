@@ -15,6 +15,20 @@ export default function PatientSchedule() {
     setMode("past");
   };
 
+  const renderCard = ({ item }) => (
+    <AppointmentPCard
+      drProfile={item.drProfile}
+      drName={item.drName}
+      speciality={item.speciality}
+      date={item.date}
+      time={item.time}
+      channelType={item.channelType}
+      status={item.status}
+    />
+  );
+
+  //after time appointment time  -> go to past
+
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">
       <View className=" flex-row justify-between items-center px-5 py-5 bg-background ">
@@ -58,16 +72,13 @@ export default function PatientSchedule() {
         contentContainerStyle={{ paddingBottom: 50 }}
         data={appointmentForPatient}
         keyExtractor={(item) => item.id}
+        //mode == upcoming
+        //mode == past
         renderItem={({ item }) => (
-          <AppointmentPCard
-            drProfile={item.drProfile}
-            drName={item.drName}
-            speciality={item.speciality}
-            date={item.date}
-            time={item.time}
-            channelType={item.channelType}
-            status={item.status}
-          />
+          item?.status === mode && 
+          (
+          renderCard({ item })
+          )
         )}
       />
     </SafeAreaView>

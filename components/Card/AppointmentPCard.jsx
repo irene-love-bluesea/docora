@@ -12,8 +12,10 @@ export default function AppointmentPCard({
   date,
   time,
   channelType,
+  status
 }) {
   const Icon = specialtyIconMap[speciality];
+  console.log("Status: ", status);
 
   const renderIcon = (channelType,color) => {
     switch (channelType) {
@@ -59,8 +61,8 @@ export default function AppointmentPCard({
                 renderIcon(channelType, "#fff")
               }
               variant="primary"
-              // disabled={getReadyTime(date, time)}
-              className={ getReadyTime(date, time)  ? "bg-primary text-white px-4 py-2 rounded-lg " : " bg-secondary"}
+              disabled={!getReadyTime(date, time, 5)}
+              className={ getReadyTime(date, time , 5)  ? "bg-primary text-white px-4 py-2 rounded-lg " : " bg-secondary"}
             />
           </View>
           <TouchableOpacity
