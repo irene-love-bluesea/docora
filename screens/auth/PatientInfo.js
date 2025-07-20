@@ -123,7 +123,7 @@ export default function PatientInfo({ navigation }) {
         }}
       >
         <View className="flex-1 justify-start items-center px-5 bg-background">
-          <View className="mb-3 w-full">
+          <View className="mb-3 w-full mt-5">
             <Text className="text-lg font-medium mb-2">Gender *</Text>
             <Dropdown
               data={gender}
