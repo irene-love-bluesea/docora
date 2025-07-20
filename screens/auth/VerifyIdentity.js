@@ -122,7 +122,7 @@ const VerifyIdentity = ({ navigation }) => {
       >
         <ScrollView className="flex-1 bg-background">
           <View className=" justify-start items-center px-5 ">
-            <View className="mb-3 w-full">
+            <View className="mb-3 w-full mt-5">
               <Text className="text-lg font-medium mb-2">
                 Medical Licence Number *
               </Text>

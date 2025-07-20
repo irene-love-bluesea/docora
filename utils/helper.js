@@ -1,4 +1,5 @@
-import { formatDate, format } from "date-fns";
+import { addMinutes, formatDate, format, isWithinInterval, min, parse, subMinutes } from "date-fns";
+
 
 function formatDateTime(date) {
   // Convert input to Date object if it's not already
@@ -37,6 +38,7 @@ function formatCurrentDateTime() {
 
 // Export functions for Expo/React Native
 export { formatDateTime, formatCurrentDateTime };
+
 
 
 export const getUpcomingDays = () => {
@@ -101,3 +103,42 @@ export function addMinutesToTimeString(timeString, minutesToAdd) {
 
   return `${newHours}:${paddedMinutes} ${newModifier}`;
 }
+
+
+export function getTodayOrTommorow(date) {
+  const today = new Date();
+  const nextDate = new Date(date);
+  if (today.getDate() === nextDate.getDate() && today.getMonth() === nextDate.getMonth() && today.getFullYear() === nextDate.getFullYear()) {
+    return "Today";
+  } else if (today.getDate() + 1 === nextDate.getDate() && today.getMonth() === nextDate.getMonth() && today.getFullYear() === nextDate.getFullYear()) { 
+    return "Tommorow";
+  }else{
+    return formatDate(nextDate, "d MMMM");
+  }
+}
+
+
+ // appointment 6:00 PM - current time 5:55 PM  -> true
+export function getReadyTime(dateString, timeString , minutesToSubtract) {
+  const dateTimeString = `${dateString} ${timeString}`;
+  const formatString = 'yyyy-MM-dd h:mm a';
+
+  const appointmentDate = parse(dateTimeString, formatString, new Date());
+
+  //start session before 5 minutes of appointment date
+  const readySession = subMinutes(appointmentDate, minutesToSubtract);
+  //end session after 15 minutes of appointment date
+  const endSession = addMinutes(appointmentDate, 15);
+  
+  const now = new Date();
+  const isReadyTime = isWithinInterval(now, {
+    start: readySession,
+    end: endSession,
+  });
+
+  console.log(`Is it time to get ready? -> ${isReadyTime}`);
+  
+  return isReadyTime;
+}
+
+

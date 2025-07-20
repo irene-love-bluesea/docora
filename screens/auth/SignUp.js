@@ -13,7 +13,7 @@ export default function SignUpScreen({ navigation }) {
 
   return (
     <View className="flex-1 justify-start items-center px-5 bg-background">
-      <View className="w-full mt-3">
+      <View className="w-full mt-5">
         <Text className="text-lg text-left font-medium mb-2">Full Name</Text>
       </View>
       <TextInput
@@ -43,7 +43,7 @@ export default function SignUpScreen({ navigation }) {
         value={password}
         onChangeText={setPassword}
       />
-      <View className="flex-row justify-center items-center my-3">
+      <View className="flex-row justify-start items-center my-3  w-full">
         <Checkbox
           value={isChecked}
           onValueChange={setChecked}

@@ -9,7 +9,7 @@ export default function VerifyScreen({ navigation }) {
 
   return (
     <View className="flex-1 justify-start items-center px-5 bg-background">
-      <View className="w-full">
+      <View className="w-full mt-5">
         <Text className="text-xl font-semibold mb-1">Enter OTP</Text>
       </View>
       <Text className="text-lg font-normal my-3">We have sent a verification code to your email address. Please enter it below.</Text>
