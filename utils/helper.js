@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { formatDate, min } from "date-fns";
 
 export const getUpcomingDays = () => {
   const today = new Date();
@@ -62,3 +62,38 @@ export function addMinutesToTimeString(timeString, minutesToAdd) {
 
   return `${newHours}:${paddedMinutes} ${newModifier}`;
 }
+
+
+export function getTodayOrTommorow(date) {
+  const today = new Date();
+  const nextDate = new Date(date);
+  console.log(today.getDate() , nextDate.getDate());
+  if (today.getDate() === nextDate.getDate() && today.getMonth() === nextDate.getMonth() && today.getFullYear() === nextDate.getFullYear()) {
+    return "Today";
+  } else if (today.getDate() + 1 === nextDate.getDate() && today.getMonth() === nextDate.getMonth() && today.getFullYear() === nextDate.getFullYear()) { 
+    return "Tommorow";
+  }else{
+    return formatDate(nextDate, "d MMMM");
+  }
+}
+
+
+export function getReadyTime(date , time){
+  const [hours, modifier] = time.split(" ");
+  const [hour, minute] = hours.split(":");
+  // time = addMinutesToTimeString(time, 30);
+  const today = new Date();
+  const currentModifier = today.getHours() >= 12 ? "PM" : "AM";
+  const currentHour = today.getHours() >= 12 ? today.getHours() - 12 : today.getHours();
+  const currentMinutes = today.getMinutes();
+  
+  // appointment 6:00PM - current time 5:55 PM  -> true
+  if(hour === currentHour && modifier === currentModifier && minute <= currentMinutes ){
+    console.log("true");
+    
+    return true;
+  }else{
+    return false;
+  }
+}
+

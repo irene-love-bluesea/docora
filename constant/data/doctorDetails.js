@@ -5,17 +5,26 @@ import Cardiologist from "../../assets/icon/speciality/cardiologist.svg";
 import Psychiatrist from "../../assets/icon/speciality/psychiatrist.svg";
 import Dentist from "../../assets/icon/speciality/dentist.svg";
 
+
+const specialtyIconMap = {
+  "GeneralPhysician": GeneralPhysician,
+  "Dermatologist": Dermatologist,
+  "Pediatrician": Pediatrician,
+  "Cardiologist": Cardiologist,
+  "Psychiatrist": Psychiatrist,
+  "Dentist": Dentist,
+};
+
 //export svg icons for doctor specialities
-export {GeneralPhysician, Dermatologist, Pediatrician, Cardiologist, Psychiatrist, Dentist};
+export {GeneralPhysician, Dermatologist, Pediatrician, Cardiologist, Psychiatrist, Dentist , specialtyIconMap};
 
 export const specialityRole = [
-  { label: "Cardiology", value: "Cardiology" },
-  { label: "General Practitioner", value: "General Practitioner" },
-  { label: "Neurology", value: "Neurology" },
-  { label: "Psychiatry", value: "Psychiatry" },
-  { label: "Pulmonology", value: "Pulmonology" },
-  { label: "Surgery", value: "Surgery" },
-  { label: "Urology", value: "Urology" },
+  { label: "General Physician", value: "GeneralPhysician" },
+  { label: "Dermatologist", value: "Dermatologist" },
+  { label: "Pediatrician", value: "Pediatrician" },
+  { label: "Cardiologist", value: "Cardiologist" },
+  { label: "Psychiatrist", value: "Psychiatrist" },
+  { label: "Dentist", value: "Dentist" },
 ];
 
 
