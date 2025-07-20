@@ -1,15 +1,28 @@
 import React from "react";
-import { View, Text } from "react-native";
+import {
+  ScrollView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DoctorChatScreen({ navigation }) {
   return (
-    <View className="flex-1 justify-center items-center p-5 bg-background">
-      <Text className="text-5xl font-bold mb-4 text-green-700">
-        Chat Screen
+    <SafeAreaView style={{ flex: 1 }} className="bg-background">
+      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
+        Profile
       </Text>
-      <Text className="text-base text-center text-gray-600">
-        Welcome to the Doctor's Chat Page.
-      </Text>
-    </View>
+      <ScrollView
+        className="bg-background"
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5"></View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

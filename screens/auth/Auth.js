@@ -26,6 +26,15 @@ export default function AuthScreen({ navigation }) {
         title="Go to Patient Profile"
         onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
       />
+       
+      <CustomButton
+      variant="primary"
+      title="ConsultationNote"
+      onPress={() =>navigation.navigate("ConsultationNotes")}
+      />
+      
+
+      
     </View>
   );
 }
