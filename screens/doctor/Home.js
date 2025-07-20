@@ -7,6 +7,7 @@ import {
   Image,
   Platform,
   Text,
+  TouchableOpacity,
 } from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -20,7 +21,7 @@ export default function HomeScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1 }} className="bg-background">
       {/*Header Start */}
       <View
-        className="flex-row justify-between items-center border-b border-blue-200 px-5 pb-2"
+        className="flex-row justify-between items-center border-b border-blue-200 px-5 mt-3 pb-2"
         style={{
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
@@ -187,18 +188,22 @@ export default function HomeScreen({ navigation }) {
 
           {/* Quick Action row */}
           <View className="flex-row gap-2 items-center justify-center mt-2 mb-3 px-5">
-            <View className="flex items-center justify-center gap-1 h-[100px] w-[48%] bg-white border border-blue-200 rounded-xl">
-              <Ionicons name="calendar-clear" size={25} color="#023E8A" />
-              <Text className="text-primary text-center text-lg font-semibold">
-                Patient{"\n"}History
-              </Text>
-            </View>
-            <View className="flex items-center justify-center gap-1 h-[100px] w-[48%] bg-white border border-blue-200 rounded-xl">
-              <AntDesign name="star" size={25} color="#023E8A" />
-              <Text className="text-primary text-lg  text-center font-semibold">
-                View{"\n"}Feedback
-              </Text>
-            </View>
+            <TouchableOpacity className="flex items-center justify-center h-[100px] w-[48%]  bg-white border border-blue-200 rounded-xl">
+              <View className="flex items-center justify-center gap-1">
+                <Ionicons name="calendar-clear" size={25} color="#023E8A" />
+                <Text className="text-primary text-center text-lg font-semibold">
+                  Patient{"\n"}History
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity className="flex items-center justify-center h-[100px] w-[48%] bg-white border border-blue-200 rounded-xl">
+              <View className="flex items-center justify-center gap-1">
+                <AntDesign name="star" size={25} color="#023E8A" />
+                <Text className="text-primary text-lg  text-center font-semibold">
+                  View{"\n"}Feedback
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
           {/* Quick Action row end */}
         </View>

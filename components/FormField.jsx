@@ -10,10 +10,10 @@ const FormField = ({
   ...props 
 }) => {
   return (
-    <View className="mb-2 px-2 w-full">
-      <Text className="text-lg font-medium mb-2">{label}</Text>
+    <View className="mb-2 w-full">
+      <Text className="text-lg font-medium my-2">{label}</Text>
       <TextInput
-        className="border border-gray-200 tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black"
+        className="border border-gray-200 tracking-wider rounded-xl px-4 py-4 text-base bg-white text-black"
         placeholder={placeholder}
         placeholderTextColor="#999"
         textAlignVertical="top"

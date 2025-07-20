@@ -13,31 +13,26 @@ import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
-import MedicalEditModal from "../../components/modals/MedicalEditModal";
-import EmergencyContactModal from "../../components/modals/EmergencyContactModal";
-import {ProfileEditCard, SettingCard} from "../../components/ProfileEditCard";
+import ProfessionalModal from "../../components/modals/ProfessionalModal";
+import { ProfileEditCard, SettingCard } from "../../components/ProfileEditCard";
+import { gender } from "./../../constant/data/patientDetails";
 import {
-  gender,
-  bloodType,
-  allergy,
-  chronical,
-} from "./../../constant/data/patientDetails";
+  experienceYears,
+  specialityRole,
+} from "../../constant/data/doctorDetails";
 
-export default function PatientOwnProfile() {
+export default function DoctorOwnProfile() {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
 
   // Modal states
   const [profileModalVisible, setProfileModalVisible] = React.useState(false);
   const [contactModalVisible, setContactModalVisible] = React.useState(false);
-  const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
-  const [emergencyModalVisible, setEmergencyModalVisible] =
+  const [professionalModalVisible, setProfessionalModalVisible] =
     React.useState(false);
 
   // Form states
   const [profileData, setProfileData] = React.useState({
-    name: "Sarah James",
-    age: "28",
-    gender: "Female",
+    name: "Ethan Carter",
   });
 
   const [contactData, setContactData] = React.useState({
@@ -46,23 +41,43 @@ export default function PatientOwnProfile() {
     address: "123 Maple Street, Anytown, USA",
   });
 
-  const [medicalData, setMedicalData] = React.useState({
-    bloodType: "O",
-    allergies: ["Aspirin", "Penicillin"],
-    chronic: "",
-    medications: "",
-  });
-
-  const [emergencyData, setEmergencyData] = React.useState({
-    name: "Harrington James",
-    phone: "+1 888 103-8035",
+  const [professionalData, setProfessionalData] = React.useState({
+    experience: "1-3 years",
+    specialty: "Cardiology",
+    workPlace: "New York Medical Center",
+    graduated: "Harvard Medical School",
   });
 
   const [genderOpen, setGenderOpen] = React.useState(false);
-  const [bloodTypeOpen, setBloodTypeOpen] = React.useState(false);
-  const [allergyOpen, setAllergyOpen] = React.useState(false);
-  const [chronicOpen, setChronicOpen] = React.useState(false);
   const [birthOpen, setBirthOpen] = React.useState(false);
+  const [experienceOpen, setExperienceOpen] = React.useState(false);
+  const [specialtyOpen, setSpecialtyOpen] = React.useState(false);
+
+  // Form handlers
+  const handleProfileChange = (field, value) => {
+    setProfileData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleContactChange = (field, value) => {
+    setContactData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleProfessionalChange = (field, value) => {
+    setProfessionalData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  // Submit handlers
+  const handleProfileSubmit = () => {
+    setProfileModalVisible(false);
+  };
+
+  const handleContactSubmit = () => {
+    setContactModalVisible(false);
+  };
+
+  const handleProfessionalSubmit = () => {
+    setProfessionalModalVisible(false);
+  };
 
   // Image picker functions
   const pickImage = async () => {
@@ -144,40 +159,6 @@ export default function PatientOwnProfile() {
     ]);
   };
 
-  // Form handlers
-  const handleProfileChange = (field, value) => {
-    setProfileData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleContactChange = (field, value) => {
-    setContactData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleMedicalChange = (field, value) => {
-    setMedicalData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleEmergencyChange = (field, value) => {
-    setEmergencyData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  // Submit handlers
-  const handleProfileSubmit = () => {
-    setProfileModalVisible(false);
-  };
-
-  const handleContactSubmit = () => {
-    setContactModalVisible(false);
-  };
-
-  const handleMedicalSubmit = () => {
-    setMedicalModalVisible(false);
-  };
-
-  const handleEmergencySubmit = () => {
-    setEmergencyModalVisible(false);
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-background">
       <Text className="text-2xl font-bold mt-6 mb-2 mx-5">Profile</Text>
@@ -202,7 +183,7 @@ export default function PatientOwnProfile() {
                     source={
                       profilePhoto
                         ? { uri: profilePhoto.uri }
-                        : require("../../assets/profile/patient_f.png")
+                        : require("../../assets/profile/profile_m.png")
                     }
                   />
                   <Ionicons
@@ -219,12 +200,9 @@ export default function PatientOwnProfile() {
                   />
                 </TouchableOpacity>
               </View>
-              <View className="flex items-start">
+              <View className="flex items-start justify-start">
                 <Text className="text-2xl text-center font-medium">
-                  {profileData.name}
-                </Text>
-                <Text className="text-lg text-gray-500 font-medium">
-                  {profileData.age} years old, {profileData.gender}
+                  Dr. {profileData.name}
                 </Text>
               </View>
             </View>
@@ -238,75 +216,44 @@ export default function PatientOwnProfile() {
             title="Contact Information"
             onEdit={() => setContactModalVisible(true)}
           >
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Email</Text>
-                <Text className="text-lg font-normal">{contactData.email}</Text>
-              </View>
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Phone</Text>
-                <Text className="text-lg font-normal">{contactData.phone}</Text>
-              </View>
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Address</Text>
-                <Text className="text-lg font-normal">
-                  {contactData.address}
-                </Text>
-              </View>
-          </ProfileEditCard>
-
-          {/* Medical Information */}
-          <ProfileEditCard
-            title="Medical Information"
-            onEdit={() => setMedicalModalVisible(true)}
-          >
             <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Blood Type</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.bloodType}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Allergies</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.allergies && medicalData.allergies.length > 0
-                  ? medicalData.allergies.join(", ")
-                  : "None"}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Chronic Conditions</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.chronic && medicalData.chronic.length > 0
-                  ? medicalData.chronic.join(", ")
-                  : "None"}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Current Medications</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.medications || "None"}
-              </Text>
-            </View>
-          </ProfileEditCard>
-
-          {/* Emergency Contact */}
-          <ProfileEditCard
-            title="Emergency Contact"
-            onEdit={() => setEmergencyModalVisible(true)}
-          >
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Name</Text>
-              <Text className="text-lg font-normal">{emergencyData.name}</Text>
+              <Text className="text-lg font-semibold">Email</Text>
+              <Text className="text-lg font-normal">{contactData.email}</Text>
             </View>
             <View className="px-3 my-2">
               <Text className="text-lg font-semibold">Phone</Text>
-              <Text className="text-lg font-normal">{emergencyData.phone}</Text>
+              <Text className="text-lg font-normal">{contactData.phone}</Text>
+            </View>
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Address</Text>
+              <Text className="text-lg font-normal">{contactData.address}</Text>
             </View>
           </ProfileEditCard>
 
-          <SettingCard>
-          </SettingCard>
+        {/* Professional Information */}
+           <ProfileEditCard
+            title="Professional Information"
+            onEdit={() => setProfessionalModalVisible(true)}
+          >
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Year of Experience</Text>
+              <Text className="text-lg font-normal">{professionalData.experience} Years</Text>
+            </View>
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Medical Specialty</Text>
+              <Text className="text-lg font-normal">{professionalData.specialty}</Text>
+            </View>
+             <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Current Work Place</Text>
+              <Text className="text-lg font-normal">{professionalData.workPlace}</Text>
+            </View>
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Graduated From</Text>
+              <Text className="text-lg font-normal">{professionalData.graduated}</Text>
+            </View>
+          </ProfileEditCard>
 
+          <SettingCard></SettingCard>
         </View>
       </ScrollView>
 
@@ -322,7 +269,20 @@ export default function PatientOwnProfile() {
         setGenderOpen={setGenderOpen}
         birthOpen={birthOpen}
         setBirthOpen={setBirthOpen}
-        userType="patient"
+      />
+
+      <ProfessionalModal
+        visible={professionalModalVisible}
+        onClose={() => setProfessionalModalVisible(false)}
+        formData={professionalData}
+        onFormChange={handleProfessionalChange}
+        onSubmit={handleProfessionalSubmit}
+        experienceOptions={experienceYears}
+        experienceOpen={experienceOpen}
+        setExperienceOpen={setExperienceOpen}
+        specialtyOptions={specialityRole}
+        specialtyOpen={specialtyOpen}
+        setSpecialtyOpen={setSpecialtyOpen}
       />
 
       <ContactEditModal
@@ -331,31 +291,6 @@ export default function PatientOwnProfile() {
         formData={contactData}
         onFormChange={handleContactChange}
         onSubmit={handleContactSubmit}
-      />
-
-      <MedicalEditModal
-        visible={medicalModalVisible}
-        onClose={() => setMedicalModalVisible(false)}
-        formData={medicalData}
-        onFormChange={handleMedicalChange}
-        onSubmit={handleMedicalSubmit}
-        bloodTypeOptions={bloodType}
-        bloodTypeOpen={bloodTypeOpen}
-        setBloodTypeOpen={setBloodTypeOpen}
-        allergyOptions={allergy}
-        allergyOpen={allergyOpen}
-        setAllergyOpen={setAllergyOpen}
-        chronicOptions={chronical}
-        chronicOpen={chronicOpen}
-        setChronicOpen={setChronicOpen}
-      />
-
-      <EmergencyContactModal
-        visible={emergencyModalVisible}
-        onClose={() => setEmergencyModalVisible(false)}
-        formData={emergencyData}
-        onFormChange={handleEmergencyChange}
-        onSubmit={handleEmergencySubmit}
       />
     </SafeAreaView>
   );

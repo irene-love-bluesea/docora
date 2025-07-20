@@ -10,7 +10,6 @@ import VerifyIdentity from "../screens/auth/VerifyIdentity";
 import DoctorChatScreen from "../screens/doctor/Chat";
 import HomeScreen from "../screens/doctor/Home";
 import PatientProfile from "../screens/doctor/PatientProfile";
-import ProfileScreen from "../screens/doctor/Profile";
 import DoctorScheduleScreen from "../screens/doctor/Schedule";
 import PatientHome from "../screens/patient/PatientHome";
 import PatientOwnProfile from "../screens/patient/PatientOwnProfile";
@@ -21,16 +20,17 @@ import { CustomHeader } from "../components/Header";
 import DoctorProfile from "../screens/patient/DoctorProfile";
 import DoctorReview from "../screens/patient/DoctorReview";
 import HealthConcern from "../screens/patient/HealthConcern";
-
+import DoctorOwnProfile from "../screens/doctor/DoctorOwnProfile";
 import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 import RateDoctor from "../screens/patient/RateDoctor";
+import ConsultationNotes from "../screens/doctor/ConsultationNotes";
 
 // Tab screen configurations
 export const doctorTabs = [
   { name: "Home", component: HomeScreen, icon: "home" },
   { name: "Schedule", component: DoctorScheduleScreen, icon: "calendar" },
   { name: "Chat", component: DoctorChatScreen, icon: "chatbox" },
-  { name: "Profile", component: ProfileScreen, icon: "person" },
+  { name: "Profile", component: DoctorOwnProfile, icon: "person" },
 ];
 
 export const patientTabs = [
@@ -209,6 +209,19 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Share Your Feedback"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+   {
+    name: "ConsultationNotes",
+    component: ConsultationNotes,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Post Consultation Notes"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
