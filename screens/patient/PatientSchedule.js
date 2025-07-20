@@ -1,19 +1,13 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AppointmentPCard from "../../components/Card/AppointmentPCard";
 import { appointmentForPatient } from "../../constant/data/appointment";
+import { isSessionEnd } from "../../utils/helper";
 
 export default function PatientSchedule() {
   const [mode, setMode] = useState("upcoming");
-
-  const upComingAppointment = () => {
-    setMode("upcoming");
-  };
-  const pastAppointment = () => {
-    setMode("past");
-  };
 
   const renderCard = ({ item }) => (
     <AppointmentPCard
@@ -27,7 +21,13 @@ export default function PatientSchedule() {
     />
   );
 
-  //after time appointment time  -> go to past
+  //after time appointment time  -> status change to past integrate API
+  const appointmentsStatus = useMemo(() => {
+    return appointmentForPatient.map(appointment => ({
+      ...appointment,
+      status: isSessionEnd(appointment.date, appointment.time) ? "past" : "upcoming",
+    }))
+  }, [appointmentForPatient]);
 
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">
@@ -35,11 +35,11 @@ export default function PatientSchedule() {
         <Text className="text-2xl font-alata">Appointments</Text>
         <Ionicons name="add-circle" size={30} color="#023E8A" />
       </View>
-      <View className=" flex-row justify-between items-center  border border-secondary rounded-xl  w-full">
+      <View className=" flex-row justify-beteen items-center  border border-secondary rounded-xl  w-full">
         <Pressable
-          onPress={() => upComingAppointment()}
-          className={` w-1/2  py-4  ${
-            mode === "upcoming" ? "bg-primary rounded-l-xl " : "bg-secondary"
+          onPress={() => setMode("upcoming")}
+          className={` w-1/2  py-4 rounded-l-xl ${
+            mode === "upcoming" ? "bg-primary  " : "bg-secondary"
           }`}
         >
           <Text
@@ -51,9 +51,9 @@ export default function PatientSchedule() {
           </Text>
         </Pressable>
         <Pressable
-          onPress={() => pastAppointment()}
-          className={`w-1/2 py-4 ${
-            mode === "past" ? "bg-primary rounded-r-xl" : "bg-secondary"
+          onPress={() => setMode("past")}
+          className={`w-1/2 py-4 rounded-r-xl ${
+            mode === "past" ? "bg-primary rounded-r-xl" : "bg-secondary "
           }`}
         >
           <Text
@@ -72,8 +72,6 @@ export default function PatientSchedule() {
         contentContainerStyle={{ paddingBottom: 50 }}
         data={appointmentForPatient}
         keyExtractor={(item) => item.id}
-        //mode == upcoming
-        //mode == past
         renderItem={({ item }) => (
           item?.status === mode && 
           (

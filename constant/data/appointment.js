@@ -4,10 +4,10 @@ export const appointmentForPatient = [
     drProfile: require("../../assets/profile/profile_m.png"),
     drName: "Dr. John Smith",
     speciality: "Cardiologist",
-    date: "2025-07-20",
-    time: "08:00 PM",
+    date: "2025-07-19",
+    time: "10:45 PM",
     channelType: "Video",
-    status: "upcoming",
+    status: "past",
   },
   {
     id: "2",
