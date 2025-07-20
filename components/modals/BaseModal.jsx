@@ -7,7 +7,7 @@ const BaseModal = ({
   onClose, 
   title, 
   children, 
-  width = "w-[80%]" 
+  width = "w-[100%]" 
 }) => {
   return (
     <Modal
@@ -17,13 +17,13 @@ const BaseModal = ({
       onRequestClose={onClose}
     >
       <TouchableOpacity
-        className="flex-1 items-center justify-center"
+        className="flex-1 px-5 items-center justify-center"
         style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         activeOpacity={1}
         onPress={onClose}
       >
         <TouchableOpacity
-          className={`bg-background p-3 ${width} border border-gray-300 rounded-xl`}
+          className={`bg-background p-5 ${width} border border-gray-300 rounded-xl`}
           activeOpacity={1}
           onPress={(e) => e.stopPropagation()}
         >

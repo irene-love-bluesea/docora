@@ -395,7 +395,7 @@ export default function HealthConcern() {
           {/* Form end */}
 
           <CustomButton
-            title="Submit Appointment"
+            title="Confirm"
             variant="primary"
             disabled={!isHealthFormValid}
             onPress={() => navigation.navigate("PatientHome")}

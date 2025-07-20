@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BaseModal from "./BaseModal";
 import FormField from "../FormField";
 import CustomButton from "../Buttons/CustomButton";
@@ -10,32 +10,69 @@ const ContactEditModal = ({
   onFormChange, 
   onSubmit 
 }) => {
+
+   const [localFormData, setLocalFormData] = useState({
+    email: "",
+    phone: "",
+    address: ""
+  });
+
+   useEffect(() => {
+    if (visible) {
+      setLocalFormData({
+        email: formData.email || "",
+        phone: formData.phone || "",
+        address: formData.address || ""
+      });
+    }
+  }, [visible, formData]);
+
+   const handleLocalChange = (field, value) => {
+    setLocalFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+   const handleSubmit = () => {
+    Object.keys(localFormData).forEach(key => {
+      onFormChange(key, localFormData[key]);
+    });
+    onSubmit();
+  };
+
+  const handleClose = () => {
+    setLocalFormData({
+      email: formData.email || "",
+      phone: formData.phone || "",
+      address: formData.address || ""
+    });
+    onClose();
+  };
+  
   return (
-    <BaseModal
+     <BaseModal
       visible={visible}
-      onClose={onClose}
+      onClose={handleClose}
       title="Edit Contact Information"
     >
       <FormField
         label="Email"
-        value={formData.email}
-        onChangeText={(text) => onFormChange('email', text)}
+        value={localFormData.email}
+        onChangeText={(text) => handleLocalChange('email', text)}
         placeholder="Enter your email"
         keyboardType="email-address"
       />
 
       <FormField
         label="Phone"
-        value={formData.phone}
-        onChangeText={(text) => onFormChange('phone', text)}
+        value={localFormData.phone}
+        onChangeText={(text) => handleLocalChange('phone', text)}
         placeholder="Enter your phone"
         keyboardType="phone-pad"
       />
 
       <FormField
         label="Address"
-        value={formData.address}
-        onChangeText={(text) => onFormChange('address', text)}
+        value={localFormData.address}
+        onChangeText={(text) => handleLocalChange('address', text)}
         placeholder="Enter your address"
       />
 
@@ -43,7 +80,7 @@ const ContactEditModal = ({
         title="Confirm"
         width="w-[60%]"
         variant="green"
-        onPress={onSubmit}
+        onPress={handleSubmit}
       />
     </BaseModal>
   );

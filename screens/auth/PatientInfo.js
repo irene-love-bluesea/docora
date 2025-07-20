@@ -12,41 +12,7 @@ import CustomButton from "../../components/Buttons/CustomButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Dropdown from "../../components/Dropdown";
 import { RadioButton } from "react-native-paper";
-
-const gender = [
-  { label: "Male", value: "Male" },
-  { label: "Female", value: "Female" },
-  { label: "Rather not to say", value: "RatherNotToSay" },
-];
-const bloodType = [
-  { label: "O", value: "O" },
-  { label: "A", value: "A" },
-  { label: "B", value: "B" },
-  { label: "AB", value: "AB" },
-];
-const allergy = [
-  { label: "Penicillin", value: "Penicillin" },
-  { label: "Aspirin", value: "Aspirin" },
-  { label: "SulfaDrugs", value: "SulfaDrugs" },
-  { label: "NSAIDs", value: "NSAIDs" },
-  { label: "Latex", value: "Latex" },
-  { label: "Peanuts", value: "Peanuts" },
-  { label: "Shellfish", value: "Shellfish" },
-  { label: "Eggs", value: "Eggs" },
-  { label: "Dairy", value: "Dairy" },
-  { label: "Iodine", value: "Iodine" },
-  { label: "InsectStings", value: "InsectStings" },
-];
-const chronical = [
-  { label: "Asthma", value: "Asthma" },
-  { label: "Diabetes ", value: "Diabetes" },
-  { label: "Hypertension", value: "Hypertension" },
-  { label: "Cancer", value: "Cancer" },
-  { label: "Arthritis", value: "Arthritis" },
-  { label: "Alzheimers", value: "Alzheimers" },
-  { label: "Heart Disease", value: "Heart Disease" },
-  { label: "Liver Disease", value: "Liver Disease" },
-];
+import { gender, bloodType, allergy , chronical} from './../../constant/data/patientDetails';
 
 export default function PatientInfo({ navigation }) {
   const [genderValue, setGenderValue] = React.useState("");
