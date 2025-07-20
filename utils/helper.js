@@ -1,4 +1,4 @@
-import { addMinutes, formatDate, format, isWithinInterval, min, parse, subMinutes } from "date-fns";
+import { addMinutes, formatDate, format, isWithinInterval, min, parse, subMinutes, isAfter } from "date-fns";
 
 
 function formatDateTime(date) {
@@ -142,3 +142,19 @@ export function getReadyTime(dateString, timeString , minutesToSubtract) {
 }
 
 
+export function isSessionEnd(dateString, timeString) {
+  const now = new Date();
+  const dateTimeString = `${dateString} ${timeString}`;
+  const formatString = 'yyyy-MM-dd h:mm a';
+
+  // Parse the appointment start time
+  const appointmentDate = parse(
+    dateTimeString,
+    formatString,
+    new Date()
+  );
+  
+  const sessionEnd = addMinutes(appointmentDate, 15);
+  
+  return isAfter(now, sessionEnd);
+}

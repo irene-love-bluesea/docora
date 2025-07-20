@@ -1,9 +1,14 @@
 import { Image, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { specialtyIconMap } from "../../constant/data/doctorDetails";
-import { getReadyTime, getTodayOrTommorow } from "../../utils/helper";
+import {
+  getReadyTime,
+  getTodayOrTommorow,
+  isSessionEnd,
+} from "../../utils/helper";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CustomButton from "../Buttons/CustomButton";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function AppointmentPCard({
   drProfile,
@@ -12,24 +17,31 @@ export default function AppointmentPCard({
   date,
   time,
   channelType,
-  status
+  status,
 }) {
   const Icon = specialtyIconMap[speciality];
   console.log("Status: ", status);
 
-  const renderIcon = (channelType,color) => {
+  const renderIcon = (channelType, color) => {
     switch (channelType) {
       case "Chat":
         return <Ionicons name="chatbubbles" size={20} color={color} />;
       case "Video":
         return <FontAwesome name="video-camera" size={20} color={color} />;
-      default:
+      case "Call":
         return <Ionicons name="call" size={20} color={color} />;
+      default:
+        return <Ionicons name="document-text" size={20} color={color} />;
     }
   };
 
+  const joinAppointment = () => {
+    // console.log(`Joining appointment with Dr. ${drName} on ${date} at ${time}`);
+  };
+
+
   return (
-    <View className="bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5">
+    <View elevation={2} className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5 ${getReadyTime(date, time, 5) && "border-2 border-primary"}`}>
       <Image
         source={drProfile}
         className="w-16 h-16 rounded-full mb-2 border border-primary"
@@ -52,26 +64,50 @@ export default function AppointmentPCard({
             {channelType} Consultation
           </Text>
         </View>
-        <View className="flex-row items-center  gap-3 w-full">
-          <View className="!w-[70%]">
-            <CustomButton
-              title={getTodayOrTommorow(date) === "Today" ? "Join" : "Waiting"}
-              onPress={() => {}}
-              icon={
-                renderIcon(channelType, "#fff")
-              }
-              variant="primary"
-              disabled={!getReadyTime(date, time, 5)}
-              className={ getReadyTime(date, time , 5)  ? "bg-primary text-white px-4 py-2 rounded-lg " : " bg-secondary"}
-            />
+        <View className="flex-row items-center  gap-3 ">
+          <View className="!w-[60%]">
+            {status === "upcoming" ? (
+              <CustomButton
+                title={
+                  getTodayOrTommorow(date) === "Today" ? "Join Now" : "Waiting"
+                }
+                onPress={() => joinAppointment()}
+                icon={renderIcon(channelType, "#fff")}
+                variant="primary"
+                disabled={!getReadyTime(date, time, 5)}
+                className={
+                  getReadyTime(date, time, 5)
+                    ? "bg-primary text-white px-4 py-2 rounded-lg "
+                    : " bg-secondary " 
+                }
+              />
+            ) : (
+              <CustomButton
+                title="View Details"
+                icon={renderIcon("Past", "#023E8A")}
+                variant="secondary"
+                className="bg-background  px-4 py-2 rounded-lg border border-primary"
+                textClassName="text-primary"
+              />
+            )}
           </View>
-          <TouchableOpacity
-            className="p-2 rounded-lg bg-white border border-secondary " 
-            activeOpacity={0.7}
-            onPress={() => {}}
-          >
-            <Ionicons name="close" size={24} color="#023E8A" />
-          </TouchableOpacity>
+          {status === "upcoming" ? (
+            <TouchableOpacity
+              className="px-4 py-3 rounded-xl bg-white border border-primary "
+              activeOpacity={0.7}
+              onPress={() => {}}
+            >
+              <Ionicons name="close" size={24} color="#023E8A" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              className="px-4 py-3 rounded-xl bg-white border border-primary "
+              activeOpacity={0.7}
+              onPress={() => {}}
+            >
+              <AntDesign name="download" size={24} color="#023E8A"  />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </View>
