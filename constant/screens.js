@@ -25,6 +25,7 @@ import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 import RateDoctor from "../screens/patient/RateDoctor";
 import ConsultationNotes from "../screens/doctor/ConsultationNotes";
 import NotificationPatient from "../screens/patient/NotificationPatient";
+import PatientMessenger from "../screens/patient/PatientMessenger";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -241,6 +242,12 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
+  }
+   {
+    name: "PatientMessenger",
+    component: PatientMessenger,
+    options: ({ navigation }) => ({
+      headerShown: false,
     }),
   },
 ];
