@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView, Text, TextInput, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MedicationInput from "../../components/MedicationInput";
+import MedicationInput from "../../components/Form/MedicationInput";
 import CustomButton from "../../components/Buttons/CustomButton";
 
 export default function ConsultationNotes({navigation}) {

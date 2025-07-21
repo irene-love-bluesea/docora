@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  FlatList,
   Image,
   Platform,
   StatusBar,
@@ -13,7 +12,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native";
 import Logo from "../../assets/logo/docora_hospital.svg";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import {
   Cardiologist,
   Dentist,
@@ -66,7 +64,9 @@ export default function PatientHome({ navigation }) {
     <SafeAreaView style={{ flex: 1 }} className="bg-background ">
       <View className=" flex-row justify-between items-center px-5 py-5 bg-background ">
         <Logo width={60} height={50} />
-        <Ionicons name="notifications-outline" size={26} color="#023E8A" />
+        <TouchableOpacity onPress={() => navigation.navigate("NotificationPatient")}>
+            <Ionicons name="notifications-outline" size={26} color="#023E8A" />
+        </TouchableOpacity>
       </View>
       <ScrollView
         className=" bg-background pt-3 "

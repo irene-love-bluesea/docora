@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView, Text, Image } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import CustomProgressBar from "../../components/ProgressBar";
+import CustomProgressBar from "../../components/UI/ProgressBar";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Cardiologist } from "../../constant/data/doctorDetails";
 

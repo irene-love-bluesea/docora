@@ -13,7 +13,7 @@ import {
 } from "react-native";
 
 import { countries } from "../../constant/data/countries";
-import Dropdown from "../../components/Dropdown";
+import Dropdown from "../../components/Form/Dropdown";
 import CustomButton from "../../components/Buttons/CustomButton";
 import {
   experienceYears,

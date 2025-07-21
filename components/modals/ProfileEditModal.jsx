@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, Platform } from "react-native";
-import BaseModal from "./BaseModal";
-import FormField from "../FormField";
-import Dropdown from "../Dropdown";
-import CustomButton from "../Buttons/CustomButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import React, { useEffect, useState } from "react";
+import { Platform, Text, TouchableOpacity, View } from "react-native";
+import CustomButton from "../Buttons/CustomButton";
+import Dropdown from "../Form/Dropdown";
+import FormField from "../Form/FormField";
+import BaseModal from "./BaseModal";
 
 const ProfileEditModal = ({
   visible,

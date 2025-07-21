@@ -16,7 +16,7 @@ import PatientOwnProfile from "../screens/patient/PatientOwnProfile";
 import PatientSchedule from "../screens/patient/PatientSchedule";
 import PatientChat from "../screens/patient/PatientChat";
 import SearchDoctor from "../screens/patient/SearchDoctor";
-import { CustomHeader } from "../components/Header";
+import { CustomHeader } from "../components/UI/Header";
 import DoctorProfile from "../screens/patient/DoctorProfile";
 import DoctorReview from "../screens/patient/DoctorReview";
 import HealthConcern from "../screens/patient/HealthConcern";
@@ -24,6 +24,7 @@ import DoctorOwnProfile from "../screens/doctor/DoctorOwnProfile";
 import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 import RateDoctor from "../screens/patient/RateDoctor";
 import ConsultationNotes from "../screens/doctor/ConsultationNotes";
+import NotificationPatient from "../screens/patient/NotificationPatient";
 import PatientMessenger from "../screens/patient/PatientMessenger";
 
 // Tab screen configurations
@@ -216,7 +217,7 @@ export const stackScreens = [
       ),
     }),
   },
-   {
+  {
     name: "ConsultationNotes",
     component: ConsultationNotes,
     options: ({ navigation }) => ({
@@ -229,6 +230,19 @@ export const stackScreens = [
       ),
     }),
   },
+  {
+    name: "NotificationPatient",
+    component: NotificationPatient,
+    options: ({ navigation }) => ({
+      headerShown: false,
+      header: () => (
+        <CustomHeader
+          title="Notifications"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+  }
    {
     name: "PatientMessenger",
     component: PatientMessenger,

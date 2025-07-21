@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text } from "react-native";
-import BaseModal from "./BaseModal";
-import FormField from "../FormField";
 import CustomButton from "../Buttons/CustomButton";
-import Dropdown from "../Dropdown";
+import Dropdown from "../Form/Dropdown";
+import FormField from "../Form/FormField";
+import BaseModal from "./BaseModal";
 
 const ProfessionalModal = ({
   visible,

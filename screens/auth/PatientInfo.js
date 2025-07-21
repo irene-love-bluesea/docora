@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import Dropdown from "../../components/Dropdown";
+import Dropdown from "../../components/Form/Dropdown";
 import { RadioButton } from "react-native-paper";
 import { gender, bloodType, allergy , chronical} from './../../constant/data/patientDetails';
 
