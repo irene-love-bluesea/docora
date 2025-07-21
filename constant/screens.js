@@ -242,8 +242,9 @@ export const stackScreens = [
           backgroundColor="#E6F2FF"
         />
       ),
-  }
-   {
+    }),
+  },
+  {
     name: "PatientMessenger",
     component: PatientMessenger,
     options: ({ navigation }) => ({
