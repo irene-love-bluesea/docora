@@ -8,7 +8,7 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CustomButton from "../Buttons/CustomButton";
-import AntDesign from '@expo/vector-icons/AntDesign';
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function AppointmentPCard({
   drProfile,
@@ -17,11 +17,10 @@ export default function AppointmentPCard({
   date,
   time,
   channelType,
+  mode,
   status,
 }) {
   const Icon = specialtyIconMap[speciality];
-  console.log("Status: ", status);
-
   const renderIcon = (channelType, color) => {
     switch (channelType) {
       case "Chat":
@@ -30,8 +29,10 @@ export default function AppointmentPCard({
         return <FontAwesome name="video-camera" size={20} color={color} />;
       case "Call":
         return <Ionicons name="call" size={20} color={color} />;
-      default:
+      case "Completed":
         return <Ionicons name="document-text" size={20} color={color} />;
+      default:
+        return <Ionicons name="calendar" size={20} color={color} />;
     }
   };
 
@@ -39,9 +40,13 @@ export default function AppointmentPCard({
     // console.log(`Joining appointment with Dr. ${drName} on ${date} at ${time}`);
   };
 
-
   return (
-    <View elevation={2} className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5 ${getReadyTime(date, time, 5) && "border-2 border-primary"}`}>
+    <View
+      elevation={2}
+      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5 ${
+        getReadyTime(date, time, 5) && "border-2 border-primary"
+      }`}
+    >
       <Image
         source={drProfile}
         className="w-16 h-16 rounded-full mb-2 border border-primary"
@@ -65,8 +70,8 @@ export default function AppointmentPCard({
           </Text>
         </View>
         <View className="flex-row items-center  gap-3 ">
-          <View className="!w-[60%]">
-            {status === "upcoming" ? (
+          <View className={`w-[65%] ${mode === "past" && status === "missed" && "!w-[73%]"}`}>
+            {mode === "upcoming" && (
               <CustomButton
                 title={
                   getTodayOrTommorow(date) === "Today" ? "Join Now" : "Waiting"
@@ -78,20 +83,31 @@ export default function AppointmentPCard({
                 className={
                   getReadyTime(date, time, 5)
                     ? "bg-primary text-white px-4 py-2 rounded-lg "
-                    : " bg-secondary " 
+                    : " bg-secondary "
                 }
               />
-            ) : (
+            )}
+            {mode === "past" && status === "completed" && (
               <CustomButton
                 title="View Details"
-                icon={renderIcon("Past", "#023E8A")}
+                icon={renderIcon("Completed", "#023E8A")}
                 variant="secondary"
                 className="bg-background  px-4 py-2 rounded-lg border border-primary"
                 textClassName="text-primary"
               />
             )}
+            {mode === "past" && status === "missed" && (
+              <CustomButton
+                title="Reschedule"
+                icon={renderIcon("Failed", "#023E8A")}
+                variant="secondary"
+                className=" bg-background   px-4 py-2 rounded-lg border border-primary "
+                textClassName="text-primary "
+                onPress={() => {}}
+              />
+            )}
           </View>
-          {status === "upcoming" ? (
+          {mode === "upcoming" ? (
             <TouchableOpacity
               className="px-4 py-3 rounded-xl bg-white border border-primary "
               activeOpacity={0.7}
@@ -100,13 +116,15 @@ export default function AppointmentPCard({
               <Ionicons name="close" size={24} color="#023E8A" />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity
-              className="px-4 py-3 rounded-xl bg-white border border-primary "
-              activeOpacity={0.7}
-              onPress={() => {}}
-            >
-              <AntDesign name="download" size={24} color="#023E8A"  />
-            </TouchableOpacity>
+            status === "completed" && (
+              <TouchableOpacity
+                className="px-4 py-3 rounded-xl bg-white border border-primary "
+                activeOpacity={0.7}
+                onPress={() => {}}
+              >
+                <AntDesign name="download" size={24} color="#023E8A" />
+              </TouchableOpacity>
+            )
           )}
         </View>
       </View>

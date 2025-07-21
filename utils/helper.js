@@ -136,7 +136,6 @@ export function getReadyTime(dateString, timeString , minutesToSubtract) {
     end: endSession,
   });
 
-  console.log(`Is it time to get ready? -> ${isReadyTime}`);
   
   return isReadyTime;
 }
@@ -157,4 +156,14 @@ export function isSessionEnd(dateString, timeString) {
   const sessionEnd = addMinutes(appointmentDate, 15);
   
   return isAfter(now, sessionEnd);
+}
+
+export function timeSortingAscending(appointments){
+  const now = new Date();
+  const sortedAppointments = appointments.sort((a, b) => {
+    const dateA = parse(`${a.date} ${a.time}`, 'yyyy-MM-dd h:mm a', now);
+    const dateB = parse(`${b.date} ${b.time}`, 'yyyy-MM-dd h:mm a', now);
+    return dateA - dateB;
+  })
+  return sortedAppointments;
 }
