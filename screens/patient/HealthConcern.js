@@ -1,20 +1,20 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import * as DocumentPicker from "expo-document-picker";
 import React from "react";
 import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Text,
   Image,
+  ScrollView,
+  Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import * as DocumentPicker from "expo-document-picker";
-import { Cardiologist } from "../../constant/data/doctorDetails";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Dropdown from "../../components/Dropdown";
 import CustomButton from "../../components/Buttons/CustomButton";
-import MedicationInput from "../../components/MedicationInput";
+import Dropdown from "../../components/Form/Dropdown";
+import MedicationInput from "../../components/Form/MedicationInput";
+import { Cardiologist } from "../../constant/data/doctorDetails";
 
 export default function HealthConcern({navigation}) {
   const [symptom, setSymptom] = React.useState("");

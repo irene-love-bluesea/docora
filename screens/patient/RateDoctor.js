@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Cardiologist } from "../../constant/data/doctorDetails";
 import { useState } from "react";
-import RatingStar from "../../components/RatingStar";
+import RatingStar from "../../components/UI/RatingStar";
 import CustomButton from "../../components/Buttons/CustomButton";
 
 export default function RateDoctor() {

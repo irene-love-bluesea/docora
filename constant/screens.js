@@ -16,7 +16,7 @@ import PatientOwnProfile from "../screens/patient/PatientOwnProfile";
 import PatientSchedule from "../screens/patient/PatientSchedule";
 import PatientChat from "../screens/patient/PatientChat";
 import SearchDoctor from "../screens/patient/SearchDoctor";
-import { CustomHeader } from "../components/Header";
+import { CustomHeader } from "../components/UI/Header";
 import DoctorProfile from "../screens/patient/DoctorProfile";
 import DoctorReview from "../screens/patient/DoctorReview";
 import HealthConcern from "../screens/patient/HealthConcern";

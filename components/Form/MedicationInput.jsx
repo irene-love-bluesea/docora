@@ -1,16 +1,16 @@
-import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-} from "react-native";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import Dropdown from "./Dropdown";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import React from "react";
+import {
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { RadioButton } from "react-native-paper";
-import CustomButton from "./Buttons/CustomButton";
+import CustomButton from "../Buttons/CustomButton";
+import Dropdown from "./Dropdown";
 
 const MedicationInput = ({ 
   medications,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BaseModal from "./BaseModal";
-import FormField from "../FormField";
 import CustomButton from "../Buttons/CustomButton";
+import FormField from "../Form/FormField";
 
 const ContactEditModal = ({ 
   visible, 
