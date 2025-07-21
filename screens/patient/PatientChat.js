@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export default function PatientChat() {
+export default function PatientChat({navigation}) {
   const [search, setSearch] = React.useState("");
 
   const messagesData = [
@@ -72,8 +72,10 @@ export default function PatientChat() {
     message.name.toLowerCase().includes(search.toLowerCase())
   );
 
+
   const MessageCard = ({ message }) => (
-    <TouchableOpacity className="my-4 w-full px-1">
+
+    <TouchableOpacity className="my-4 w-full px-1" activeOpacity={0.2} onPress={() => navigation.navigate("PatientMessenger")}>
       <View className="flex-row items-center gap-3">
         <Image
           source={message.profileImage}
