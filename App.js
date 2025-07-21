@@ -6,6 +6,7 @@ import "./global.css"
 import { configureReanimatedLogger, ReanimatedLogLevel } from 'react-native-reanimated';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false, // Reanimated runs in strict mode by default
@@ -32,9 +33,11 @@ export default function App() {
   }
 
   return (
+    <SafeAreaProvider>    
       <NavigationContainer>
             <AppNavigator />
       </NavigationContainer>
+      </SafeAreaProvider>
 
   );
 }

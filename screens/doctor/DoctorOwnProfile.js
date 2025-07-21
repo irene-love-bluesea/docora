@@ -168,7 +168,7 @@ export default function DoctorOwnProfile() {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
+        <View className=" justify-start items-center px-5 pt-4 bg-background pb-5">
           {/* Profile Header */}
           <View
             className="w-full p-3 rounded-lg bg-white flex-row justify-between items-center mb-1"
