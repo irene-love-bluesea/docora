@@ -23,7 +23,7 @@ export default function PatientSchedule() {
   );
 
   //after time appointment time  -> mode change to past integrate API
-  const appointmentsmode = useMemo(() => {
+  const appointmentsMode = useMemo(() => {
     return appointmentForPatient.map(appointment => ({
       ...appointment,
       mode: isSessionEnd(appointment.date, appointment.time) ? "past" : "upcoming",
@@ -33,7 +33,7 @@ export default function PatientSchedule() {
   const filterAppointments = useMemo(() => {
      const sortedAppoinments =timeSortingAscending(appointmentForPatient);
     return sortedAppoinments.filter(appointment => appointment.mode === mode);
-  }, [appointmentsmode, mode]);
+  }, [appointmentsMode, mode]);
 
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">

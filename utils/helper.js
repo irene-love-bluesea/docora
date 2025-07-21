@@ -1,33 +1,45 @@
-import { addMinutes, formatDate, format, isWithinInterval, min, parse, subMinutes, isAfter } from "date-fns";
-
+import {
+  addMinutes,
+  formatDate,
+  format,
+  isWithinInterval,
+  min,
+  parse,
+  subMinutes,
+  isAfter,
+  parseISO,
+  formatDistance,
+  formatDistanceToNow,
+  differenceInSeconds,
+} from "date-fns";
 
 function formatDateTime(date) {
   // Convert input to Date object if it's not already
   const dateObj = new Date(date);
-  
+
   // Check if date is valid
   if (isNaN(dateObj.getTime())) {
-    throw new Error('Invalid date provided');
+    throw new Error("Invalid date provided");
   }
-  
+
   // Options for formatting the date part
   const dateOptions = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   };
-  
+
   // Options for formatting the time part
   const timeOptions = {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
   };
-  
+
   // Format date and time parts
-  const datePart = dateObj.toLocaleDateString('en-US', dateOptions);
-  const timePart = dateObj.toLocaleTimeString('en-US', timeOptions);
-  
+  const datePart = dateObj.toLocaleDateString("en-US", dateOptions);
+  const timePart = dateObj.toLocaleTimeString("en-US", timeOptions);
+
   // Combine with the desired format
   return `${datePart} - ${timePart}`;
 }
@@ -38,8 +50,6 @@ function formatCurrentDateTime() {
 
 // Export functions for Expo/React Native
 export { formatDateTime, formatCurrentDateTime };
-
-
 
 export const getUpcomingDays = () => {
   const today = new Date();
@@ -104,24 +114,30 @@ export function addMinutesToTimeString(timeString, minutesToAdd) {
   return `${newHours}:${paddedMinutes} ${newModifier}`;
 }
 
-
 export function getTodayOrTommorow(date) {
   const today = new Date();
   const nextDate = new Date(date);
-  if (today.getDate() === nextDate.getDate() && today.getMonth() === nextDate.getMonth() && today.getFullYear() === nextDate.getFullYear()) {
+  if (
+    today.getDate() === nextDate.getDate() &&
+    today.getMonth() === nextDate.getMonth() &&
+    today.getFullYear() === nextDate.getFullYear()
+  ) {
     return "Today";
-  } else if (today.getDate() + 1 === nextDate.getDate() && today.getMonth() === nextDate.getMonth() && today.getFullYear() === nextDate.getFullYear()) { 
+  } else if (
+    today.getDate() + 1 === nextDate.getDate() &&
+    today.getMonth() === nextDate.getMonth() &&
+    today.getFullYear() === nextDate.getFullYear()
+  ) {
     return "Tommorow";
-  }else{
+  } else {
     return formatDate(nextDate, "d MMMM");
   }
 }
 
-
- // appointment 6:00 PM - current time 5:55 PM  -> true
-export function getReadyTime(dateString, timeString , minutesToSubtract) {
+// appointment 6:00 PM - current time 5:55 PM  -> true
+export function getReadyTime(dateString, timeString, minutesToSubtract) {
   const dateTimeString = `${dateString} ${timeString}`;
-  const formatString = 'yyyy-MM-dd h:mm a';
+  const formatString = "yyyy-MM-dd h:mm a";
 
   const appointmentDate = parse(dateTimeString, formatString, new Date());
 
@@ -129,41 +145,56 @@ export function getReadyTime(dateString, timeString , minutesToSubtract) {
   const readySession = subMinutes(appointmentDate, minutesToSubtract);
   //end session after 15 minutes of appointment date
   const endSession = addMinutes(appointmentDate, 15);
-  
+
   const now = new Date();
   const isReadyTime = isWithinInterval(now, {
     start: readySession,
     end: endSession,
   });
 
-  
   return isReadyTime;
 }
-
 
 export function isSessionEnd(dateString, timeString) {
   const now = new Date();
   const dateTimeString = `${dateString} ${timeString}`;
-  const formatString = 'yyyy-MM-dd h:mm a';
+  const formatString = "yyyy-MM-dd h:mm a";
 
   // Parse the appointment start time
-  const appointmentDate = parse(
-    dateTimeString,
-    formatString,
-    new Date()
-  );
-  
+  const appointmentDate = parse(dateTimeString, formatString, new Date());
+
   const sessionEnd = addMinutes(appointmentDate, 15);
-  
+
   return isAfter(now, sessionEnd);
 }
 
-export function timeSortingAscending(appointments){
+export function timeSortingAscending(appointments) {
   const now = new Date();
   const sortedAppointments = appointments.sort((a, b) => {
-    const dateA = parse(`${a.date} ${a.time}`, 'yyyy-MM-dd h:mm a', now);
-    const dateB = parse(`${b.date} ${b.time}`, 'yyyy-MM-dd h:mm a', now);
+    const dateA = parse(`${a.date} ${a.time}`, "yyyy-MM-dd h:mm a", now);
+    const dateB = parse(`${b.date} ${b.time}`, "yyyy-MM-dd h:mm a", now);
     return dateA - dateB;
-  })
+  });
   return sortedAppointments;
+}
+
+
+//notification format funcitons
+export function notiSorting(noti) {
+  const sortedNoti = noti?.slice().sort((a, b) => {
+    const dateA = parseISO(a.createdAt);
+    const dateB = parseISO(b.createdAt);
+    return dateB - dateA;
+  });
+  
+  return sortedNoti;
+}
+
+export function notiDateFormat(dateString) {
+  const date = parseISO(dateString);
+  const now = new Date();
+  if (differenceInSeconds(now, date) < 30) {
+    return "Just now";
+  }
+  return formatDistanceToNow(date, { addSuffix: true });
 }

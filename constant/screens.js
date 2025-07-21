@@ -24,6 +24,7 @@ import DoctorOwnProfile from "../screens/doctor/DoctorOwnProfile";
 import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 import RateDoctor from "../screens/patient/RateDoctor";
 import ConsultationNotes from "../screens/doctor/ConsultationNotes";
+import NotificationPatient from "../screens/patient/NotificationPatient";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -215,13 +216,27 @@ export const stackScreens = [
       ),
     }),
   },
-   {
+  {
     name: "ConsultationNotes",
     component: ConsultationNotes,
     options: ({ navigation }) => ({
       header: () => (
         <CustomHeader
           title="Post Consultation Notes"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "NotificationPatient",
+    component: NotificationPatient,
+    options: ({ navigation }) => ({
+      headerShown: false,
+      header: () => (
+        <CustomHeader
+          title="Notifications"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />

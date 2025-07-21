@@ -71,7 +71,7 @@ export const appointmentForPatient = [
     drName: "Dr. John Doe",
     speciality: "Dentist",
     date: "2025-07-21",
-    time: "2:20 PM",
+    time: "3:40 PM",
     channelType: "Video",
     mode : "upcoming",
     status: "waiting",

@@ -128,6 +128,26 @@ export default function AppointmentPCard({
           )}
         </View>
       </View>
+      {/* status badge  */}
+      <View className="absolute top-3 right-3 w-[70px]">
+        {isSessionEnd(date, time) && status === "completed" && (
+          <View className="absolute top-0 right-0 bg-green-500 px-2 py-1 rounded-full w-full">
+            <Text className="text-white text-xs text-center">Completed</Text>
+          </View>
+        )} 
+        {getReadyTime(date, time, 5) && (
+          <View className="absolute top-0 right-0 bg-green-500 px-2 py-1 rounded-full w-full">
+            <Text className="text-white text-xs text-center">Ready</Text>
+          </View>
+        )}
+        {
+          mode === "past" && status === "missed" && (
+            <View className="absolute top-0 right-0 bg-amber-500  px-2 py-1 rounded-full w-full">
+              <Text className="text-white text-xs text-center">Missed</Text>
+            </View>
+          )
+        }
+      </View>
     </View>
   );
 }
