@@ -7,7 +7,7 @@ export const appointmentForPatient = [
     date: "2025-07-19",
     time: "10:45 PM",
     channelType: "Video",
-    mode : "past",
+    mode: "past",
     status: "completed",
   },
   {
@@ -18,8 +18,8 @@ export const appointmentForPatient = [
     date: "2025-07-20",
     time: "02:30 PM",
     channelType: "Chat",
-    mode : "past",
-    status: "missed"
+    mode: "past",
+    status: "missed",
   },
   {
     id: "3",
@@ -29,7 +29,7 @@ export const appointmentForPatient = [
     date: "2025-08-20",
     time: "11:00 AM",
     channelType: "Chat",
-    mode : "upcoming",
+    mode: "upcoming",
     status: "waiting",
   },
   {
@@ -40,7 +40,7 @@ export const appointmentForPatient = [
     date: "2025-08-21",
     time: "10:00 AM",
     channelType: "Call",
-    mode : "upcoming",
+    mode: "upcoming",
     status: "waiting",
   },
   {
@@ -51,7 +51,7 @@ export const appointmentForPatient = [
     date: "2025-08-15",
     time: "10:00 AM",
     channelType: "Call",
-    mode : "upcoming",
+    mode: "upcoming",
     status: "waiting",
   },
   {
@@ -62,7 +62,7 @@ export const appointmentForPatient = [
     date: "2025-08-15",
     time: "10:15 AM",
     channelType: "Call",
-    mode : "upcoming",
+    mode: "upcoming",
     status: "waiting",
   },
   {
@@ -73,7 +73,108 @@ export const appointmentForPatient = [
     date: "2025-07-21",
     time: "3:40 PM",
     channelType: "Video",
-    mode : "upcoming",
+    mode: "upcoming",
     status: "waiting",
-  }
+  },
+];
+
+export const appointmentForDoctor = [
+  {
+    id: "1",
+    patientData : {
+      profile: require("../../assets/profile/patient_f.png"),
+      name: "Alice Johnson",
+      age: "30",
+      gender: "Female",
+    },
+    date: "2025-07-21",
+    time: "05:00 PM",
+    channelType: "Video",
+    mode: "past",
+    status: "completed",
+  },
+  {
+    id: "2",
+    patientData: {
+      profile: require("../../assets/profile/patient_m.png"),
+      name: "Bob Williams",
+      age: "25",
+      gender: "Male",
+    },
+    date: "2025-07-20",
+    time: "11:30 AM",
+    channelType: "Chat",
+    mode: "past",
+    status: "missed",
+  },
+  {
+    id: "3",
+    patientData: {
+      profile: require("../../assets/profile/patient_f.png"),
+      name: "Chloe Davis",
+      age: "28",
+      gender: "Female",
+    },
+    date: "2025-07-22", // Tomorrow
+    time: "03:30 PM",
+    channelType: "Call",
+    mode: "upcoming",
+    status: "waiting",
+  },
+  {
+    id: "4",
+    patientData: {
+      profile: require("../../assets/profile/patient_m.png"),
+      name: "David Miller",
+      age: "32",
+      gender: "Male",
+    },
+    date: "2025-07-22", // Tomorrow
+    time: "09:15 AM",
+    channelType: "Video",
+    mode: "upcoming",
+    status: "waiting",
+  },
+  {
+    id: "5",
+    patientData: {
+      profile: require("../../assets/profile/patient_f.png"),
+      name: "Eva Garcia",
+      age: "27",
+      gender: "Female",
+    },
+    date: "2025-07-24", // Later this week
+    time: "02:00 PM",
+    channelType: "Chat",
+    mode: "upcoming",
+    status: "waiting",
+  },
+  {
+    id: "6",
+    patientData: {
+      profile: require("../../assets/profile/patient_m.png"),
+      name: "Frank Rodriguez",
+      age: "31",
+      gender: "Male",
+    },
+    date: "2025-07-21", // Earlier today, but patient didn't show
+    time: "09:00 PM",
+    channelType: "Video",
+    mode: "past",
+    status: "missed",
+  },
+  {
+    id: "7",
+    patientData: {
+      profile: require("../../assets/profile/patient_f.png"),
+      name: "Grace Lee",
+      age: "29",
+      gender: "Female",
+    },
+    date: "2025-08-01", // Next month
+    time: "11:00 AM",
+    channelType: "Call",
+    mode: "upcoming",
+    status: "waiting",
+  },
 ];
