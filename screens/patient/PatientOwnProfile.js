@@ -28,6 +28,9 @@ import {
   allergy,
   chronical,
 } from "./../../constant/data/patientDetails";
+import LogoutModal from "../../components/modals/LogOutModal";
+
+
 
 // Medical info configuration for reusable rendering
 const getMedicalInfoConfig = (medicalData) => [
@@ -142,13 +145,14 @@ const InfoSection = ({ title, config, onEdit }) => (
   </ProfileEditCard>
 );
 
-export default function PatientOwnProfile() {
+export default function PatientOwnProfile({navigation}) {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
 
   // Modal states
   const [profileModalVisible, setProfileModalVisible] = React.useState(false);
   const [contactModalVisible, setContactModalVisible] = React.useState(false);
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
   const [emergencyModalVisible, setEmergencyModalVisible] = React.useState(false);
 
   // Form states
@@ -181,6 +185,10 @@ export default function PatientOwnProfile() {
   const [allergyOpen, setAllergyOpen] = React.useState(false);
   const [chronicOpen, setChronicOpen] = React.useState(false);
   const [birthOpen, setBirthOpen] = React.useState(false);
+
+    const handleLogout = () => {
+    console.log("User logged out");
+  };
 
   // Image picker functions
   const pickImage = async () => {
@@ -371,7 +379,9 @@ export default function PatientOwnProfile() {
             onEdit={() => setEmergencyModalVisible(true)}
           />
 
-          <SettingCard></SettingCard>
+           <SettingCard 
+            onLogoutPress={() => setLogoutModalVisible(true)}
+          />
         </View>
       </ScrollView>
 
@@ -421,6 +431,11 @@ export default function PatientOwnProfile() {
         formData={emergencyData}
         onFormChange={handleEmergencyChange}
         onSubmit={handleEmergencySubmit}
+      />
+       <LogoutModal
+        visible={logoutModalVisible}
+        onClose={() => setLogoutModalVisible(false)}
+        onConfirmLogout={handleLogout}
       />
     </SafeAreaView>
   );

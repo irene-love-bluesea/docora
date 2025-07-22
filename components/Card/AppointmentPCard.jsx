@@ -19,6 +19,7 @@ export default function AppointmentPCard({
   channelType,
   mode,
   status,
+  navigation,
 }) {
   const Icon = specialtyIconMap[speciality];
   const renderIcon = (channelType, color) => {
@@ -40,10 +41,21 @@ export default function AppointmentPCard({
     // console.log(`Joining appointment with Dr. ${drName} on ${date} at ${time}`);
   };
 
+  const rescheduleAppointment = () => {
+    const drProfile = {
+      drProfile,
+      drName,
+      speciality,
+      date,
+      time,
+      channelType,
+    };
+    navigation.navigate("TimeSlotSelector", { drProfile });
+  };
   return (
     <View
       elevation={2}
-      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5 ${
+      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  border border-secondary gap-5 ${
         getReadyTime(date, time, 5) && "border-2 border-primary"
       }`}
     >
@@ -70,7 +82,11 @@ export default function AppointmentPCard({
           </Text>
         </View>
         <View className="flex-row items-center  gap-3 ">
-          <View className={`w-[65%] ${mode === "past" && status === "missed" && "!w-[73%]"}`}>
+          <View
+            className={`w-[65%] ${
+              mode === "past" && status === "missed" && "!w-[73%]"
+            }`}
+          >
             {mode === "upcoming" && (
               <CustomButton
                 title={
@@ -94,6 +110,7 @@ export default function AppointmentPCard({
                 variant="secondary"
                 className="bg-background  px-4 py-2 rounded-lg border border-primary"
                 textClassName="text-primary"
+                onPress={() => navigation.navigate("ViewConsultationNote")}
               />
             )}
             {mode === "past" && status === "missed" && (
@@ -103,11 +120,11 @@ export default function AppointmentPCard({
                 variant="secondary"
                 className=" bg-background   px-4 py-2 rounded-lg border border-primary "
                 textClassName="text-primary "
-                onPress={() => {}}
+                onPress={() => rescheduleAppointment()}
               />
             )}
           </View>
-          {mode === "upcoming" ? (
+          {mode === "upcoming" && (
             <TouchableOpacity
               className="px-4 py-3 rounded-xl bg-white border border-primary "
               activeOpacity={0.7}
@@ -115,16 +132,6 @@ export default function AppointmentPCard({
             >
               <Ionicons name="close" size={24} color="#023E8A" />
             </TouchableOpacity>
-          ) : (
-            status === "completed" && (
-              <TouchableOpacity
-                className="px-4 py-3 rounded-xl bg-white border border-primary "
-                activeOpacity={0.7}
-                onPress={() => {}}
-              >
-                <AntDesign name="download" size={24} color="#023E8A" />
-              </TouchableOpacity>
-            )
           )}
         </View>
       </View>
@@ -134,19 +141,17 @@ export default function AppointmentPCard({
           <View className="absolute top-0 right-0 bg-green-500 px-2 py-1 rounded-full w-full">
             <Text className="text-white text-xs text-center">Completed</Text>
           </View>
-        )} 
+        )}
         {getReadyTime(date, time, 5) && (
           <View className="absolute top-0 right-0 bg-green-500 px-2 py-1 rounded-full w-full">
             <Text className="text-white text-xs text-center">Ready</Text>
           </View>
         )}
-        {
-          mode === "past" && status === "missed" && (
-            <View className="absolute top-0 right-0 bg-amber-500  px-2 py-1 rounded-full w-full">
-              <Text className="text-white text-xs text-center">Missed</Text>
-            </View>
-          )
-        }
+        {mode === "past" && status === "missed" && (
+          <View className="absolute top-0 right-0 bg-amber-500  px-2 py-1 rounded-full w-full">
+            <Text className="text-white text-xs text-center">Missed</Text>
+          </View>
+        )}
       </View>
     </View>
   );

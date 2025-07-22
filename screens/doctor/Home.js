@@ -8,6 +8,7 @@ import {
   Platform,
   Text,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -37,9 +38,9 @@ export default function HomeScreen({ navigation }) {
             <Text className="text-md font-normal text-primary">{now}</Text>
           </View>
         </View>
-        <View>
-          <Ionicons name="notifications-outline" size={24} color="#023E8A" />
-        </View>
+        <Pressable onPress={() => navigation.navigate("Notifications")}>
+          <Ionicons name="notifications-outline" size={30} color="#023E8A" />
+        </Pressable>
       </View>
       {/* Header end */}
 

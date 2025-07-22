@@ -6,4 +6,5 @@ config.transformer.babelTransformerPath = require.resolve('react-native-svg-tran
 config.resolver.assetExts = config.resolver.assetExts.filter((ext) => ext !== 'svg');
 config.resolver.sourceExts.push('svg');
 
+config.resolver.assetExts.push('md'); //for markdown display
 module.exports = withNativeWind(config, { input: './global.css' })

@@ -6,7 +6,7 @@ import AppointmentPCard from "../../components/Card/AppointmentPCard";
 import { appointmentForPatient } from "../../constant/data/appointment";
 import { isSessionEnd, timeSortingAscending } from "../../utils/helper";
 
-export default function PatientSchedule() {
+export default function PatientSchedule({ navigation }) {
   const [mode, setMode] = useState("upcoming");
 
   const renderCard = ({ item }) => (
@@ -19,6 +19,7 @@ export default function PatientSchedule() {
       channelType={item.channelType}
       mode={item.mode}
       status={item.status}
+      navigation={navigation}
     />
   );
 
@@ -39,7 +40,7 @@ export default function PatientSchedule() {
     <SafeAreaView className=" flex-1 bg-background px-5">
       <View className=" flex-row justify-between items-center  py-5 bg-background ">
         <Text className="text-2xl font-alata">Appointments</Text>
-        <Ionicons name="add-circle" size={30} color="#023E8A" />
+        {/* <Ionicons name="add-circle" size={30} color="#023E8A" /> */}
       </View>
       <View className=" flex-row justify-beteen items-center  border border-secondary rounded-xl  w-full">
         <Pressable
