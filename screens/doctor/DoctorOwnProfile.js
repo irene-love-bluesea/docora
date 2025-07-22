@@ -7,14 +7,20 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaInsetsContext,
+  SafeAreaView,
+} from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import ProfessionalModal from "../../components/modals/ProfessionalModal";
-import { ProfileEditCard, SettingCard } from "../../components/Card/ProfileEditCard";
+import {
+  ProfileEditCard,
+  SettingCard,
+} from "../../components/Card/ProfileEditCard";
 import { gender } from "./../../constant/data/patientDetails";
 import {
   experienceYears,
@@ -160,15 +166,16 @@ export default function DoctorOwnProfile() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-background">
-      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">Profile</Text>
+    <SafeAreaView className="bg-background">
+      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
+        Profile
+      </Text>
+
       <ScrollView
         className="bg-background"
-        style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View className=" justify-start items-center px-5 pt-4 bg-background pb-5">
+        <View className="px-5 pt-4 pb-5">
           {/* Profile Header */}
           <View
             className="w-full p-3 rounded-lg bg-white flex-row justify-between items-center mb-1"
@@ -229,33 +236,40 @@ export default function DoctorOwnProfile() {
             </View>
           </ProfileEditCard>
 
-        {/* Professional Information */}
-           <ProfileEditCard
+          {/* Professional Information */}
+          <ProfileEditCard
             title="Professional Information"
             onEdit={() => setProfessionalModalVisible(true)}
           >
             <View className="px-3 my-2">
               <Text className="text-lg font-semibold">Year of Experience</Text>
-              <Text className="text-lg font-normal">{professionalData.experience} Years</Text>
+              <Text className="text-lg font-normal">
+                {professionalData.experience} Years
+              </Text>
             </View>
             <View className="px-3 my-2">
               <Text className="text-lg font-semibold">Medical Specialty</Text>
-              <Text className="text-lg font-normal">{professionalData.specialty}</Text>
+              <Text className="text-lg font-normal">
+                {professionalData.specialty}
+              </Text>
             </View>
-             <View className="px-3 my-2">
+            <View className="px-3 my-2">
               <Text className="text-lg font-semibold">Current Work Place</Text>
-              <Text className="text-lg font-normal">{professionalData.workPlace}</Text>
+              <Text className="text-lg font-normal">
+                {professionalData.workPlace}
+              </Text>
             </View>
             <View className="px-3 my-2">
               <Text className="text-lg font-semibold">Graduated From</Text>
-              <Text className="text-lg font-normal">{professionalData.graduated}</Text>
+              <Text className="text-lg font-normal">
+                {professionalData.graduated}
+              </Text>
             </View>
           </ProfileEditCard>
 
           <SettingCard></SettingCard>
         </View>
       </ScrollView>
-
       {/* Modals */}
       <ProfileEditModal
         visible={profileModalVisible}
