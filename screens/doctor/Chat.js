@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export default function DoctorChatScreen({navigation}) {
+export default function DoctorChatScreen({ navigation }) {
   const [search, setSearch] = React.useState("");
 
   const messagesData = [
@@ -66,21 +66,53 @@ export default function DoctorChatScreen({navigation}) {
       isSeen: true,
       profileImage: require("../../assets/profile/patient_m.png"),
     },
+    {
+      id: 6,
+      name: "James Preston",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/patient_m.png"),
+    },
+    {
+      id: 7,
+      name: "Chloe Anderson",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/patient_f.png"),
+    },
+     {
+      id: 8,
+      name: "Mia Collins",
+      specialty: "Psychiatrist",
+      message: "Okay, Have a great day!",
+      time: "July 13",
+      isMissedCall: false,
+      isSeen: false,
+      profileImage: require("../../assets/profile/patient_f.png"),
+    },
   ];
 
   const filteredMessages = messagesData.filter((message) =>
     message.name.toLowerCase().includes(search.toLowerCase())
   );
 
-
   const MessageCard = ({ message }) => {
-    
     return (
       <TouchableOpacity
-        className="my-4 w-full px-1"
+        className="my-3 w-full px-1"
         activeOpacity={0.2}
-        onPress={() => navigation.navigate("DoctorMessenger", {  name: message.name,
-    image: message.profileImage,})}
+        onPress={() =>
+          navigation.navigate("DoctorMessenger", {
+            name: message.name,
+            image: message.profileImage,
+          })
+        }
       >
         <View className="flex-row items-center gap-3">
           <Image
@@ -127,30 +159,24 @@ export default function DoctorChatScreen({navigation}) {
     );
   };
 
-
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-background">
+   <View className="flex-1 bg-background"> 
+    <SafeAreaView className="bg-background" >
       <Text className="text-2xl font-semibold font-alata mt-6 mb-3 mx-5">
         Messages
       </Text>
-      <ScrollView
-        className="bg-background"
-        style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="flex-1 justify-start items-center px-5 pt-3 bg-background pb-5">
-          {/* search bar  */}
-          <TouchableOpacity className="w-full flex-row items-center bg-white rounded-lg px-5 mb-5">
-            <Ionicons name="search" size={20} color="#999" className="" />
-            <TextInput
-              className="border border-white tracking-wider rounded-xl px-5 py-2 text-base bg-white text-black h-[55px]"
-              placeholder="Search by name"
-              value={search}
-              onChangeText={setSearch}
-            />
-          </TouchableOpacity>
-
+      {/* search bar  */}
+      <TouchableOpacity className="mx-5 flex-row items-center bg-white rounded-lg px-5 my-2">
+        <Ionicons name="search" size={20} color="#999" className="" />
+        <TextInput
+          className="border border-white tracking-wider rounded-xl px-5 py-2 text-base bg-white text-black h-[55px]"
+          placeholder="Search by name"d
+          value={search}
+          onChangeText={setSearch}
+        />
+      </TouchableOpacity>
+      <ScrollView className="bg-background" showsVerticalScrollIndicator={false}>
+        <View className="flex-1 justify-start items-center px-5 pt-3 bg-background pb-20">
           {filteredMessages.map((message) => (
             <MessageCard key={message.id} message={message} />
           ))}
@@ -163,5 +189,6 @@ export default function DoctorChatScreen({navigation}) {
         </View>
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 }
