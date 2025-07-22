@@ -25,33 +25,33 @@ const initialMessages = [
     text: "Hey there! How are you doing?",
     sender: "other",
     timestamp: new Date(Date.now() - 3600000),
-    avatar: require("../../assets/profile/profile_m.png"),
+    avatar: require("../../assets/profile/patient_f.png"),
   },
   {
     id: "2",
     text: "I'm doing great! Just working on a new React Native app.",
     sender: "me",
     timestamp: new Date(Date.now() - 3500000),
-    avatar: require("../../assets/profile/patient_f.png"),
+    avatar: require("../../assets/profile/profile_m.png"),
   },
   {
     id: "3",
     text: "That sounds awesome! What kind of app are you building?",
     sender: "other",
     timestamp: new Date(Date.now() - 3400000),
-    avatar: require("../../assets/profile/profile_m.png"),
+    avatar: require("../../assets/profile/patient_f.png"),
   },
   {
     id: "4",
     text: "It's a chat application with a clean UI using NativeWind for styling.",
     sender: "me",
     timestamp: new Date(Date.now() - 3300000),
-    avatar: require("../../assets/profile/patient_f.png"),
+    avatar: require("../../assets/profile/profile_m.png"),
   },
 ];
 
-const PatientMessenger = ({ navigation, route }) => {
-const {name,image} = route.params;
+const DoctorMessenger = ({ navigation, route }) => {
+  const {name,image} = route.params;
 
   const [messages, setMessages] = useState(initialMessages);
   const [inputText, setInputText] = useState("");
@@ -110,7 +110,7 @@ const {name,image} = route.params;
       text: inputText.trim(),
       sender: "me",
       timestamp: new Date(),
-      avatar: require("../../assets/profile/patient_f.png"),
+      avatar: require("../../assets/profile/profile_m.png"),
     };
 
     setMessages((prev) => [...prev, newMessage]);
@@ -125,7 +125,6 @@ const {name,image} = route.params;
         text: "Thanks for your message! This is a simulated response.",
         sender: "other",
         timestamp: new Date(),
-        avatar: require("../../assets/profile/profile_m.png"),
       };
       setMessages((prev) => [...prev, responseMessage]);
     }, 2000);
@@ -133,7 +132,7 @@ const {name,image} = route.params;
 
   const MessageBubble = ({ item }) => {
     const isMe = item.sender === "me";
-
+    
     return (
       <View
         className={`flex-row mb-4 ${isMe ? "justify-end" : "justify-start"}`}
@@ -201,7 +200,7 @@ const {name,image} = route.params;
         <TouchableOpacity
           className="mr-4"
           onPress={() =>
-            navigation.navigate("BottomTabs", { userType: "patient" })
+            navigation.navigate("BottomTabs", { userType: "doctor" })
           }
         >
           <Ionicons name="arrow-back" size={24} color="black" />
@@ -326,4 +325,4 @@ const {name,image} = route.params;
   );
 };
 
-export default PatientMessenger;
+export default DoctorMessenger;

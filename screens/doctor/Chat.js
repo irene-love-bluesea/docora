@@ -73,52 +73,60 @@ export default function DoctorChatScreen({navigation}) {
   );
 
 
-  const MessageCard = ({ message }) => (
-
-    <TouchableOpacity className="my-4 w-full px-1" activeOpacity={0.2} onPress={() => navigation.navigate("PatientMessenger")}>
-      <View className="flex-row items-center gap-3">
-        <Image
-          source={message.profileImage}
-          className="w-[60px] h-[60px] rounded-full border border-gray-400"
-        />
-        <View className="flex gap-1">
-          <View className="flex-row items-center gap-2">
-            <Text className="text-lg font-semibold">{message.name}</Text>
-            {/* <Text className="text-md font-medium text-gray-500">
-              {message.specialty}
-            </Text> */}
-          </View>
-          <View className="flex-row items-center gap-2">
-            {message.isMissedCall && (
-              <MaterialIcons name="phone-missed" size={22} color="red" />
-            )}
-            <Text
-              className={`text-md font-medium ${
-                message.isMissedCall
-                  ? "text-red-500"
-                  : message.isSeen
-                  ? "text-gray-500"
-                  : "text-primary"
-              }`}
-            >
-              {message.message}
-            </Text>
-            <Text
-              className={`text-md font-medium ${
-                message.isMissedCall
-                  ? "text-primary"
-                  : message.isSeen
-                  ? "text-gray-500"
-                  : "text-primary"
-              }`}
-            >
-              • {message.time}
-            </Text>
+  const MessageCard = ({ message }) => {
+    
+    return (
+      <TouchableOpacity
+        className="my-4 w-full px-1"
+        activeOpacity={0.2}
+        onPress={() => navigation.navigate("DoctorMessenger", {  name: message.name,
+    image: message.profileImage,})}
+      >
+        <View className="flex-row items-center gap-3">
+          <Image
+            source={message.profileImage}
+            className="w-[60px] h-[60px] rounded-full border border-gray-400"
+          />
+          <View className="flex gap-1">
+            <View className="flex-row items-center gap-2">
+              <Text className="text-lg font-semibold">{message.name} •</Text>
+              <Text className="text-md font-medium text-gray-500">
+                {message.specialty}
+              </Text>
+            </View>
+            <View className="flex-row items-center gap-2">
+              {message.isMissedCall && (
+                <MaterialIcons name="phone-missed" size={22} color="red" />
+              )}
+              <Text
+                className={`text-md font-medium ${
+                  message.isMissedCall
+                    ? "text-red-500"
+                    : message.isSeen
+                    ? "text-gray-500"
+                    : "text-primary"
+                }`}
+              >
+                {message.message}
+              </Text>
+              <Text
+                className={`text-md font-medium ${
+                  message.isMissedCall
+                    ? "text-primary"
+                    : message.isSeen
+                    ? "text-gray-500"
+                    : "text-primary"
+                }`}
+              >
+                • {message.time}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
+
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-background">
