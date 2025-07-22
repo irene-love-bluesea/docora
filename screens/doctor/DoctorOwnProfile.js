@@ -11,8 +11,8 @@ import {
   SafeAreaInsetsContext,
   SafeAreaView,
 } from "react-native-safe-area-context";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
@@ -27,6 +27,106 @@ import {
   specialityRole,
 } from "../../constant/data/doctorDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
+
+// Contact info configuration
+const getContactInfoConfig = (contactData) => [
+  {
+    id: "email",
+    title: "Email",
+    icon: { name: "mail", library: "Ionicons", color: "#023E8A" },
+    bgColor: "bg-secondary",
+    value: contactData.email,
+  },
+  {
+    id: "phone",
+    title: "Phone",
+    icon: {
+      name: "phone",
+      library: "MaterialCommunityIcons",
+      color: "#023E8A",
+    },
+    bgColor: "bg-secondary",
+    value: contactData.phone,
+  },
+  {
+    id: "address",
+    title: "Address",
+    icon: { name: "home", library: "MaterialCommunityIcons", color: "#023E8A" },
+    bgColor: "bg-secondary",
+    value: contactData.address,
+  },
+];
+
+//Professional Info configuration
+const getProfessionalInfoConfig = (professionalData) => [
+  {
+    id: "exp",
+    title: "Year of Experience",
+    icon: { name: "user-doctor", library: "FontAwesome6", color: "orange" },
+    bgColor: "bg-orange-100",
+    value: professionalData.experience + " Years",
+  },
+  {
+    id: "special",
+    title: "Medical Specialty",
+    icon: { name: "book-medical", library: "FontAwesome5", color: "red" },
+    bgColor: "bg-red-100",
+    value: professionalData.specialty,
+  },
+  {
+    id: "work",
+    title: "Current Work Place",
+    icon: { name: "work", library: "MaterialIcons", color: "blue" },
+    bgColor: "bg-blue-100",
+    value: professionalData.workPlace,
+  },
+  {
+    id: "graduate",
+    title: "Graduated From",
+    icon: { name: "school", library: "Ionicons", color: "green" },
+    bgColor: "bg-green-100",
+    value: professionalData.graduated,
+  },
+];
+
+// Reusable Info Row Component
+const InfoRow = ({ item }) => {
+  const IconComponent =
+    item.icon.library === "MaterialCommunityIcons"
+      ? MaterialCommunityIcons
+      : item.icon.library === "FontAwesome5"
+      ? FontAwesome5
+      : item.icon.library === "FontAwesome6"
+      ? FontAwesome6
+      : item.icon.library === "MaterialIcons"
+      ? MaterialIcons
+      : Ionicons;
+
+  return (
+    <View className="flex-row gap-4 px-3 my-2 items-center">
+      <View className={`${item.bgColor || "bg-gray-100"} p-2 rounded-full`}>
+        <IconComponent
+          name={item.icon.name}
+          size={24}
+          color={item.icon.color}
+        />
+      </View>
+      <View>
+        <Text className="text-lg font-semibold">{item.title}</Text>
+        <Text className="text-lg font-normal">{item.value}</Text>
+      </View>
+    </View>
+  );
+};
+
+// Reusable Info Section Component
+const InfoSection = ({ title, config, onEdit }) => (
+  <ProfileEditCard title={title} onEdit={onEdit}>
+    {config.map((item) => (
+      <InfoRow key={item.id} item={item} />
+    ))}
+  </ProfileEditCard>
+);
 
 export default function DoctorOwnProfile({ navigation }) {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
@@ -44,13 +144,13 @@ export default function DoctorOwnProfile({ navigation }) {
   });
 
   const [contactData, setContactData] = React.useState({
-    email: "sarahjames@gmail.com",
-    phone: "+1 555 123-4567",
+    email: "ethancarter@gmail.com",
+    phone: "+1 222 123-4567",
     address: "123 Maple Street, Anytown, USA",
   });
 
   const [professionalData, setProfessionalData] = React.useState({
-    experience: "1-3 years",
+    experience: "1-3",
     specialty: "Cardiology",
     workPlace: "New York Medical Center",
     graduated: "Harvard Medical School",
@@ -224,60 +324,23 @@ export default function DoctorOwnProfile({ navigation }) {
           </View>
 
           {/* Contact Information */}
-          <ProfileEditCard
+          <InfoSection
             title="Contact Information"
+            config={getContactInfoConfig(contactData)}
             onEdit={() => setContactModalVisible(true)}
-          >
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Email</Text>
-              <Text className="text-lg font-normal">{contactData.email}</Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Phone</Text>
-              <Text className="text-lg font-normal">{contactData.phone}</Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Address</Text>
-              <Text className="text-lg font-normal">{contactData.address}</Text>
-            </View>
-          </ProfileEditCard>
+          />
 
           {/* Professional Information */}
-          <ProfileEditCard
+          <InfoSection
             title="Professional Information"
+            config={getProfessionalInfoConfig(professionalData)}
             onEdit={() => setProfessionalModalVisible(true)}
-          >
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Year of Experience</Text>
-              <Text className="text-lg font-normal">
-                {professionalData.experience} Years
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Medical Specialty</Text>
-              <Text className="text-lg font-normal">
-                {professionalData.specialty}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Current Work Place</Text>
-              <Text className="text-lg font-normal">
-                {professionalData.workPlace}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Graduated From</Text>
-              <Text className="text-lg font-normal">
-                {professionalData.graduated}
-              </Text>
-            </View>
-          </ProfileEditCard>
+          />
 
-          <SettingCard 
-            navigation={navigation} 
+          <SettingCard
+            navigation={navigation}
             onLogoutPress={() => setLogoutModalVisible(true)}
           />
-          
         </View>
       </ScrollView>
       {/* Modals */}

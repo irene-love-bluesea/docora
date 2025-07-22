@@ -30,8 +30,6 @@ import {
 } from "./../../constant/data/patientDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
 
-
-
 // Medical info configuration for reusable rendering
 const getMedicalInfoConfig = (medicalData) => [
   {
