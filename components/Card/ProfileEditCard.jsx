@@ -2,12 +2,14 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { FontAwesome6, Ionicons } from "@expo/vector-icons";
+import { useNavigation } from '@react-navigation/native';
 
 export const ProfileEditCard = ({
   title,
   children,
   onEdit,
-  backgroundColor = "bg-blue-200",
+  backgroundColor = "bg-secondary",
 }) => {
   return (
     <View className="mt-4 bg-white rounded-lg" style={{ elevation: 1 }}>
@@ -24,44 +26,87 @@ export const ProfileEditCard = ({
   );
 };
 
-export const SettingCard = ({ backgroundColor = "bg-blue-200" }) => {
+const settingsOptions = [
+  {
+    label: "Change Password",
+    icon: <Ionicons name="key" size={25} color="#023E8A" />,
+    textColor: "text-black",
+    iconColor: "black",
+    bgColor: "bg-secondary",
+    route: "PatientProfile",
+  },
+  {
+    label: "Two-Factor Authentication",
+    icon: <Ionicons name="lock-closed" size={25} color="#023E8A" />,
+    textColor: "text-black",
+    iconColor: "black",
+    bgColor: "bg-secondary",
+    route: "PatientProfile",
+  },
+  {
+    label: "Privacy Policy",
+    icon: <Ionicons name="shield-half" size={25} color="#023E8A" />,
+    textColor: "text-black",
+    iconColor: "black",
+    route: "PatientProfile",
+    bgColor: "bg-secondary",
+    route: "PrivacyPolicy",
+  },
+  {
+    label: "Log Out",
+    icon: <MaterialIcons name="logout" size={25} color="#023E8A" />,
+    textColor: "text-black",
+    iconColor: "black",
+    bgColor: "bg-secondary",
+    route: "",
+  },
+  {
+    label: "Delete Account",
+    icon: <MaterialIcons name="delete" size={25} color="red" />,
+    textColor: "text-red-500",
+    iconColor: "red",
+    bgColor: "bg-red-100",
+    route: "PatientProfile",
+  },
+];
+
+export const SettingCard = ({
+  backgroundColor = "bg-secondary",
+  
+  onLogOutPress,
+}) => {
+   const navigation = useNavigation();
+
   return (
     <View className="mt-4 w-full bg-white rounded-lg" style={{ elevation: 1 }}>
       <View className={`p-3 w-full rounded-t-lg ${backgroundColor}`}>
         <Text className="text-xl font-semibold">Security & Settings</Text>
       </View>
-      <TouchableOpacity>
-        <View className="px-3 py-4 flex-row justify-between items-center">
-          <Text className="text-lg font-semibold">Blood Type</Text>
-          <AntDesign name="right" size={25} color="black" />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View className="px-3 py-4 flex-row justify-between items-center">
-          <Text className="text-lg font-semibold">
-            Two-Factor Authentication
-          </Text>
-          <AntDesign name="right" size={25} color="black" />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View className="px-3 py-4 flex-row justify-between items-center">
-          <Text className="text-lg font-semibold">Privacy Policy</Text>
-          <AntDesign name="right" size={25} color="black" />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View className="px-3 py-4 flex-row justify-between items-center">
-          <Text className="text-lg font-semibold">Log Out</Text>
-          <MaterialIcons name="logout" size={25} color="black" />
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <View className="px-3 py-4 flex-row justify-between items-center">
-          <Text className="text-lg text-red-500 font-semibold">Delete Account</Text>
-          <MaterialIcons name="delete" size={25} color="red" />
-        </View>
-      </TouchableOpacity>
+
+      {settingsOptions.map((item, index) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() => {
+            if (item.route === "") {
+              onLogOutPress();
+            } else {
+              navigation.navigate(item.route);
+            }
+          }}
+        >
+          <View className="px-3 py-4 flex-row justify-between items-center">
+            <View className="flex-row gap-3 items-center">
+              <View className={`p-2 rounded-full ${item.bgColor}`}>
+                {item.icon}
+              </View>
+              <Text className={`text-lg font-semibold ${item.textColor}`}>
+                {item.label}
+              </Text>
+            </View>
+            <AntDesign name="right" size={25} color="black" />
+          </View>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 };

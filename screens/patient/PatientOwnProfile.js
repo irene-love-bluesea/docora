@@ -7,21 +7,140 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { SafeAreaInsetsContext, SafeAreaView } from "react-native-safe-area-context";
-import { MaterialIcons } from "@expo/vector-icons";
+import {
+  SafeAreaInsetsContext,
+  SafeAreaView,
+} from "react-native-safe-area-context";
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import MedicalEditModal from "../../components/modals/MedicalEditModal";
 import EmergencyContactModal from "../../components/modals/EmergencyContactModal";
-import { ProfileEditCard, SettingCard } from "../../components/Card/ProfileEditCard";
+import {
+  ProfileEditCard,
+  SettingCard,
+} from "../../components/Card/ProfileEditCard";
 import {
   gender,
   bloodType,
   allergy,
   chronical,
 } from "./../../constant/data/patientDetails";
+
+// Medical info configuration for reusable rendering
+const getMedicalInfoConfig = (medicalData) => [
+  {
+    id: "bloodType",
+    title: "Blood Type",
+    icon: { name: "water", library: "MaterialCommunityIcons", color: "red" },
+    bgColor: "bg-red-100",
+    value: medicalData.bloodType || "Not specified"
+  },
+  {
+    id: "allergies",
+    title: "Allergies",
+    icon: { name: "exclamation-triangle", library: "FontAwesome5", color: "orange" },
+    bgColor: "bg-orange-100",
+    value: medicalData.allergies && medicalData.allergies.length > 0
+      ? medicalData.allergies.join(", ")
+      : "None"
+  },
+  {
+    id: "chronic",
+    title: "Chronic Conditions",
+    icon: { name: "heartbeat", library: "FontAwesome5", color: "green" },
+    bgColor: "bg-green-100",
+    value: medicalData.chronic && medicalData.chronic.length > 0
+      ? medicalData.chronic.join(", ")
+      : "None"
+  },
+  {
+    id: "medications",
+    title: "Current Medications",
+    icon: { name: "pills", library: "FontAwesome5", color: "blue" },
+    bgColor: "bg-blue-100",
+    value: medicalData.medications || "None"
+  }
+];
+
+// Contact info configuration
+const getContactInfoConfig = (contactData) => [
+  {
+    id: "email",
+    title: "Email",
+    icon: { name: "mail", library: "Ionicons", color: "#023E8A" },
+    bgColor: "bg-secondary",
+    value: contactData.email
+  },
+  {
+    id: "phone",
+    title: "Phone",
+    icon: { name: "phone", library: "MaterialCommunityIcons", color: "#023E8A" },
+    bgColor: "bg-secondary",
+    value: contactData.phone
+  },
+  {
+    id: "address",
+    title: "Address",
+    icon: { name: "home", library: "MaterialCommunityIcons", color: "#023E8A" },
+    bgColor: "bg-secondary",
+    value: contactData.address
+  }
+];
+
+// Emergency contact configuration
+const getEmergencyContactConfig = (emergencyData) => [
+  {
+    id: "name",
+    title: "Name",
+    icon: { name: "person", library: "Ionicons", color: "black" },
+    bgColor: "bg-secondary",
+    value: emergencyData.name
+  },
+  {
+    id: "phone",
+    title: "Phone",
+    icon: { name: "phone", library: "MaterialCommunityIcons", color: "black" },
+     bgColor: "bg-secondary",
+    value: emergencyData.phone
+  }
+];
+
+// Reusable Info Row Component
+const InfoRow = ({ item }) => {
+  const IconComponent = item.icon.library === "MaterialCommunityIcons" 
+    ? MaterialCommunityIcons 
+    : item.icon.library === "FontAwesome5"
+    ? FontAwesome5
+    : Ionicons;
+
+  return (
+    <View className="flex-row gap-4 px-3 my-2 items-center">
+      <View className={`${item.bgColor || 'bg-gray-100'} p-2 rounded-full`}>
+        <IconComponent 
+          name={item.icon.name} 
+          size={24} 
+          color={item.icon.color} 
+        />
+      </View>
+      <View>
+        <Text className="text-lg font-semibold">{item.title}</Text>
+        <Text className="text-lg font-normal">{item.value}</Text>
+      </View>
+    </View>
+  );
+};
+
+// Reusable Info Section Component
+const InfoSection = ({ title, config, onEdit }) => (
+  <ProfileEditCard title={title} onEdit={onEdit}>
+    {config.map((item) => (
+      <InfoRow key={item.id} item={item} />
+    ))}
+  </ProfileEditCard>
+);
 
 export default function PatientOwnProfile() {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
@@ -30,8 +149,7 @@ export default function PatientOwnProfile() {
   const [profileModalVisible, setProfileModalVisible] = React.useState(false);
   const [contactModalVisible, setContactModalVisible] = React.useState(false);
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
-  const [emergencyModalVisible, setEmergencyModalVisible] =
-    React.useState(false);
+  const [emergencyModalVisible, setEmergencyModalVisible] = React.useState(false);
 
   // Form states
   const [profileData, setProfileData] = React.useState({
@@ -179,12 +297,15 @@ export default function PatientOwnProfile() {
   };
 
   return (
- <SafeAreaView className="bg-background">
-   <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
-          Profile
-        </Text>
-  <ScrollView className="bg-background" showsVerticalScrollIndicator={false}>
-     <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
+    <SafeAreaView className="bg-background">
+      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
+        Profile
+      </Text>
+      <ScrollView
+        className="bg-background"
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
           {/* Profile Header */}
           <View
             className="w-full p-3 rounded-lg bg-white flex-row justify-between items-center mb-1"
@@ -230,83 +351,31 @@ export default function PatientOwnProfile() {
           </View>
 
           {/* Contact Information */}
-          <ProfileEditCard
+          <InfoSection
             title="Contact Information"
+            config={getContactInfoConfig(contactData)}
             onEdit={() => setContactModalVisible(true)}
-          >
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Email</Text>
-                <Text className="text-lg font-normal">{contactData.email}</Text>
-              </View>
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Phone</Text>
-                <Text className="text-lg font-normal">{contactData.phone}</Text>
-              </View>
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Address</Text>
-                <Text className="text-lg font-normal">
-                  {contactData.address}
-                </Text>
-              </View>
-          </ProfileEditCard>
+          />
 
           {/* Medical Information */}
-          <ProfileEditCard
+          <InfoSection
             title="Medical Information"
+            config={getMedicalInfoConfig(medicalData)}
             onEdit={() => setMedicalModalVisible(true)}
-          >
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Blood Type</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.bloodType}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Allergies</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.allergies && medicalData.allergies.length > 0
-                  ? medicalData.allergies.join(", ")
-                  : "None"}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Chronic Conditions</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.chronic && medicalData.chronic.length > 0
-                  ? medicalData.chronic.join(", ")
-                  : "None"}
-              </Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Current Medications</Text>
-              <Text className="text-lg font-normal">
-                {medicalData.medications || "None"}
-              </Text>
-            </View>
-          </ProfileEditCard>
+          />
 
           {/* Emergency Contact */}
-          <ProfileEditCard
+          <InfoSection
             title="Emergency Contact"
+            config={getEmergencyContactConfig(emergencyData)}
             onEdit={() => setEmergencyModalVisible(true)}
-          >
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Name</Text>
-              <Text className="text-lg font-normal">{emergencyData.name}</Text>
-            </View>
-            <View className="px-3 my-2">
-              <Text className="text-lg font-semibold">Phone</Text>
-              <Text className="text-lg font-normal">{emergencyData.phone}</Text>
-            </View>
-          </ProfileEditCard>
+          />
 
-          <SettingCard>
-          </SettingCard>
-
+          <SettingCard></SettingCard>
         </View>
+      </ScrollView>
 
-  </ScrollView>
-   {/* Modals */}
+      {/* Modals */}
       <ProfileEditModal
         visible={profileModalVisible}
         onClose={() => setProfileModalVisible(false)}
@@ -353,7 +422,6 @@ export default function PatientOwnProfile() {
         onFormChange={handleEmergencyChange}
         onSubmit={handleEmergencySubmit}
       />
-
- </SafeAreaView>
+    </SafeAreaView>
   );
 }
