@@ -73,7 +73,7 @@ const settingsOptions = [
 export const SettingCard = ({
   backgroundColor = "bg-secondary",
   
-  onLogOutPress,
+  onLogoutPress,
 }) => {
    const navigation = useNavigation();
 
@@ -85,14 +85,7 @@ export const SettingCard = ({
 
       {settingsOptions.map((item, index) => (
         <TouchableOpacity
-          key={index}
-          onPress={() => {
-            if (item.route === "") {
-              onLogOutPress();
-            } else {
-              navigation.navigate(item.route);
-            }
-          }}
+          key={index} onPress={item.route === "" ? onLogoutPress : ()=> navigation.navigate(item.route)}
         >
           <View className="px-3 py-4 flex-row justify-between items-center">
             <View className="flex-row gap-3 items-center">
