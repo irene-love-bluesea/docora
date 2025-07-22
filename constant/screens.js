@@ -24,7 +24,7 @@ import DoctorOwnProfile from "../screens/doctor/DoctorOwnProfile";
 import TimeSlotSelector from "../screens/patient/TimeSlotSelector";
 import RateDoctor from "../screens/patient/RateDoctor";
 import ConsultationNotes from "../screens/doctor/ConsultationNotes";
-import NotificationPatient from "../screens/patient/NotificationPatient";
+import Notifications from "../screens/patient/Notifications";
 import PatientMessenger from "../screens/patient/PatientMessenger";
 import DoctorMessenger from "../screens/doctor/DoctorMessenger";
 
@@ -232,8 +232,8 @@ export const stackScreens = [
     }),
   },
   {
-    name: "NotificationPatient",
-    component: NotificationPatient,
+    name: "Notifications",
+    component: Notifications,
     options: ({ navigation }) => ({
       headerShown: false,
       header: () => (

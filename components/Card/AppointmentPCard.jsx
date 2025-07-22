@@ -43,7 +43,7 @@ export default function AppointmentPCard({
   return (
     <View
       elevation={2}
-      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5 ${
+      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  border border-secondary gap-5 ${
         getReadyTime(date, time, 5) && "border-2 border-primary"
       }`}
     >

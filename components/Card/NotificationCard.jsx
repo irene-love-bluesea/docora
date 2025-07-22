@@ -36,26 +36,30 @@ export default function NotificationCard({ noti }) {
   const { icon, color } = getNotificationStyle(noti?.type);
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      elevation={3}
-      onPress={() => console.log("Notification pressed", noti?.id)}
-      className={`flex-1 secondary mb-4 p-4 rounded-lg shadow-sm border border-gray-200 ${noti?.isRead ? "bg-gray-100" : "bg-background"}`}
-    >
-      <View className="flex-row items-center gap-3  ">
-        <View
-          className={`w-10 h-10  items-center justify-center bg-secondary rounded-xl`}
-        >
-          {icon}
-        </View>
-        <View className="flex-1">
-          <Text className=" text-lg font-semibold">{noti?.title}</Text>
-          <Text className="text-gray-500 ">{noti?.body}</Text>
-          <Text className="text-xs text-gray-500 mt-1">
-            {notiDateFormat(noti?.createdAt)}
-          </Text>
-        </View>
+<>
+  <TouchableOpacity
+    activeOpacity={0.7}
+    elevation={3}
+    onPress={() => console.log("Notification pressed", noti?.id)}
+    className={`flex-1 secondary  p-4  shadow-sm ${noti?.isRead ? " bg-white" : "bg-background"}`}
+  >
+    <View className="flex-row items-center gap-3  ">
+      <View
+        className={`w-10 h-10  items-center justify-center bg-secondary rounded-xl`}
+      >
+        {icon}
       </View>
-    </TouchableOpacity>
+      <View className="flex-1">
+        <Text className=" text-lg font-semibold">{noti?.title}</Text>
+        <Text className="text-gray-500 ">{noti?.body}</Text>
+        <Text className="text-xs text-gray-500 mt-1">
+          {notiDateFormat(noti?.createdAt)}
+        </Text>
+      </View>
+    </View>
+  </TouchableOpacity>
+  {/* line break  */}
+  <Text className={`h-[1px] bg-secondary w-full`}></Text> 
+</>
   );
 }
