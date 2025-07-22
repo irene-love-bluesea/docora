@@ -16,7 +16,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const { height: screenHeight } = Dimensions.get('window');
+const { height: screenHeight } = Dimensions.get("window");
 
 // Sample data for demonstration
 const initialMessages = [
@@ -51,7 +51,7 @@ const initialMessages = [
 ];
 
 const DoctorMessenger = ({ navigation, route }) => {
-  const {name,image} = route.params;
+  const { name, image } = route.params;
 
   const [messages, setMessages] = useState(initialMessages);
   const [inputText, setInputText] = useState("");
@@ -64,7 +64,7 @@ const DoctorMessenger = ({ navigation, route }) => {
   // Handle keyboard events
   useEffect(() => {
     const keyboardWillShowListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow",
       (e) => {
         setKeyboardHeight(e.endCoordinates.height);
         // Scroll to bottom when keyboard shows
@@ -77,7 +77,7 @@ const DoctorMessenger = ({ navigation, route }) => {
     );
 
     const keyboardWillHideListener = Keyboard.addListener(
-      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide",
       () => {
         setKeyboardHeight(0);
       }
@@ -132,7 +132,7 @@ const DoctorMessenger = ({ navigation, route }) => {
 
   const MessageBubble = ({ item }) => {
     const isMe = item.sender === "me";
-    
+
     return (
       <View
         className={`flex-row mb-4 ${isMe ? "justify-end" : "justify-start"}`}
@@ -178,10 +178,10 @@ const DoctorMessenger = ({ navigation, route }) => {
   const TypingIndicator = () => (
     <View className="flex-row justify-start mb-16">
       <View className=" mr-3 items-center justify-center">
-         <Image
-            className="w-[40px] h-[40px] border border-gray-600 rounded-full"
-            source={image}
-          />
+        <Image
+          className="w-[40px] h-[40px] border border-gray-600 rounded-full"
+          source={require("../../assets/profile/profile_m.png")}
+        />
       </View>
       <View className="bg-gray-200 px-4 py-3 rounded-2xl rounded-bl-md">
         <View className="flex-row items-center">
@@ -206,17 +206,18 @@ const DoctorMessenger = ({ navigation, route }) => {
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
 
-        <View className=" mr-3 items-center justify-center">
-          <Image
+        <View className="mr-3 items-center justify-center">
+          <TouchableOpacity onPress={() => navigation.navigate("PatientProfile")}> <Image
             className="w-[40px] h-[40px] border border-gray-600 rounded-full"
             source={image}
-          />
+          /></TouchableOpacity>
         </View>
 
-        <View className="flex-1">
-          <Text className="text-black text-lg font-semibold">
-            {name}
-          </Text>
+        <View
+          className="flex-1"
+        >
+          <TouchableOpacity onPress={() => navigation.navigate("PatientProfile")}>
+          <Text className="text-black text-lg font-semibold">{name}</Text></TouchableOpacity>
           <Text className="text-black/80 text-sm">Online</Text>
         </View>
 
@@ -229,10 +230,10 @@ const DoctorMessenger = ({ navigation, route }) => {
         </TouchableOpacity>
       </View>
 
-      <View 
+      <View
         className="flex-1"
-        style={{ 
-          marginBottom: keyboardHeight > 0 ? keyboardHeight + 85 : 85 
+        style={{
+          marginBottom: keyboardHeight > 0 ? keyboardHeight + 85 : 85,
         }}
       >
         {/* Messages List */}
@@ -256,16 +257,16 @@ const DoctorMessenger = ({ navigation, route }) => {
           keyboardShouldPersistTaps="handled"
           maintainVisibleContentPosition={{
             minIndexForVisible: 0,
-            autoscrollToTopThreshold: 10
+            autoscrollToTopThreshold: 10,
           }}
         />
       </View>
       {/* Input Area */}
       <View
         className="flex-row items-center px-4 py-3 bg-gray-50 border-t border-gray-200"
-        style={{ 
+        style={{
           paddingBottom: Math.max(insets.bottom, 12),
-          position: 'absolute',
+          position: "absolute",
           bottom: keyboardHeight > 0 ? keyboardHeight : 0,
           left: 0,
           right: 0,
@@ -287,8 +288,8 @@ const DoctorMessenger = ({ navigation, route }) => {
             className="flex-1 text-base max-h-24"
             multiline
             maxLength={1000}
-            onSubmitEditing={Platform.OS === 'ios' ? sendMessage : undefined}
-            returnKeyType={Platform.OS === 'ios' ? "send" : "default"}
+            onSubmitEditing={Platform.OS === "ios" ? sendMessage : undefined}
+            returnKeyType={Platform.OS === "ios" ? "send" : "default"}
             blurOnSubmit={false}
             textAlignVertical="center"
             style={{
@@ -299,9 +300,7 @@ const DoctorMessenger = ({ navigation, route }) => {
 
           <TouchableOpacity
             className="ml-2 p-1"
-            onPress={() =>
-              Alert.alert("Feature", "Emoji picker functionality")
-            }
+            onPress={() => Alert.alert("Feature", "Emoji picker functionality")}
           >
             <Ionicons name="happy-outline" size={20} color="#6B7280" />
           </TouchableOpacity>
