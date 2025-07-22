@@ -31,17 +31,6 @@ export default function TimeSlotSelector() {
 
   const handleTime = (selectedSlot) => {
     setSelectedTime(selectedSlot);
-    // setTimeSlots((prevTimeSlots) => {
-    //   Object.keys(prevTimeSlots).forEach((period) => {
-    //     updatedSlots[period] = prevTimeSlots[period].map((slot) => ({
-    //       ...slot,
-    //       selected: slot.id === selectedSlot.id,
-    //     }));
-    //   });
-
-    //   return updatedSlots;
-    // });
-
     setTimeSlots((prevTimeSlots) => {
       const newTimeSlots = {};
       for (const period in prevTimeSlots) {

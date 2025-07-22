@@ -37,7 +37,7 @@ export default function PatientSchedule() {
 
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">
-      <View className=" flex-row justify-between items-center px-5 py-5 bg-background ">
+      <View className=" flex-row justify-between items-center  py-5 bg-background ">
         <Text className="text-2xl font-alata">Appointments</Text>
         <Ionicons name="add-circle" size={30} color="#023E8A" />
       </View>
