@@ -26,8 +26,9 @@ import {
   experienceYears,
   specialityRole,
 } from "../../constant/data/doctorDetails";
+import LogoutModal from "../../components/modals/LogOutModal";
 
-export default function DoctorOwnProfile() {
+export default function DoctorOwnProfile({ navigation }) {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
 
   // Modal states
@@ -35,6 +36,7 @@ export default function DoctorOwnProfile() {
   const [contactModalVisible, setContactModalVisible] = React.useState(false);
   const [professionalModalVisible, setProfessionalModalVisible] =
     React.useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
   // Form states
   const [profileData, setProfileData] = React.useState({
@@ -83,6 +85,10 @@ export default function DoctorOwnProfile() {
 
   const handleProfessionalSubmit = () => {
     setProfessionalModalVisible(false);
+  };
+
+  const handleLogout = () => {
+    console.log("User logged out");
   };
 
   // Image picker functions
@@ -267,7 +273,11 @@ export default function DoctorOwnProfile() {
             </View>
           </ProfileEditCard>
 
-          <SettingCard></SettingCard>
+          <SettingCard 
+            navigation={navigation} 
+            onLogoutPress={() => setLogoutModalVisible(true)}
+          />
+          
         </View>
       </ScrollView>
       {/* Modals */}
@@ -304,6 +314,11 @@ export default function DoctorOwnProfile() {
         formData={contactData}
         onFormChange={handleContactChange}
         onSubmit={handleContactSubmit}
+      />
+      <LogoutModal
+        visible={logoutModalVisible}
+        onClose={() => setLogoutModalVisible(false)}
+        onConfirmLogout={handleLogout}
       />
     </SafeAreaView>
   );

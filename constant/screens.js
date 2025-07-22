@@ -28,6 +28,7 @@ import Notifications from "../screens/patient/Notifications";
 import PatientMessenger from "../screens/patient/PatientMessenger";
 import DoctorMessenger from "../screens/doctor/DoctorMessenger";
 import ViewConsultationNote from "../screens/common/ViewConsultationNote";
+import PrivacyPolicy from "../screens/common/PrivacyPolicy";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -267,6 +268,19 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Consultation Note"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "PrivacyPolicy",
+    component: PrivacyPolicy,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Privacy Policy"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
