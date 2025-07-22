@@ -8,9 +8,9 @@ import {
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { consultationChannels } from "../constant/data/timeSlot";
+import { consultationChannels } from "../../constant/data/timeSlot";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import CustomButton from "./Buttons/CustomButton";
+import CustomButton from "../Buttons/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 
 export default function ModalChannel({

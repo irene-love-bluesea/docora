@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { allTimeSlots } from "../../constant/data/timeSlot";
-import TimeSelection from "../../components/TimeSelection";
+import TimeSelection from "../../components/UI/TimeSelection";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomButton from "../../components/Buttons/CustomButton";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { addMinutesToTimeString, getUpcomingDays } from "../../utils/helper";
-import ModalChannel from "../../components/ModalChannel";
+import ModalChannel from "../../components/modals/ModalChannel";
 
 export default function TimeSlotSelector() {
   const [selectedTime, setSelectedTime] = useState(null);

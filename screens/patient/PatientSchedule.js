@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AppointmentPCard from "../../components/Card/AppointmentPCard";
 import { appointmentForPatient } from "../../constant/data/appointment";
-import { isSessionEnd } from "../../utils/helper";
+import { isSessionEnd, timeSortingAscending } from "../../utils/helper";
 
 export default function PatientSchedule() {
   const [mode, setMode] = useState("upcoming");
@@ -17,17 +17,23 @@ export default function PatientSchedule() {
       date={item.date}
       time={item.time}
       channelType={item.channelType}
+      mode={item.mode}
       status={item.status}
     />
   );
 
-  //after time appointment time  -> status change to past integrate API
-  const appointmentsStatus = useMemo(() => {
+  //after time appointment time  -> mode change to past integrate API
+  const appointmentsMode = useMemo(() => {
     return appointmentForPatient.map(appointment => ({
       ...appointment,
-      status: isSessionEnd(appointment.date, appointment.time) ? "past" : "upcoming",
+      mode: isSessionEnd(appointment.date, appointment.time) ? "past" : "upcoming",
     }))
   }, [appointmentForPatient]);
+
+  const filterAppointments = useMemo(() => {
+     const sortedAppoinments =timeSortingAscending(appointmentForPatient);
+    return sortedAppoinments.filter(appointment => appointment.mode === mode);
+  }, [appointmentsMode, mode]);
 
   return (
     <SafeAreaView className=" flex-1 bg-background px-5">
@@ -70,10 +76,10 @@ export default function PatientSchedule() {
         className="mt-5"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 50 }}
-        data={appointmentForPatient}
+        data={filterAppointments}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          item?.status === mode && 
+          item?.mode === mode && 
           (
           renderCard({ item })
           )
