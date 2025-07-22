@@ -1,6 +1,7 @@
 import { Image, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { specialtyIconMap } from "../../constant/data/doctorDetails";
 import {
+  addMinutesToTimeString,
   getReadyTime,
   getTodayOrTommorow,
   isSessionEnd,
@@ -44,7 +45,7 @@ export default function AppointmentDCard({
   return (
     <View
       elevation={2}
-      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row  gap-5 ${
+      className={`bg-white p-4 rounded-lg shadow-md mb-4 flex-row border border-secondary  gap-5 ${
         getReadyTime(date, time, 5) && "border-2 border-primary"
       }`}
     >
@@ -55,13 +56,13 @@ export default function AppointmentDCard({
       <View className="flex-col gap-1">
         <Text className=" text-xl font-semibold">{patientName}</Text>
         <View className="flex-row items-center gap-1 mb-1 ">
-          <Text className="text-md text-grey-500">{patientAge} years</Text>
-          <Text className="text-md text-grey-500">{patientGender}</Text>
+          <Text className="text-md  text-grey-500">{patientAge} years .</Text>
+          <Text className="text-md font-medium text-grey-500">{patientGender}</Text>
         </View>
         <View className=" flex-row items-center gap-2 mb-1">
           <FontAwesome name="calendar" size={16} color="#023E8A" />
           <Text className="text-md text-grey-500">
-            {getTodayOrTommorow(date)} at {time}
+            {getTodayOrTommorow(date)} at {time} -  {addMinutesToTimeString(time, 15)}
           </Text>
         </View>
         <View className=" flex-row items-center gap-2">
@@ -97,7 +98,7 @@ export default function AppointmentDCard({
                 textClassName="text-primary"
               />
             )}
-            {mode === "past" && status === "missed" && (
+            {/* {mode === "past" && status === "missed" && (
               <CustomButton
                 title="Reschedule"
                 icon={renderIcon("Failed", "#023E8A")}
@@ -106,9 +107,9 @@ export default function AppointmentDCard({
                 textClassName="text-primary "
                 onPress={() => {}}
               />
-            )}
+            )} */}
           </View>
-          {mode === "upcoming" ? (
+          {mode === "upcoming" && (
             <TouchableOpacity
               className="px-4 py-3 rounded-xl bg-white border border-primary "
               activeOpacity={0.7}
@@ -116,17 +117,8 @@ export default function AppointmentDCard({
             >
               <Ionicons name="close" size={24} color="#023E8A" />
             </TouchableOpacity>
-          ) : (
-            status === "completed" && (
-              <TouchableOpacity
-                className="px-4 py-3 rounded-xl bg-white border border-primary "
-                activeOpacity={0.7}
-                onPress={() => {}}
-              >
-                <AntDesign name="download" size={24} color="#023E8A" />
-              </TouchableOpacity>
-            )
-          )}
+          ) 
+          }
         </View>
       </View>
       {/* status badge  */}

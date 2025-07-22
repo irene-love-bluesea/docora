@@ -22,6 +22,7 @@ import {
   Psychiatrist,
 } from "../../constant/data/doctorDetails";
 import PopularDoctorsCard from "../../components/Card/PopularDoctorsCard";
+import SpecialitiesShowCard from "../../components/Card/SpecialitiesShowCard";
 
 export default function PatientHome({ navigation }) {
   const specialityR = [
@@ -64,8 +65,10 @@ export default function PatientHome({ navigation }) {
     <SafeAreaView style={{ flex: 1 }} className="bg-background ">
       <View className=" flex-row justify-between items-center px-5 py-5 bg-background ">
         <Logo width={60} height={50} />
-        <TouchableOpacity onPress={() => navigation.navigate("NotificationPatient")}>
-            <Ionicons name="notifications-outline" size={26} color="#023E8A" />
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Notifications")}
+        >
+          <Ionicons name="notifications-outline" size={26} color="#023E8A" />
         </TouchableOpacity>
       </View>
       <ScrollView
@@ -92,20 +95,13 @@ export default function PatientHome({ navigation }) {
           {/* speciality box  */}
           <View className="flex-row justify-center items-center flex-wrap gap-2 mt-4 mx-5">
             {specialityData?.map((item) => (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("SearchDoctor", {
-                    speciality: item.name,
-                  });
-                }}
+              <SpecialitiesShowCard
                 key={item.id}
-                className="flex-col justify-center items-center gap-5 py-3 rounded-lg border border-white bg-white mt-1 flex-1 min-w-[140px] max-w-[48%]"
-              >
-                {item.icon}
-                <Text className="text-lg font-semibold text-center">
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
+                id={item.id}
+                name={item.name}
+                icon={item.icon}
+                navigation={navigation}
+              />
             ))}
           </View>
 

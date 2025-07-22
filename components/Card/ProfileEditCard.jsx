@@ -24,7 +24,8 @@ export const ProfileEditCard = ({
   );
 };
 
-export const SettingCard = ({ backgroundColor = "bg-blue-200" }) => {
+export const SettingCard = ({ backgroundColor = "bg-blue-200" , navigation , onLogoutPress }) => {
+
   return (
     <View className="mt-4 w-full bg-white rounded-lg" style={{ elevation: 1 }}>
       <View className={`p-3 w-full rounded-t-lg ${backgroundColor}`}>
@@ -44,16 +45,16 @@ export const SettingCard = ({ backgroundColor = "bg-blue-200" }) => {
           <AntDesign name="right" size={25} color="black" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("PrivacyPolicy")}>
         <View className="px-3 py-4 flex-row justify-between items-center">
           <Text className="text-lg font-semibold">Privacy Policy</Text>
           <AntDesign name="right" size={25} color="black" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity  onPress={onLogoutPress}>
         <View className="px-3 py-4 flex-row justify-between items-center">
           <Text className="text-lg font-semibold">Log Out</Text>
-          <MaterialIcons name="logout" size={25} color="black" />
+          <MaterialIcons name="logout" size={25} color="red" />
         </View>
       </TouchableOpacity>
       <TouchableOpacity>

@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { SafeAreaInsetsContext, SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaInsetsContext,
+  SafeAreaView,
+} from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -15,15 +18,19 @@ import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import MedicalEditModal from "../../components/modals/MedicalEditModal";
 import EmergencyContactModal from "../../components/modals/EmergencyContactModal";
-import { ProfileEditCard, SettingCard } from "../../components/Card/ProfileEditCard";
+import {
+  ProfileEditCard,
+  SettingCard,
+} from "../../components/Card/ProfileEditCard";
 import {
   gender,
   bloodType,
   allergy,
   chronical,
 } from "./../../constant/data/patientDetails";
+import LogoutModal from "../../components/modals/LogOutModal";
 
-export default function PatientOwnProfile() {
+export default function PatientOwnProfile({ navigation }) {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
 
   // Modal states
@@ -32,6 +39,7 @@ export default function PatientOwnProfile() {
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
   const [emergencyModalVisible, setEmergencyModalVisible] =
     React.useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
   // Form states
   const [profileData, setProfileData] = React.useState({
@@ -178,13 +186,20 @@ export default function PatientOwnProfile() {
     setEmergencyModalVisible(false);
   };
 
+  const handleLogout = () => {
+    console.log("User logged out");
+  };
+
   return (
- <SafeAreaView className="bg-background">
-   <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
-          Profile
-        </Text>
-  <ScrollView className="bg-background" showsVerticalScrollIndicator={false}>
-     <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
+    <SafeAreaView className="bg-background">
+      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
+        Profile
+      </Text>
+      <ScrollView
+        className="bg-background"
+        showsVerticalScrollIndicator={false}
+      >
+        <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
           {/* Profile Header */}
           <View
             className="w-full p-3 rounded-lg bg-white flex-row justify-between items-center mb-1"
@@ -234,20 +249,18 @@ export default function PatientOwnProfile() {
             title="Contact Information"
             onEdit={() => setContactModalVisible(true)}
           >
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Email</Text>
-                <Text className="text-lg font-normal">{contactData.email}</Text>
-              </View>
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Phone</Text>
-                <Text className="text-lg font-normal">{contactData.phone}</Text>
-              </View>
-              <View className="px-3 my-2">
-                <Text className="text-lg font-semibold">Address</Text>
-                <Text className="text-lg font-normal">
-                  {contactData.address}
-                </Text>
-              </View>
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Email</Text>
+              <Text className="text-lg font-normal">{contactData.email}</Text>
+            </View>
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Phone</Text>
+              <Text className="text-lg font-normal">{contactData.phone}</Text>
+            </View>
+            <View className="px-3 my-2">
+              <Text className="text-lg font-semibold">Address</Text>
+              <Text className="text-lg font-normal">{contactData.address}</Text>
+            </View>
           </ProfileEditCard>
 
           {/* Medical Information */}
@@ -300,13 +313,13 @@ export default function PatientOwnProfile() {
             </View>
           </ProfileEditCard>
 
-          <SettingCard>
-          </SettingCard>
-
+          <SettingCard 
+            navigation={navigation} 
+            onLogoutPress={() => setLogoutModalVisible(true)}
+          />
         </View>
-
-  </ScrollView>
-   {/* Modals */}
+      </ScrollView>
+      {/* Modals */}
       <ProfileEditModal
         visible={profileModalVisible}
         onClose={() => setProfileModalVisible(false)}
@@ -353,7 +366,11 @@ export default function PatientOwnProfile() {
         onFormChange={handleEmergencyChange}
         onSubmit={handleEmergencySubmit}
       />
-
- </SafeAreaView>
+      <LogoutModal
+        visible={logoutModalVisible}
+        onClose={() => setLogoutModalVisible(false)}
+        onConfirmLogout={handleLogout}
+      />
+    </SafeAreaView>
   );
 }

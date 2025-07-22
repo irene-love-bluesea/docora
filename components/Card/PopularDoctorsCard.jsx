@@ -5,7 +5,7 @@ import { specialtyIconMap } from "../../constant/data/doctorDetails";
 export default function PopularDoctorsCard({ item }) {
   return (
     <View
-      className="flex-row  items-center my-2 gap-5 bg-white p-5 rounded-lg shadow-sm elevation-sm"
+      className="flex-row  items-center my-2 gap-5 bg-white border border-secondary p-5 rounded-lg shadow-sm elevation-sm"
     >
       <Image
         source={item?.image}
