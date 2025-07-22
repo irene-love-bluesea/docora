@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaInsetsContext, SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -179,16 +179,12 @@ export default function PatientOwnProfile() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-background">
-      <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">Profile</Text>
-
-      <ScrollView
-        className="bg-background"
-        style={{ flex: 1 }}
-        contentContainerStyle={{ flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
+ <SafeAreaView className="bg-background">
+   <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
+          Profile
+        </Text>
+  <ScrollView className="bg-background" showsVerticalScrollIndicator={false}>
+     <View className="flex-1 justify-start items-center px-5 pt-4 bg-background pb-5">
           {/* Profile Header */}
           <View
             className="w-full p-3 rounded-lg bg-white flex-row justify-between items-center mb-1"
@@ -308,9 +304,9 @@ export default function PatientOwnProfile() {
           </SettingCard>
 
         </View>
-      </ScrollView>
 
-      {/* Modals */}
+  </ScrollView>
+   {/* Modals */}
       <ProfileEditModal
         visible={profileModalVisible}
         onClose={() => setProfileModalVisible(false)}
@@ -357,6 +353,7 @@ export default function PatientOwnProfile() {
         onFormChange={handleEmergencyChange}
         onSubmit={handleEmergencySubmit}
       />
-    </SafeAreaView>
+
+ </SafeAreaView>
   );
 }
