@@ -32,7 +32,6 @@ export default function AuthScreen({ navigation }) {
         onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
       />
 
-      
     </View>
   );
 }

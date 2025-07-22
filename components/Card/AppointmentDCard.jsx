@@ -98,7 +98,7 @@ export default function AppointmentDCard({
                 textClassName="text-primary"
               />
             )}
-            {mode === "past" && status === "missed" && (
+            {/* {mode === "past" && status === "missed" && (
               <CustomButton
                 title="Reschedule"
                 icon={renderIcon("Failed", "#023E8A")}
@@ -107,9 +107,9 @@ export default function AppointmentDCard({
                 textClassName="text-primary "
                 onPress={() => {}}
               />
-            )}
+            )} */}
           </View>
-          {mode === "upcoming" ? (
+          {mode === "upcoming" && (
             <TouchableOpacity
               className="px-4 py-3 rounded-xl bg-white border border-primary "
               activeOpacity={0.7}
@@ -117,17 +117,8 @@ export default function AppointmentDCard({
             >
               <Ionicons name="close" size={24} color="#023E8A" />
             </TouchableOpacity>
-          ) : (
-            status === "completed" && (
-              <TouchableOpacity
-                className="px-4 py-3 rounded-xl bg-white border border-primary "
-                activeOpacity={0.7}
-                onPress={() => {}}
-              >
-                <AntDesign name="download" size={24} color="#023E8A" />
-              </TouchableOpacity>
-            )
-          )}
+          ) 
+          }
         </View>
       </View>
       {/* status badge  */}

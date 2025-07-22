@@ -122,15 +122,15 @@ export default function TimeSlotSelector() {
           ))}
         </View>
       </ScrollView>
-      <View className="flex-row items-center gap-5 justify-center mb-5 border-t border-t-gray-300 pt-3">
+      <View className="flex-row items-center gap-5 justify-between mb-5 border-t border-t-gray-300 pt-3">
         <View className=" flex-col gap-3 w-[45%] ">
-          <View className=" flex-row  items-center  gap-3 ">
+          <View className=" flex-row  items-center  gap-2 ">
             <Ionicons name="calendar-outline" size={24} color={"#023E8A"} />
             <Text className=" text-lg  font-semibold text-primary">
               {selectedDate?.dateFormat}
             </Text>
           </View>
-          <View className=" flex-row  items-center  gap-3 ">
+          <View className=" flex-row  items-center  gap-2 ">
             <AntDesign name="clockcircleo" size={24} color={"#023E8A"} />
             {selectedTime ? (
               <Text className=" text-lg  font-semibold text-primary">
@@ -149,7 +149,7 @@ export default function TimeSlotSelector() {
           variant="primary"
           title="Confirm"
           onPress={() => confirmHandler()}
-          className=" !w-[45%]"
+          className=" !w-[40%]"
           disabled={!isValid}
         />
       </View>

@@ -27,6 +27,7 @@ import ConsultationNotes from "../screens/doctor/ConsultationNotes";
 import Notifications from "../screens/patient/Notifications";
 import PatientMessenger from "../screens/patient/PatientMessenger";
 import DoctorMessenger from "../screens/doctor/DoctorMessenger";
+import ViewConsultationNote from "../screens/common/ViewConsultationNote";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -257,6 +258,19 @@ export const stackScreens = [
     component: DoctorMessenger,
     options: ({ navigation }) => ({
       headerShown: false,
+    }),
+  },
+  {
+    name: "ViewConsultationNote",
+    component: ViewConsultationNote,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Consultation Note"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
     }),
   },
 ];
