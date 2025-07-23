@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 const medicalInfo = [
   {
@@ -44,6 +44,7 @@ const medicalInfo = [
     colors: ["bg-green-200", "bg-blue-200"],
   },
 ];
+
 
 const MedicalInfoSection = ({ section }) => {
   const IconComponent =
@@ -115,8 +116,10 @@ const bgColors = [
 ];
 
 export default function PatientProfile() {
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView className="flex-1 bg-background">
+    <View style={{ paddingTop: insets.top }} className="flex-1 bg-background">
+      <SafeAreaView className="flex-1">
       <ScrollView
         className="flex-1 bg-background px-5 pb-3"
         showsVerticalScrollIndicator={false}
@@ -219,7 +222,8 @@ export default function PatientProfile() {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 

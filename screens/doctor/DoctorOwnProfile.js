@@ -10,6 +10,7 @@ import {
 import {
   SafeAreaInsetsContext,
   SafeAreaView,
+  useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
@@ -271,14 +272,16 @@ export default function DoctorOwnProfile({ navigation }) {
     ]);
   };
 
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView className="bg-background">
+    <View style={{ paddingTop: insets.top }} className="bg-background">
       <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
         Profile
       </Text>
 
       <ScrollView
-        className="bg-background"
+        className="bg-background mb-14"
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-4 pb-5">
@@ -383,6 +386,6 @@ export default function DoctorOwnProfile({ navigation }) {
         onClose={() => setLogoutModalVisible(false)}
         onConfirmLogout={handleLogout}
       />
-    </SafeAreaView>
+    </View>
   );
 }

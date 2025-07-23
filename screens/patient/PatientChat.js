@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -66,6 +66,56 @@ export default function PatientChat({ navigation }) {
       isSeen: true,
       profileImage: require("../../assets/profile/profile_m.png"),
     },
+    {
+      id: 6,
+      name: "Dr. Megan Trainer",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/profile_m.png"),
+    },
+    {
+      id: 7,
+      name: "Dr. Megan Trainer",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/profile_m.png"),
+    },
+    {
+      id: 8,
+      name: "Dr. Megan Trainer",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/profile_m.png"),
+    },
+    {
+      id: 9,
+      name: "Dr. Megan Trainer",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/profile_m.png"),
+    },
+    {
+      id: 10,
+      name: "Dr. Megan Trainer",
+      specialty: "Dentist",
+      message: "You should eat less sweet!",
+      time: "July 09",
+      isMissedCall: false,
+      isSeen: true,
+      profileImage: require("../../assets/profile/profile_m.png"),
+    },
   ];
 
   const filteredMessages = messagesData.filter((message) =>
@@ -73,14 +123,16 @@ export default function PatientChat({ navigation }) {
   );
 
   const MessageCard = ({ message }) => {
-   
-
     return (
       <TouchableOpacity
         className="my-4 w-full px-1"
         activeOpacity={0.2}
-        onPress={() => navigation.navigate("PatientMessenger", {  name: message.name,
-    image: message.profileImage,})}
+        onPress={() =>
+          navigation.navigate("PatientMessenger", {
+            name: message.name,
+            image: message.profileImage,
+          })
+        }
       >
         <View className="flex-row items-center gap-3">
           <Image
@@ -126,9 +178,10 @@ export default function PatientChat({ navigation }) {
       </TouchableOpacity>
     );
   };
+  const insets = useSafeAreaInsets();
 
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-background">
+    <View style={{ flex: 1  , paddingTop: insets.top}} className="bg-background">
       <Text className="text-2xl font-semibold font-alata mt-6 mb-3 mx-5">
         Messages
       </Text>
@@ -161,6 +214,6 @@ export default function PatientChat({ navigation }) {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

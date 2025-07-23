@@ -33,13 +33,11 @@ export default function AuthScreen({ navigation }) {
         onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
       />
 
-
-        <CustomButton
-        variant="secondary"
-        title="Profile"
-        onPress={() => navigation.navigate("PatientProfile")}
+      <CustomButton
+        variant="primary"
+        title="Go to Change Password"
+        onPress={() => navigation.navigate("ChangePassword")}
       />
-
     </View>
   );
 }

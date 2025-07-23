@@ -33,7 +33,7 @@ const settingsOptions = [
     textColor: "text-black",
     iconColor: "black",
     bgColor: "bg-secondary",
-    route: "PatientProfile",
+    route: "ChangePassword",
   },
   {
     label: "Two-Factor Authentication",

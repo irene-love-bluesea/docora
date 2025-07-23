@@ -29,6 +29,7 @@ import PatientMessenger from "../screens/patient/PatientMessenger";
 import DoctorMessenger from "../screens/doctor/DoctorMessenger";
 import ViewConsultationNote from "../screens/common/ViewConsultationNote";
 import PrivacyPolicy from "../screens/common/PrivacyPolicy";
+import ChangePassword from "../screens/common/ChangePassword";
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -281,6 +282,19 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Privacy Policy"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "ChangePassword",
+    component: ChangePassword,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Change Password"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />

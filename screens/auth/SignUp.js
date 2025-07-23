@@ -2,12 +2,15 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Checkbox from "expo-checkbox";
 import CustomButton from "../../components/Buttons/CustomButton";
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 
 export default function SignUpScreen({ navigation }) {
   const [fullName, setFullName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [isChecked, setChecked] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
   const isFormValid =
     fullName !== "" && email !== "" && password !== "" && isChecked === true;
 
@@ -33,16 +36,26 @@ export default function SignUpScreen({ navigation }) {
         value={email}
         onChangeText={setEmail}
       />
-      <View className="w-full">
-        <Text className="text-lg text-left font-medium mb-2">Password</Text>
+      <View className="mb-3 w-full ">
+        <Text className="text-lg font-medium mb-2">Password</Text>
+        <TextInput
+          secureTextEntry={!showPassword}
+          className="border border-white tracking-wider w-full rounded-xl px-4 py-2 text-base bg-white text-black h-[55px]"
+          placeholder="Enter Your Password"
+          placeholderTextColor="#999"
+          value={password}
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="absolute right-5 bottom-5">
+          {
+            showPassword ? (
+            <Ionicons name="eye-off-outline" size={24} color="#999" />
+            ) : (
+            <Ionicons name="eye-outline" size={24} color="#999" />
+            )
+          }
+        </TouchableOpacity>
       </View>
-      <TextInput
-        className="border border-white w-full rounded-xl mb-3 px-4 py-2 text-base bg-white text-black h-[55px]"
-        placeholder="Enter Your Password"
-        placeholderTextColor="#999"
-        value={password}
-        onChangeText={setPassword}
-      />
       <View className="flex-row justify-start items-center my-3  w-full">
         <Checkbox
           value={isChecked}

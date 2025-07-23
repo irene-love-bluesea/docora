@@ -13,7 +13,7 @@ import NotificationCard from "../../components/Card/NotificationCard";
 import { notiSorting } from "../../utils/helper";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default function Notifications() {
+export default function Notifications({navigation}) {
   const [isRead, setIsRead] = useState(false);
   const [noti, setNoti] = useState(notifications);
 

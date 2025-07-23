@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ScrollView, Text, TextInput, Image } from "react-native";
+import { View, ScrollView, Text, TextInput, Image, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MedicationInput from "../../components/Form/MedicationInput";
 import CustomButton from "../../components/Buttons/CustomButton";
@@ -16,6 +16,11 @@ export default function ConsultationNotes({navigation}) {
 
   return (
     <SafeAreaView style={{ flex: 1 }} className="bg-background">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+
       <ScrollView
         className="bg-background"
         style={{ flex: 1 }}
@@ -103,6 +108,7 @@ export default function ConsultationNotes({navigation}) {
           </View>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
