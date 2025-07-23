@@ -48,6 +48,48 @@ const initialMessages = [
     timestamp: new Date(Date.now() - 3300000),
     avatar: require("../../assets/profile/patient_f.png"),
   },
+  {
+    id: "5",
+    text: "It's a chat application with a clean UI using NativeWind for styling.",
+    sender: "me",
+    timestamp: new Date(Date.now() - 3300000),
+    avatar: require("../../assets/profile/patient_f.png"),
+  },
+  {
+    id: "6",
+    text: "It's a chat application with a clean UI using NativeWind for styling.",
+    sender: "me",
+    timestamp: new Date(Date.now() - 3300000),
+    avatar: require("../../assets/profile/patient_f.png"),
+  },
+  {
+    id: "7",
+    text: "It's a chat application with a clean UI using NativeWind for styling.",
+    sender: "me",
+    timestamp: new Date(Date.now() - 3300000),
+    avatar: require("../../assets/profile/patient_f.png"),
+  },
+  {
+    id: "8",
+    text: "It's a chat application with a clean UI using NativeWind for styling.",
+    sender: "me",
+    timestamp: new Date(Date.now() - 3300000),
+    avatar: require("../../assets/profile/patient_f.png"),
+  },
+  {
+    id: "9",
+    text: "It's a chat application with a clean UI using NativeWind for styling.",
+    sender: "me",
+    timestamp: new Date(Date.now() - 3300000),
+    avatar: require("../../assets/profile/patient_f.png"),
+  },
+  {
+    id: "10",
+    text: "It's a chat application with a clean UI using NativeWind for styling.",
+    sender: "me",
+    timestamp: new Date(Date.now() - 3300000),
+    avatar: require("../../assets/profile/patient_f.png"),
+  },
 ];
 
 const PatientMessenger = ({ navigation, route }) => {
@@ -184,7 +226,7 @@ const {name,image} = route.params;
             source={image}
           />
       </View>
-      <View className="bg-gray-200 px-4 py-3 rounded-2xl rounded-bl-md">
+      <View className="bg-white px-4 py-3 rounded-2xl rounded-bl-md">
         <View className="flex-row items-center">
           <View className="w-2 h-2 bg-gray-400 rounded-full mx-1 animate-pulse" />
           <View className="w-2 h-2 bg-gray-400 rounded-full mx-1 animate-pulse" />

@@ -50,5 +50,60 @@ export const notifications = {
         appointmentId: "appt_xyz789",
       },
     },
+    {
+      id: "notif_1a2b09",
+      type: "CALL_STARTED",
+      title: "It's Time! Join Your Call",
+      body: "Dr. Evelyn Reed is ready for you. Tap here to join the video call now.",
+      isRead: false,
+      createdAt: "2025-07-21T08:30:00Z",
+      data: {
+        appointmentId: "appt_xyz789",
+      }
+    },
+    {
+      id: "notif_1a2b90",
+      type: "CALL_STARTED",
+      title: "It's Time! Join Your Call",
+      body: "Dr. Evelyn Reed is ready for you. Tap here to join the video call now.",
+      isRead: false,
+      createdAt: "2025-07-21T08:30:00Z",
+      data: {
+        appointmentId: "appt_xyz789",
+      },
+    },
+    {
+      id: "notif_1a2b30",
+      type: "CALL_STARTED",
+      title: "It's Time! Join Your Call",
+      body: "Dr. Evelyn Reed is ready for you. Tap here to join the video call now.",
+      isRead: false,
+      createdAt: "2025-07-21T08:30:00Z",
+      data: {
+        appointmentId: "appt_xyz789",
+      },
+    },
+    {
+      id: "notif_1a2b10",
+      type: "CALL_STARTED",
+      title: "It's Time! Join Your Call",
+      body: "Dr. Evelyn Reed is ready for you. Tap here to join the video call now.",
+      isRead: false,
+      createdAt: "2025-07-21T08:30:00Z",
+      data: {
+        appointmentId: "appt_xyz789",
+      },
+    },
+    {
+      id: "notif_1a2b50",
+      type: "CALL_STARTED",
+      title: "It's Time! Join Your Call",
+      body: "Dr. Evelyn Reed is ready for you. Tap here to join the video call now.",
+      isRead: false,
+      createdAt: "2025-07-21T08:30:00Z",
+      data: {
+        appointmentId: "appt_xyz789",
+      },
+    }
   ],
 };

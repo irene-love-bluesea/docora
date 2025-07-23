@@ -180,10 +180,10 @@ const DoctorMessenger = ({ navigation, route }) => {
       <View className=" mr-3 items-center justify-center">
         <Image
           className="w-[40px] h-[40px] border border-gray-600 rounded-full"
-          source={require("../../assets/profile/profile_m.png")}
+          source={image}
         />
       </View>
-      <View className="bg-gray-200 px-4 py-3 rounded-2xl rounded-bl-md">
+      <View className="bg-white px-4 py-3 rounded-2xl rounded-bl-md">
         <View className="flex-row items-center">
           <View className="w-2 h-2 bg-gray-400 rounded-full mx-1 animate-pulse" />
           <View className="w-2 h-2 bg-gray-400 rounded-full mx-1 animate-pulse" />
@@ -207,10 +207,12 @@ const DoctorMessenger = ({ navigation, route }) => {
         </TouchableOpacity>
 
         <View className="mr-3 items-center justify-center">
-          <TouchableOpacity onPress={() => navigation.navigate("PatientProfile")}> <Image
-            className="w-[40px] h-[40px] border border-gray-600 rounded-full"
-            source={image}
-          /></TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("PatientProfile")}>
+            <Image
+              className="w-[40px] h-[40px] border border-gray-600 rounded-full"
+              source={image}
+            />
+          </TouchableOpacity>
         </View>
 
         <View
@@ -244,7 +246,7 @@ const DoctorMessenger = ({ navigation, route }) => {
           renderItem={MessageBubble}
           className="flex-1 px-4 pt-4"
           showsVerticalScrollIndicator={false}
-          ListFooterComponent={isTyping ? <TypingIndicator /> : null}
+          ListFooterComponent={isTyping ? <TypingIndicator image={image} /> : null}
           contentContainerStyle={{
             paddingBottom: 20,
             flexGrow: 1,

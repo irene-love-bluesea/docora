@@ -5,16 +5,17 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import CustomButton from "../../components/Buttons/CustomButton";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function DoctorProfile({ navigation }) {
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView className=" flex-1 bg-background px-5">
+    <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}  className=" flex-1 bg-background px-5">
       <ScrollView
         className=""
-        // contentContainerStyle={{
-        //   flexGrow: 1,
-        // }}
+        contentContainerStyle={{
+          flexGrow: 1,
+        }}
         showsVerticalScrollIndicator={false}
       >
         <View className="flex-1  bg-background">
@@ -92,7 +93,7 @@ export default function DoctorProfile({ navigation }) {
         </View>
       </ScrollView>
       {/* go to bottom footer  */}
-      <View className=" absolute bottom-0 left-0 right-0 mb-4">
+      <View className="">
         <View className="flex-row items-center gap-5 justify-center ">
           <CustomButton
             variant="secondary"
@@ -114,6 +115,6 @@ export default function DoctorProfile({ navigation }) {
           />
         </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AppointmentPCard from "../../components/Card/AppointmentPCard";
 import { appointmentForPatient } from "../../constant/data/appointment";
@@ -25,19 +27,25 @@ export default function PatientSchedule({ navigation }) {
 
   //after time appointment time  -> mode change to past integrate API
   const appointmentsMode = useMemo(() => {
-    return appointmentForPatient.map(appointment => ({
+    return appointmentForPatient.map((appointment) => ({
       ...appointment,
-      mode: isSessionEnd(appointment.date, appointment.time) ? "past" : "upcoming",
-    }))
+      mode: isSessionEnd(appointment.date, appointment.time)
+        ? "past"
+        : "upcoming",
+    }));
   }, [appointmentForPatient]);
 
   const filterAppointments = useMemo(() => {
-     const sortedAppoinments =timeSortingAscending(appointmentForPatient);
-    return sortedAppoinments.filter(appointment => appointment.mode === mode);
+    const sortedAppoinments = timeSortingAscending(appointmentForPatient);
+    return sortedAppoinments.filter((appointment) => appointment.mode === mode);
   }, [appointmentsMode, mode]);
 
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView className=" flex-1 bg-background px-5">
+    <View
+      style={{ paddingTop: insets.top }}
+      className=" flex-1 bg-background px-5"
+    >
       <View className=" flex-row justify-between items-center  py-5 bg-background ">
         <Text className="text-2xl font-alata">Appointments</Text>
         {/* <Ionicons name="add-circle" size={30} color="#023E8A" /> */}
@@ -79,13 +87,8 @@ export default function PatientSchedule({ navigation }) {
         contentContainerStyle={{ paddingBottom: 50 }}
         data={filterAppointments}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          item?.mode === mode && 
-          (
-          renderCard({ item })
-          )
-        )}
+        renderItem={({ item }) => item?.mode === mode && renderCard({ item })}
       />
-    </SafeAreaView>
+    </View>
   );
 }

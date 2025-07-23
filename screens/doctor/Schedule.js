@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { appointmentForDoctor } from "../../constant/data/appointment";
 import { isSessionEnd, timeSortingAscending } from "../../utils/helper";
 import AppointmentDCard from "../../components/Card/AppointmentDCard";
@@ -55,8 +55,9 @@ export default function PatientSchedule() {
     setFilterModalVisible(false);
     console.log(filterAppointments);
   };
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView className=" flex-1 bg-background px-5">
+    <View style={{ paddingTop: insets.top }} className=" flex-1 bg-background px-5">
       <View className=" flex-row justify-between items-center  py-5 bg-background ">
         <Text className="text-2xl font-alata">Appointments</Text>
         <TouchableOpacity onPress={() => handleFilterPress()}>
@@ -110,6 +111,6 @@ export default function PatientSchedule() {
           onSubmit={handleFilterSubmit}
         />
       </View>
-    </SafeAreaView>
+    </View>
   );
 }

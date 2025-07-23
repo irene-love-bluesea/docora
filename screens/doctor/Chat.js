@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -96,6 +96,26 @@ export default function DoctorChatScreen({ navigation }) {
       isSeen: false,
       profileImage: require("../../assets/profile/patient_f.png"),
     },
+    {
+      id: 9,
+      name: "Mia Collins",
+      specialty: "Psychiatrist",
+      message: "Okay, Have a great day!",
+      time: "July 13",
+      isMissedCall: false,
+      isSeen: false,
+      profileImage: require("../../assets/profile/patient_f.png"),
+    },
+    {
+      id: 10,
+      name: "Mia Collins",
+      specialty: "Psychiatrist",
+      message: "Okay, Have a great day!",
+      time: "July 13",
+      isMissedCall: false,
+      isSeen: false,
+      profileImage: require("../../assets/profile/patient_f.png"),
+    },
   ];
 
   const filteredMessages = messagesData.filter((message) =>
@@ -159,8 +179,10 @@ export default function DoctorChatScreen({ navigation }) {
     );
   };
 
+  const insets = useSafeAreaInsets();
+
   return (
-   <View className="flex-1 bg-background"> 
+   <View style={{ paddingTop: insets.top }} className="flex-1 bg-background"> 
     <SafeAreaView className="bg-background" >
       <Text className="text-2xl font-semibold font-alata mt-6 mb-3 mx-5">
         Messages
@@ -175,7 +197,7 @@ export default function DoctorChatScreen({ navigation }) {
           onChangeText={setSearch}
         />
       </TouchableOpacity>
-      <ScrollView className="bg-background" showsVerticalScrollIndicator={false}>
+      <ScrollView className="bg-background mb-16" showsVerticalScrollIndicator={false}>
         <View className="flex-1 justify-start items-center px-5 pt-3 bg-background pb-20">
           {filteredMessages.map((message) => (
             <MessageCard key={message.id} message={message} />

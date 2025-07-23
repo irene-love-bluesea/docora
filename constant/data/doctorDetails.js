@@ -44,7 +44,7 @@ export const popularDrs = [
     id: 1,
     name: "Dr. John Doe",
     image: require("../../assets/profile/profile_m.png"),
-    speciality: "General Physician",
+    speciality: "GeneralPhysician",
     rating: 4.5,
   },
   {
