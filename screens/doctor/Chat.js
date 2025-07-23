@@ -183,7 +183,6 @@ export default function DoctorChatScreen({ navigation }) {
 
   return (
    <View style={{ paddingTop: insets.top }} className="flex-1 bg-background"> 
-    <SafeAreaView className="bg-background" >
       <Text className="text-2xl font-semibold font-alata mt-6 mb-3 mx-5">
         Messages
       </Text>
@@ -210,7 +209,6 @@ export default function DoctorChatScreen({ navigation }) {
           )}
         </View>
       </ScrollView>
-    </SafeAreaView>
     </View>
   );
 }

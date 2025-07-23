@@ -275,7 +275,7 @@ export default function DoctorOwnProfile({ navigation }) {
   const insets = useSafeAreaInsets();
 
   return (
-    <View className="bg-background">
+    <View style={{ paddingTop: insets.top }} className="bg-background">
       <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
         Profile
       </Text>
