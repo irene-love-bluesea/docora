@@ -14,12 +14,13 @@ import CustomButton from "../../components/Buttons/CustomButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { formatDateTime, formatCurrentDateTime } from "../../utils/helper.js";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function HomeScreen({ navigation }) {
   const now = formatCurrentDateTime();
-
+  const insets = useSafeAreaInsets();
   return (
-    <SafeAreaView style={{ flex: 1 }} className="bg-background">
+    <View style={{ flex: 1 , paddingTop: insets.top }} className="bg-background">
       {/*Header Start */}
       <View
         className="flex-row justify-between items-center border-b border-blue-200 px-5 mt-3 pb-2"
@@ -209,6 +210,6 @@ export default function HomeScreen({ navigation }) {
           {/* Quick Action row end */}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
