@@ -119,7 +119,6 @@ export default function PatientProfile() {
   const insets = useSafeAreaInsets();
   return (
     <View style={{ paddingTop: insets.top }} className="flex-1 bg-background">
-      <SafeAreaView className="flex-1">
       <ScrollView
         className="flex-1 bg-background px-5 pb-3"
         showsVerticalScrollIndicator={false}
@@ -222,7 +221,6 @@ export default function PatientProfile() {
           ))}
         </View>
       </ScrollView>
-      </SafeAreaView>
     </View>
   );
 }
