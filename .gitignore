@@ -37,3 +37,4 @@ yarn-error.*
 *.tsbuildinfo
 
 yarn.lock
+serviceAccountKey.json
