@@ -224,7 +224,7 @@ export default function PatientInfo({ navigation }) {
           </View>
 
           <CustomButton
-            title="Go to Patient Profile"
+            title="Confirm"
             variant="primary"
             disabled={!isDetailCompleted} 
             onPress={() => navigation.navigate("BottomTabs",{userType: 'patient'})}

@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }) {
     <View style={{ flex: 1 , paddingTop: insets.top }} className="bg-background">
       {/*Header Start */}
       <View
-        className="flex-row justify-between items-center border-b border-blue-200 px-5 mt-3 pb-2"
+        className="flex-row justify-between items-center border-b border-blue-200 px-5  pb-2"
         style={{
           paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
         }}
