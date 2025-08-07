@@ -21,7 +21,7 @@ export default function AuthScreen({ navigation }) {
         title="Log In"
         onPress={() => navigation.navigate("Login")}
       />
-    
+
       <CustomButton
         variant="primary"
         title="Go to doctor Profile"
@@ -35,9 +35,16 @@ export default function AuthScreen({ navigation }) {
 
       <CustomButton
         variant="primary"
-        title="Go to Change Password"
-        onPress={() => navigation.navigate("ChangePassword")}
+        title="Go to identity verification"
+        onPress={() => navigation.navigate("VerifyIdentity")}
       />
+
+<CustomButton
+        variant="primary"
+        title="Go to review doctor"
+        onPress={() => navigation.navigate("ViewConsultationNote")}
+      />
+
     </View>
   );
 }
