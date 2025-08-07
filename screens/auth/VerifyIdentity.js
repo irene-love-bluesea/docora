@@ -77,6 +77,8 @@ const VerifyIdentity = ({ navigation }) => {
 
       if (!result.canceled) {
         const asset = result.assets[0];
+        console.log(asset);
+        
         if (asset.size > 5 * 1024 * 1024) {
           alert("File is too large! Maximum size is 5MB.");
           return;
@@ -103,6 +105,7 @@ const VerifyIdentity = ({ navigation }) => {
       medicalCertificate,
       governmentId
     );
+
     navigation.navigate("BottomTabs", { userType: "doctor" });
   };
 
