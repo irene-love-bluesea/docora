@@ -38,4 +38,4 @@ yarn-error.*
 
 yarn.lock
 .env
-# serviceAccountKey.json
+serviceAccountKey.json
