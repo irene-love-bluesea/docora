@@ -31,7 +31,8 @@
         {
           "mimeType": "Production"
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "permissions": [
       "CAMERA",
