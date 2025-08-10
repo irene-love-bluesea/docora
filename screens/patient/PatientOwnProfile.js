@@ -8,8 +8,6 @@ import {
   Alert,
 } from "react-native";
 import {
-  SafeAreaInsetsContext,
-  SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
@@ -30,6 +28,7 @@ import {
   chronical,
 } from "./../../constant/data/patientDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
+import { useFetchUser } from "../../api/hooks/usePatientData";
 
 // Medical info configuration for reusable rendering
 const getMedicalInfoConfig = (medicalData) => [
@@ -154,11 +153,16 @@ export default function PatientOwnProfile({navigation}) {
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
   const [emergencyModalVisible, setEmergencyModalVisible] = React.useState(false);
 
+  const userId = "6888932415d5f2b5448a6b2b";
+  const { data: user, isLoading, isError, error } = useFetchUser(userId);
+
+  //debug log user data
+    console.log("user", user);
   // Form states
   const [profileData, setProfileData] = React.useState({
-    name: "Sarah James",
-    age: "28",
-    gender: "Female",
+    name: user?.data?.name || "Default Name",
+    age: user?.data?.age || "28",
+    gender: user?.data?.gender || "Female",
   });
 
   const [contactData, setContactData] = React.useState({
@@ -178,6 +182,7 @@ export default function PatientOwnProfile({navigation}) {
     name: "Harrington James",
     phone: "+1 888 103-8035",
   });
+
 
   const [genderOpen, setGenderOpen] = React.useState(false);
   const [bloodTypeOpen, setBloodTypeOpen] = React.useState(false);

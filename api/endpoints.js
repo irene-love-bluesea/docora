@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
         verifyToken: '/auth/verifyToken'
     },
     patients: {
+        profile: '/patients/profile',
         patientDetailForm: '/patients/patientDetailForm',
         patientInfoUpdate: '/patients/patientInfoUpdate',
         popularDoctors: '/patients/popularDoctors',
