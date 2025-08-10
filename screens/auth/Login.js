@@ -1,16 +1,46 @@
 import Checkbox from "expo-checkbox";
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useLogInUser } from "../../api/hooks/useAuthenticate";
+import { saveAuthToken } from "../../storage/AuthStorage";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
-  const [password , setPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
   const isFormValid = email !== "" && password !== "" && isChecked === true;
+  const loginMutation = useLogInUser();
+
+  const handleLogIn = async () => {
+    const userData = {
+      email: email.toLowerCase().trim(),
+      password: password,
+    };
+
+    try {
+      const {data} = await loginMutation.mutateAsync(userData);
+      console.log("Login Data", data.token);
+
+      await saveAuthToken(data.token);
+      navigation.navigate("BottomTabs", { userType: data?.role });
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong. Please try again.";
+
+      Alert.alert("LogIn Failed", errorMessage);
+    }
+  };
 
   return (
     <View className="  flex-1 justify-start items-center  px-5 bg-background ">
@@ -35,14 +65,15 @@ const LoginScreen = ({navigation}) => {
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="absolute right-5 bottom-5">
-          {
-            showPassword ? (
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          className="absolute right-5 bottom-5"
+        >
+          {showPassword ? (
             <Ionicons name="eye-off-outline" size={24} color="#999" />
-            ) : (
+          ) : (
             <Ionicons name="eye-outline" size={24} color="#999" />
-            )
-          }
+          )}
         </TouchableOpacity>
       </View>
 
@@ -55,21 +86,33 @@ const LoginScreen = ({navigation}) => {
             style={{ borderRadius: 4 }}
           />
           <TouchableOpacity onPress={() => setChecked(!isChecked)}>
-            <Text className="text-base my-3 ml-2">
-              Remember me
-            </Text>
+            <Text className="text-base my-3 ml-2">Remember me</Text>
           </TouchableOpacity>
         </View>
-        <View >
-          <Text onPress={() => navigation.navigate('ForgotPassword')} className="text-base  font-semibold underline my-3 ml-2">
+        <View>
+          <Text
+            onPress={() => navigation.navigate("ForgotPassword")}
+            className="text-base  font-semibold underline my-3 ml-2"
+          >
             Forgot Password?
           </Text>
         </View>
       </View>
-      <CustomButton  variant="primary" title="Log In" disabled={!isFormValid} className=" "  />
+      <CustomButton
+        title={loginMutation.isPending ? "Logging In..." : "Log In"}
+        variant="primary"
+        disabled={!isFormValid || loginMutation.isPending}
+        onPress={handleLogIn}
+      />
       <View className="flex-row items-center justify-center gap-3 my-3">
         <Text className="text-base font-semibold">
-          Don't have an account? <Text className="text-primary underline" onPress={() => navigation.navigate('SignUp')}>Sign Up</Text>
+          Don't have an account?{" "}
+          <Text
+            className="text-primary underline"
+            onPress={() => navigation.navigate("SignUp")}
+          >
+            Sign Up
+          </Text>
         </Text>
       </View>
     </View>
@@ -80,7 +123,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   checkbox: {
-    borderColor: '#4630EB',
+    borderColor: "#4630EB",
   },
-})
-
+});

@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Checkbox from "expo-checkbox";
 import CustomButton from "../../components/Buttons/CustomButton";
-import Ionicons from '@expo/vector-icons/Ionicons';
-
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useSignUpUser } from "../../api/hooks/useAuthenticate";
 
 export default function SignUpScreen({ navigation }) {
   const [fullName, setFullName] = React.useState("");
@@ -13,6 +13,27 @@ export default function SignUpScreen({ navigation }) {
   const [showPassword, setShowPassword] = React.useState(false);
   const isFormValid =
     fullName !== "" && email !== "" && password !== "" && isChecked === true;
+  const signupMutation = useSignUpUser();
+
+  const handleSignUp = async () => {
+    const userData = {
+      name: fullName.trim(),
+      email: email.toLowerCase().trim(),
+      password: password,
+    };
+
+    try {
+      await signupMutation.mutateAsync(userData);
+      navigation.navigate("Verify", { email: userData.email });
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong. Please try again.";
+
+      Alert.alert("Signup Failed", errorMessage);
+    }
+  };
 
   return (
     <View className="flex-1 justify-start items-center px-5 bg-background">
@@ -46,14 +67,15 @@ export default function SignUpScreen({ navigation }) {
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity onPress={() => setShowPassword(!showPassword)} className="absolute right-5 bottom-5">
-          {
-            showPassword ? (
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          className="absolute right-5 bottom-5"
+        >
+          {showPassword ? (
             <Ionicons name="eye-off-outline" size={24} color="#999" />
-            ) : (
+          ) : (
             <Ionicons name="eye-outline" size={24} color="#999" />
-            )
-          }
+          )}
         </TouchableOpacity>
       </View>
       <View className="flex-row justify-start items-center my-3  w-full">
@@ -69,11 +91,11 @@ export default function SignUpScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-      <CustomButton
-        title="Sign Up"
+       <CustomButton
+        title={signupMutation.isPending ? "Signing Up..." : "Sign Up"}
         variant="primary"
-        disabled={!isFormValid}
-        onPress={() => navigation.navigate("Verify")}
+        disabled={!isFormValid || signupMutation.isPending}
+        onPress={handleSignUp}
       />
       <View className="flex-row items-center justify-center gap-3 my-3">
         <Text className="text-base font-semibold">
