@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
   const { userType } = route.params;
 
   // Select the correct set of tabs based on the user type
-  const tabsToRender = userType === "doctor" ? doctorTabs : patientTabs;
+  const tabsToRender = userType === "DOCTOR" ? doctorTabs : patientTabs;
 
   return (
     <Tab.Navigator
