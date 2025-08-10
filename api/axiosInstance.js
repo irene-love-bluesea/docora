@@ -5,16 +5,22 @@ import { getAuthToken } from "../storage/AuthStorage";
 
 const axiosInstance  = axios.create({
     baseURL: DOCORA_API_URL,
-    header: {
-        "Content-Type": "application/json"
+    headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": `Bearer ${getAuthToken()}`,
+        // "Authorization" : `Bearer `,
     },
 })
 
 axiosInstance.interceptors.request.use(async (config) => {
     const token = await getAuthToken(); // Replace with authentication logic
+    
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log("📡 Request URL:", config.baseURL + config.url);
+    console.log("📡 Request Headers:", config.headers);
     return config;
 })
 
