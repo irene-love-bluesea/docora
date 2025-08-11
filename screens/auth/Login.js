@@ -14,8 +14,8 @@ import { saveAuthToken } from "../../storage/AuthStorage";
 import { useAuth } from "../../components/Providers/AuthProvider";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("ayeminaung.mf@gmail.com");
-  const [password, setPassword] = useState("password123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const isFormValid = email !== "" && password !== "" && isChecked === true;
