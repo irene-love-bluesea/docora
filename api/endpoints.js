@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     logout: "/auth/logout",
     refreshToken: "/auth/refreshToken",
     verifyToken: "/auth/verifyToken",
+    sendSignUpOTP: "auth/sendSignUpOTP",
   },
   patients: {
     profile: "/patients/profile",
