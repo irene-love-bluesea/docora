@@ -17,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const isFormValid = email !== "" && password !== "" && isChecked === true;
+  const isFormValid = email !== "" && password !== "" 
   const loginMutation = useLogInUser();
 
   const handleLogIn = async () => {

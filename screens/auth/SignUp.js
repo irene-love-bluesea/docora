@@ -24,7 +24,7 @@ export default function SignUpScreen({ navigation }) {
 
     try {
       await signupMutation.mutateAsync(userData);
-      navigation.navigate("Verify", { email: userData.email });
+      navigation.navigate("Verify", { email: userData.email, name: userData.name });
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||

@@ -6,6 +6,8 @@ import PatientInfo from "../screens/auth/PatientInfo";
 import RoleSelector from "../screens/auth/RoleSelector";
 import SignUpScreen from "../screens/auth/SignUp";
 import VerifyScreen from "../screens/auth/Verify";
+import PasswordReset from "../screens/auth/PasswordReset";
+import PasswordOTP from "../screens/auth/PasswordOTP";
 import VerifyIdentity from "../screens/auth/VerifyIdentity";
 import DoctorChatScreen from "../screens/doctor/Chat";
 import HomeScreen from "../screens/doctor/Home";
@@ -86,6 +88,32 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Verification"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+    {
+    name: "PasswordOTP",
+    component: PasswordOTP,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Verify OTP"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+    {
+    name: "PasswordReset",
+    component: PasswordReset,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Reset Password"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
