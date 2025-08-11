@@ -1,9 +1,25 @@
 import { useState } from "react";
 import { Text, TextInput, View } from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
+import { useForgotPassword } from "../../api/hooks/useAuthenticate";
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const forgotPasswordMutation = useForgotPassword();
+
+  const handleForgotPassword = async () => {
+    try {
+      await forgotPasswordMutation.mutateAsync(email);
+      navigation.navigate("PasswordOTP",{ email: email });
+    } catch (error) {
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "OTP Sending failed. Please check the email again.";
+
+      Alert.alert("OTP Email Not Sent", errorMessage);
+    }
+  };
 
   return (
     <View className="  flex-1 justify-start items-center px-5 bg-background">
@@ -20,13 +36,14 @@ const ForgotPasswordScreen = () => {
           onChangeText={setEmail}
         />
       </View>
-      <CustomButton
-        variant="primary"
-        className="m-0"
-        title={"Send"}
-        onPress={() => {}}
-        disabled={email === ""}
+
+       <CustomButton
+        title={forgotPasswordMutation.isPending ? "Sending..." : "Send OTP"}
+        disabled={email === "" || forgotPasswordMutation.isPending}
+        variant='primary' 
+        onPress={handleForgotPassword}
       />
+      
     </View>
   );
 };

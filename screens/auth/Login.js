@@ -18,7 +18,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [isChecked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const isFormValid = email !== "" && password !== "" && isChecked === true;
+  const isFormValid = email !== "" && password !== "";
 
   const { login } = useAuth();
 
@@ -38,21 +38,7 @@ const LoginScreen = ({ navigation }) => {
       email: email.toLowerCase().trim(),
       password: password,
     };
-    // loginMutation.mutate(userData);
     await loginMutation.mutateAsync(userData);
-    // try {
-    //   console.log("Login Data", data.token);
-
-    //   await saveAuthToken(data.token);
-    //   // navigation.navigate("BottomTabs", { userType: data?.role });
-    // } catch (error) {
-    //   const errorMessage =
-    //     error.response?.data?.message ||
-    //     error.message ||
-    //     "Something went wrong. Please try again.";
-
-    //   Alert.alert("LogIn Failed", errorMessage);
-    // }
   };
 
   return (
