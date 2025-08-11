@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+  FontAwesome5,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
@@ -29,6 +31,7 @@ import {
 } from "./../../constant/data/patientDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
 import { useFetchUser } from "../../api/hooks/usePatientData";
+import { useAuth } from "../../components/Providers/AuthProvider";
 
 // Medical info configuration for reusable rendering
 const getMedicalInfoConfig = (medicalData) => [
@@ -37,33 +40,39 @@ const getMedicalInfoConfig = (medicalData) => [
     title: "Blood Type",
     icon: { name: "water", library: "MaterialCommunityIcons", color: "red" },
     bgColor: "bg-red-100",
-    value: medicalData.bloodType || "Not specified"
+    value: medicalData.bloodType || "Not specified",
   },
   {
     id: "allergies",
     title: "Allergies",
-    icon: { name: "exclamation-triangle", library: "FontAwesome5", color: "orange" },
+    icon: {
+      name: "exclamation-triangle",
+      library: "FontAwesome5",
+      color: "orange",
+    },
     bgColor: "bg-orange-100",
-    value: medicalData.allergies && medicalData.allergies.length > 0
-      ? medicalData.allergies.join(", ")
-      : "None"
+    value:
+      medicalData.allergies && medicalData.allergies.length > 0
+        ? medicalData.allergies.join(", ")
+        : "None",
   },
   {
     id: "chronic",
     title: "Chronic Conditions",
     icon: { name: "heartbeat", library: "FontAwesome5", color: "green" },
     bgColor: "bg-green-100",
-    value: medicalData.chronic && medicalData.chronic.length > 0
-      ? medicalData.chronic.join(", ")
-      : "None"
+    value:
+      medicalData.chronic && medicalData.chronic.length > 0
+        ? medicalData.chronic.join(", ")
+        : "None",
   },
   {
     id: "medications",
     title: "Current Medications",
     icon: { name: "pills", library: "FontAwesome5", color: "blue" },
     bgColor: "bg-blue-100",
-    value: medicalData.medications || "None"
-  }
+    value: medicalData.medications || "None",
+  },
 ];
 
 // Contact info configuration
@@ -73,22 +82,26 @@ const getContactInfoConfig = (contactData) => [
     title: "Email",
     icon: { name: "mail", library: "Ionicons", color: "#023E8A" },
     bgColor: "bg-secondary",
-    value: contactData.email
+    value: contactData.email,
   },
   {
     id: "phone",
     title: "Phone",
-    icon: { name: "phone", library: "MaterialCommunityIcons", color: "#023E8A" },
+    icon: {
+      name: "phone",
+      library: "MaterialCommunityIcons",
+      color: "#023E8A",
+    },
     bgColor: "bg-secondary",
-    value: contactData.phone
+    value: contactData.phone,
   },
   {
     id: "address",
     title: "Address",
     icon: { name: "home", library: "MaterialCommunityIcons", color: "#023E8A" },
     bgColor: "bg-secondary",
-    value: contactData.address
-  }
+    value: contactData.address,
+  },
 ];
 
 // Emergency contact configuration
@@ -98,32 +111,33 @@ const getEmergencyContactConfig = (emergencyData) => [
     title: "Name",
     icon: { name: "person", library: "Ionicons", color: "black" },
     bgColor: "bg-secondary",
-    value: emergencyData.name
+    value: emergencyData.name,
   },
   {
     id: "phone",
     title: "Phone",
     icon: { name: "phone", library: "MaterialCommunityIcons", color: "black" },
-     bgColor: "bg-secondary",
-    value: emergencyData.phone
-  }
+    bgColor: "bg-secondary",
+    value: emergencyData.phone,
+  },
 ];
 
 // Reusable Info Row Component
 const InfoRow = ({ item }) => {
-  const IconComponent = item.icon.library === "MaterialCommunityIcons" 
-    ? MaterialCommunityIcons 
-    : item.icon.library === "FontAwesome5"
-    ? FontAwesome5
-    : Ionicons;
+  const IconComponent =
+    item.icon.library === "MaterialCommunityIcons"
+      ? MaterialCommunityIcons
+      : item.icon.library === "FontAwesome5"
+      ? FontAwesome5
+      : Ionicons;
 
   return (
     <View className="flex-row gap-4 px-3 my-2 items-center">
-      <View className={`${item.bgColor || 'bg-gray-100'} p-2 rounded-full`}>
-        <IconComponent 
-          name={item.icon.name} 
-          size={24} 
-          color={item.icon.color} 
+      <View className={`${item.bgColor || "bg-gray-100"} p-2 rounded-full`}>
+        <IconComponent
+          name={item.icon.name}
+          size={24}
+          color={item.icon.color}
         />
       </View>
       <View>
@@ -143,7 +157,7 @@ const InfoSection = ({ title, config, onEdit }) => (
   </ProfileEditCard>
 );
 
-export default function PatientOwnProfile({navigation}) {
+export default function PatientOwnProfile({ navigation, session }) {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
 
   // Modal states
@@ -151,18 +165,17 @@ export default function PatientOwnProfile({navigation}) {
   const [contactModalVisible, setContactModalVisible] = React.useState(false);
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
-  const [emergencyModalVisible, setEmergencyModalVisible] = React.useState(false);
+  const [emergencyModalVisible, setEmergencyModalVisible] =
+    React.useState(false);
 
-  const userId = "6888932415d5f2b5448a6b2b";
-  const { data: user, isLoading, isError, error } = useFetchUser(userId);
+  const { session: auth } = useAuth();
+  const { data: user, isLoading, isError, error } = useFetchUser(auth);
 
-  //debug log user data
-    console.log("user", user);
   // Form states
   const [profileData, setProfileData] = React.useState({
-    name: user?.data?.name || "Default Name",
-    age: user?.data?.age || "28",
-    gender: user?.data?.gender || "Female",
+    name: user?.data?.name,
+    age: user?.data?.age,
+    gender: user?.data?.gender,
   });
 
   const [contactData, setContactData] = React.useState({
@@ -183,14 +196,13 @@ export default function PatientOwnProfile({navigation}) {
     phone: "+1 888 103-8035",
   });
 
-
   const [genderOpen, setGenderOpen] = React.useState(false);
   const [bloodTypeOpen, setBloodTypeOpen] = React.useState(false);
   const [allergyOpen, setAllergyOpen] = React.useState(false);
   const [chronicOpen, setChronicOpen] = React.useState(false);
   const [birthOpen, setBirthOpen] = React.useState(false);
 
-    const handleLogout = () => {
+  const handleLogout = () => {
     console.log("User logged out");
   };
 
@@ -385,9 +397,7 @@ export default function PatientOwnProfile({navigation}) {
             onEdit={() => setEmergencyModalVisible(true)}
           />
 
-           <SettingCard 
-            onLogoutPress={() => setLogoutModalVisible(true)}
-          />
+          <SettingCard onLogoutPress={() => setLogoutModalVisible(true)} />
         </View>
       </ScrollView>
 
@@ -438,7 +448,7 @@ export default function PatientOwnProfile({navigation}) {
         onFormChange={handleEmergencyChange}
         onSubmit={handleEmergencySubmit}
       />
-       <LogoutModal
+      <LogoutModal
         visible={logoutModalVisible}
         onClose={() => setLogoutModalVisible(false)}
         onConfirmLogout={handleLogout}

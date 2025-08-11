@@ -19,8 +19,12 @@ axiosInstance.interceptors.request.use(async (config) => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++");
     console.log("📡 Request URL:", config.baseURL + config.url);
     console.log("📡 Request Headers:", config.headers);
+    console.log("📡 Request Body:", config.data);
+    console.log("++++++++++++++++++++++++++++++++++++++++++++++");
+    
     return config;
 })
 
