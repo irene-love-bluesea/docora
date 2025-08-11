@@ -1,27 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
-  View,
+  ActivityIndicator,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
+  View,
 } from "react-native";
 
-import { countries } from "../../constant/data/countries";
-import Dropdown from "../../components/Form/Dropdown";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import * as DocumentPicker from "expo-document-picker";
 import CustomButton from "../../components/Buttons/CustomButton";
+import Dropdown from "../../components/Form/Dropdown";
+import { countries } from "../../constant/data/countries";
 import {
   experienceYears,
   specialityRole,
 } from "../../constant/data/doctorDetails";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import * as DocumentPicker from "expo-document-picker";
+import { deleteFile, getFileURL, uploadFile } from "../../utils/fileUpload";
+import LoadingOverlay from "../../components/Loading/LoadingOverlay";
 
 const VerifyIdentity = ({ navigation }) => {
   const [licenceNo, setLicenceNo] = useState("");
@@ -35,6 +37,19 @@ const VerifyIdentity = ({ navigation }) => {
   const [specialtyOpen, setSpecialtyOpen] = useState(false);
   const [experienceOpen, setExperienceOpen] = useState(false);
 
+  const [isUploading, setIsUploading] = useState(false); // file upload loading
+  const [uploadingFile, setUploadingFile] = useState(null); // Track which file is uploading
+  const [uploadProgress, setUploadProgress] = useState(0);
+
+  // Deleting states
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletingFile, setDeletingFile] = useState(null);
+
+  const [medicalCertificateUrl, setMedicalCertificateUrl] = useState(null);
+  const [governmentIdUrl, setGovernmentIdUrl] = useState(null);
+  const [medicalCertificatePath, setMedicalCertificatePath] = useState(null);
+  const [governmentIdPath, setGovernmentIdPath] = useState(null);
+
   const isFormValid =
     licenceNo !== "" &&
     countryValue !== null &&
@@ -42,6 +57,7 @@ const VerifyIdentity = ({ navigation }) => {
     yearOfExperience !== null &&
     medicalCertificate !== null &&
     governmentId !== null;
+
 
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {
@@ -77,23 +93,102 @@ const VerifyIdentity = ({ navigation }) => {
 
       if (!result.canceled) {
         const asset = result.assets[0];
-        console.log(asset);
-        
+
         if (asset.size > 5 * 1024 * 1024) {
           alert("File is too large! Maximum size is 5MB.");
           return;
         }
 
-        if (fileType === "medical_certificate") {
-          setMedicalCertificate(asset);
-        } else if (fileType === "government_id") {
-          setGovernmentId(asset);
+        // Set loading states
+        setIsUploading(true);
+        setUploadingFile(fileType);
+        setUploadProgress(0);
+        try {
+          const userId = "092834343434"; // Replace with actual user ID
+
+          const progressInterval = setInterval(() => {
+            setUploadProgress(prev => {
+              if (prev >= 90) {
+                clearInterval(progressInterval);
+                return 90;
+              }
+              return prev + 10;
+            });
+          }, 200);
+
+          const uploadedData = await uploadFile(userId, asset);
+          clearInterval(progressInterval);
+          setUploadProgress(100);
+          if (uploadedData) {
+            const publicUrl = getFileURL(uploadedData.path);
+            console.log("File available at:", publicUrl);
+
+            // Update state based on file type
+            if (fileType === "medical_certificate") {
+              setMedicalCertificate(asset);
+              setMedicalCertificateUrl(publicUrl);
+              setMedicalCertificatePath(uploadedData.path);
+            } else if (fileType === "government_id") {
+              setGovernmentId(asset);
+              setGovernmentIdUrl(publicUrl);
+              setGovernmentIdPath(uploadedData.path);
+            }
+
+             setTimeout(() => {
+              setIsUploading(false);
+              setUploadingFile(null);
+              setUploadProgress(0);
+            }, 500);
+
+          } else {
+            throw new Error("Upload failed, returned data was null.");
+          }
+        } catch (uploadError) {
+          console.error("Upload error:", uploadError);
+          alert("Error uploading file: " + uploadError.message);
+        } finally {
+          setIsUploading(false);
         }
       }
     } catch (err) {
       console.log(err);
       alert("Error while uploading file", err);
     }
+  };
+
+  const removeFileHandler = async (fileType) => {
+    setIsDeleting(true);
+    setDeletingFile(fileType);
+    if (fileType === "medical_certificate") {
+      if (medicalCertificatePath) {
+        const result = await deleteFile(medicalCertificatePath);
+        if (result.success) {
+          console.log("Medical certificate deleted successfully");
+        } else {
+          console.error("Failed to delete medical certificate:", result.error);
+        }
+      }
+
+      setMedicalCertificate(null);
+      setMedicalCertificateUrl(null);
+      setMedicalCertificatePath(null);
+    } else if (fileType === "government_id") {
+      if (governmentIdPath) {
+        const result = await deleteFile(governmentIdPath);
+        if (result.success) {
+          console.log("Government ID deleted successfully");
+        } else {
+          console.error("Failed to delete government ID:", result.error);
+        }
+      }
+
+      setGovernmentId(null);
+      setGovernmentIdUrl(null);
+      setGovernmentIdPath(null);
+    }
+
+    setIsDeleting(false);
+    setDeletingFile(null);
   };
 
   const handleSubmit = () => {
@@ -200,13 +295,19 @@ const VerifyIdentity = ({ navigation }) => {
                       </Text>
                     </View>
                     <TouchableOpacity
-                      onPress={() => setMedicalCertificate(null)}
+                      onPress={() => removeFileHandler("medical_certificate")}
+                      disabled={isUploading || isDeleting}
                     >
-                      <Text className="text-md text-red-500">Remove</Text>
+                      {isDeleting && deletingFile === "medical_certificate" ? (
+                        <ActivityIndicator size="small" color="#EF4444" />
+                      ) : (
+                        <Text className="text-md text-red-500">Remove</Text>
+                      )}
                     </TouchableOpacity>
                   </View>
                   <TouchableOpacity
                     onPress={() => pickFile("medical_certificate")}
+                    disabled={isUploading || isDeleting}
                     className="flex-row items-center justify-center mt-3 px-5 py-2 gap-5 border-dashed rounded-xl border-gray-300 border-2"
                   >
                     <Text className="text-lg text-gray-500">Tap to Upload</Text>
@@ -215,6 +316,7 @@ const VerifyIdentity = ({ navigation }) => {
               ) : (
                 <TouchableOpacity
                   onPress={() => pickFile("medical_certificate")}
+                  disabled={isUploading || isDeleting}
                 >
                   <View className=" flex-row items-center justify-center  px-5 py-8 gap-5 border-dashed rounded-xl border-gray-300 border-2">
                     <Ionicons
@@ -234,6 +336,13 @@ const VerifyIdentity = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               )}
+
+              {isUploading && uploadingFile === "medical_certificate" && (
+                <LoadingOverlay 
+                  message="Uploading medical certificate..." 
+                  progress={uploadProgress}
+                />
+              )}
             </View>
             <View className="mb-3 w-full">
               <Text className="text-lg font-medium mb-2">Goverment ID *</Text>
@@ -250,19 +359,29 @@ const VerifyIdentity = ({ navigation }) => {
                         Selected file: {governmentId.name}
                       </Text>
                     </View>
-                    <TouchableOpacity onPress={() => setGovernmentId(null)}>
-                      <Text className="text-md text-red-500">Remove</Text>
+                    <TouchableOpacity
+                      onPress={() => removeFileHandler("government_id")}
+                      disabled={isUploading || isDeleting}
+                    >
+                      {isDeleting && deletingFile === "government_id" ? (
+                        <ActivityIndicator size="small" color="#EF4444" />
+                      ) : (
+                        <Text className="text-md text-red-500">Remove</Text>
+                      )}
                     </TouchableOpacity>
                   </View>
                   <TouchableOpacity
                     onPress={() => pickFile("government_id")}
+                    disabled={isUploading || isDeleting}
                     className="flex-row items-center justify-center mt-3 px-5 py-2 gap-5 border-dashed rounded-xl border-gray-300 border-2"
                   >
                     <Text className="text-lg text-gray-500">Tap to Upload</Text>
                   </TouchableOpacity>
                 </View>
               ) : (
-                <TouchableOpacity onPress={() => pickFile("government_id")}>
+                <TouchableOpacity onPress={() => pickFile("government_id")}
+                   disabled={isUploading || isDeleting}
+                   >
                   <View className=" flex-row items-center justify-center  px-5 py-8 gap-5 border-dashed rounded-xl border-gray-300 border-2">
                     <FontAwesome
                       name="drivers-license-o"
@@ -281,14 +400,23 @@ const VerifyIdentity = ({ navigation }) => {
                   </View>
                 </TouchableOpacity>
               )}
+
+              {/* Loading overlay for government ID */}
+              {isUploading && uploadingFile === "government_id" && (
+                <LoadingOverlay 
+                  message="Uploading government ID..." 
+                  progress={uploadProgress}
+                />
+              )}
             </View>
             <CustomButton
               title="Submit"
               variant="primary"
               onPress={handleSubmit}
-              disabled={!isFormValid}
+              disabled={!isFormValid || isUploading || isDeleting}
               className=" mt-5"
             />
+            
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>

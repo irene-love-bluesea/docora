@@ -23,6 +23,7 @@ import {
 } from "../../constant/data/doctorDetails";
 import PopularDoctorsCard from "../../components/Card/PopularDoctorsCard";
 import SpecialitiesShowCard from "../../components/Card/SpecialitiesShowCard";
+import { useAuth } from "../../components/Providers/AuthProvider";
 
 export default function PatientHome({ navigation }) {
   const specialityR = [
@@ -61,6 +62,8 @@ export default function PatientHome({ navigation }) {
   const [specialityData, setSpecialityData] = useState(specialityR);
   const [popularDoctors, setPopularDoctors] = useState(popularDrs);
   const [search, setSearch] = useState("");
+  // const { user, logout } = useAuth();
+  // logout();
 
   const insets = useSafeAreaInsets();
   return (

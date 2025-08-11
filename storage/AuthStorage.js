@@ -3,24 +3,24 @@ import * as SecureStore from 'expo-secure-store';
 
 export const saveAuthToken = async (token) => {
     try{
-        await SecureStore.setItemAsync(TOKEN_KEY, token);
+        console.log("save token", token);
+        
+        const sessionString = JSON.stringify(token);
+        await SecureStore.setItemAsync(TOKEN_KEY, sessionString);
         console.log('Token saved securely with Expo SecureStore!');
     }catch(err){
         console.error('Failed to save the token securely', err);
     }
 }
 
-export const getUserSession = async() => {
-    try{
-        return await SecureStore.getItemAsync(TOKEN_KEY);
-    }catch(err){
-        console.error('Failed to get the token securely', err);
-    }
-}
 
 export const getAuthToken = async () => {
     try{
-        return await SecureStore.getItemAsync(TOKEN_KEY);
+        const sessionString = await SecureStore.getItemAsync(TOKEN_KEY);
+        if (sessionString) {
+          return JSON.parse(sessionString);
+        }
+         return null;
     }catch(err){
         console.error('Failed to get the token securely', err);
     }

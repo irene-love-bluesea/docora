@@ -51,126 +51,12 @@ export const patientTabs = [
 // Stack screen configurations
 export const stackScreens = [
   {
-    name: "Auth",
-    component: AuthScreen,
-    options: { headerShown: false },
-  },
-  {
-    name: "SignUp",
-    component: SignUpScreen,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Sign Up"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-  {
-    name: "Login",
-    component: LoginScreen,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Log In"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-  {
-    name: "Verify",
-    component: VerifyScreen,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Verification"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-    {
-    name: "PasswordOTP",
-    component: PasswordOTP,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Verify OTP"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-    {
-    name: "PasswordReset",
-    component: PasswordReset,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Reset Password"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-  {
-    name: "RoleSelector",
-    component: RoleSelector,
-    options: { headerShown: false },
-  },
-  {
-    name: "PatientInfo",
-    component: PatientInfo,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Detail Information"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-  {
-    name: "ForgotPassword",
-    component: ForgotPasswordScreen,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Verification"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-  {
     name: "PatientProfile",
     component: PatientProfile,
     options: ({ navigation }) => ({
       header: () => (
         <CustomHeader
           title="Patient Profile"
-          navigation={navigation}
-          backgroundColor="#E6F2FF"
-        />
-      ),
-    }),
-  },
-  {
-    name: "VerifyIdentity",
-    component: VerifyIdentity,
-    options: ({ navigation }) => ({
-      header: () => (
-        <CustomHeader
-          title="Verify Identity"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
@@ -204,6 +90,32 @@ export const stackScreens = [
       header: () => (
         <CustomHeader
           title="Reviews"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+    {
+    name: "PasswordOTP",
+    component: PasswordOTP,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Verify OTP"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+    {
+    name: "PasswordReset",
+    component: PasswordReset,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Reset Password"
           navigation={navigation}
           backgroundColor="#E6F2FF"
         />
@@ -330,3 +242,94 @@ export const stackScreens = [
     }),
   },
 ];
+
+export const authScreens =[
+  {
+    name: "Auth",
+    component: AuthScreen,
+    options: { headerShown: false },
+  },
+  {
+    name: "SignUp",
+    component: SignUpScreen,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Sign Up"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "Login",
+    component: LoginScreen,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Log In"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "Verify",
+    component: VerifyScreen,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Verification"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "RoleSelector",
+    component: RoleSelector,
+    options: { headerShown: false },
+  },
+  {
+    name: "PatientInfo",
+    component: PatientInfo,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Detail Information"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "ForgotPassword",
+    component: ForgotPasswordScreen,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Verification"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+  {
+    name: "VerifyIdentity",
+    component: VerifyIdentity,
+    options: ({ navigation }) => ({
+      header: () => (
+        <CustomHeader
+          title="Verify Identity"
+          navigation={navigation}
+          backgroundColor="#E6F2FF"
+        />
+      ),
+    }),
+  },
+]

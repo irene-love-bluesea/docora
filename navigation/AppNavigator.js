@@ -1,14 +1,27 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { doctorTabs, patientTabs , stackScreens  } from "../constant/screens";
+import { useAuth } from "../components/Providers/AuthProvider";
+import {
+  authScreens,
+  doctorTabs,
+  patientTabs,
+  stackScreens,
+} from "../constant/screens";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
- function BottomTabs({ route }) {
+function BottomTabs({ route }) {
   // Get userType from the route params
-  const { userType } = route.params;
+  const { session } = useAuth();
+  // console.log("user bottom tabs: ", user);
+
+  if (!session) {
+    return null;
+  }
+  const userType = session?.user?.role;
+  // const { userType } = route.params;
 
   // Select the correct set of tabs based on the user type
   const tabsToRender = userType === "DOCTOR" ? doctorTabs : patientTabs;
@@ -44,16 +57,31 @@ const Tab = createBottomTabNavigator();
 
 export default function AppNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Auth">
+    <Stack.Navigator initialRouteName="BottomTabs">
       {/* Add BottomTabs screen with special handling */}
       <Stack.Screen
         name="BottomTabs"
         component={BottomTabs}
         options={{ headerShown: false }}
       />
-      
+
       {/* Loop through all stack screens */}
       {stackScreens.map((screen) => (
+        <Stack.Screen
+          key={screen.name}
+          name={screen.name}
+          component={screen.component}
+          options={screen.options}
+        />
+      ))}
+    </Stack.Navigator>
+  );
+}
+
+export function AuthNavigator() {
+  return (
+    <Stack.Navigator initialRouteName="Auth">
+      {authScreens.map((screen) => (
         <Stack.Screen
           key={screen.name}
           name={screen.name}

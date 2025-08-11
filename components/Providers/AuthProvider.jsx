@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { getUserSession } from "../../storage/AuthStorage";
+import { createContext, useContext, useEffect, useState } from "react";
 import axiosInstance from "../../api/axiosInstance";
 import { API_ENDPOINTS } from "../../api/endpoints";
+import { deleteAuthToken, getAuthToken, saveAuthToken } from "../../storage/AuthStorage";
 
 const AuthContext = createContext(null);
 
@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const loadSession = async () => {
       try {
-        const storedSession = await getUserSession();
+        const storedSession = await getAuthToken();
         if (storedSession) {
           axiosInstance.defaults.headers.common[
             "Authorization"
@@ -20,13 +20,12 @@ export default function AuthProvider({ children }) {
           const { data: user } = await axiosInstance.get(
             API_ENDPOINTS.auth.getMe
           );
-          console.log("Loaded user:", user, "token:", storedSession?.token);
 
           setSession({ token: storedSession?.token, user: user });
         }
       } catch (e) {
-        console.error("Failed to load session", e);
         await deleteAuthToken();
+        console.error("Failed to load session", e);
       } finally {
         setIsLoading(false);
       }
@@ -34,17 +33,52 @@ export default function AuthProvider({ children }) {
 
     loadSession();
   }, []);
-  const value = { session, isLoading };
+
+  const login = async (token, user) => {
+    try {
+      console.log("token : " , token);
+      
+      await saveAuthToken(token);
+      axiosInstance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+      setSession({ token, user });
+    } catch (error) {
+      console.error("Login failed:", error);
+      await deleteAuthToken();
+      throw error;
+    }finally {
+      setIsLoading(false);
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await deleteAuthToken();
+      delete axiosInstance.defaults.headers.common["Authorization"];
+      setSession(null);
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const value = {
+    session,
+    isLoading,
+    login,
+    logout,
+    user: session?.user,
+    token: session?.token,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  console.log("Auth context:", context);
 
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
