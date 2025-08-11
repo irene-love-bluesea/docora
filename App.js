@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import AppNavigator from "./navigation/AppNavigator";
-import "./global.css";
 
 import {
   configureReanimatedLogger,
@@ -11,7 +9,10 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import RootNavigator from "./navigation/RootNavigator";
 import AuthProvider from "./components/Providers/AuthProvider";
+import "./global.css";
+
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false, // Reanimated runs in strict mode by default
@@ -44,7 +45,7 @@ export default function App() {
       <NavigationContainer>
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
-            <AppNavigator />
+            <RootNavigator />
           </QueryClientProvider>
         </AuthProvider>
       </NavigationContainer>

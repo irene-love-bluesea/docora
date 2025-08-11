@@ -58,7 +58,6 @@ const VerifyIdentity = ({ navigation }) => {
     medicalCertificate !== null &&
     governmentId !== null;
 
-  // const {session: auth} = useAuth();
 
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {

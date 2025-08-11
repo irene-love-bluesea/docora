@@ -9,8 +9,6 @@ const fetchUser = async (userId) => {
 
 
 export const useFetchUser = (userId) => {
-  console.log("userId", userId);
-  
   return useQuery({
     queryKey: ['user', userId], 
     queryFn: () => fetchUser(userId), // The function that will be called
