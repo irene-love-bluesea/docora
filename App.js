@@ -11,6 +11,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AuthProvider from "./components/Providers/AuthProvider";
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false, // Reanimated runs in strict mode by default
@@ -37,13 +38,15 @@ export default function App() {
   }
 
   const queryClient = new QueryClient();
-  
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <QueryClientProvider client={queryClient}>
-          <AppNavigator />
-        </QueryClientProvider>
+        <AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <AppNavigator />
+          </QueryClientProvider>
+        </AuthProvider>
       </NavigationContainer>
     </SafeAreaProvider>
   );
