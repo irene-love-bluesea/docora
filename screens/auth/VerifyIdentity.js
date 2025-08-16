@@ -201,7 +201,7 @@ const VerifyIdentity = ({ navigation }) => {
       governmentId
     );
 
-    navigation.navigate("BottomTabs", { userType: "doctor" });
+    navigation.navigate("BottomTabs", { role: "doctor" });
   };
 
   return (

@@ -85,6 +85,7 @@ export default function AuthProvider({ children }) {
 
   const value = {
     session,
+    setSession,
     isLoading,
     login,
     logout,

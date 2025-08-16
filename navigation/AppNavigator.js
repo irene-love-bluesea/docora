@@ -21,11 +21,10 @@ function BottomTabs({ route }) {
   if (!session) {
     return null;
   }
-  const userType = session?.user?.role;
-  // const { userType } = route.params;
+  const {role} = session?.user || route?.params;
 
   // Select the correct set of tabs based on the user type
-  const tabsToRender = userType === "DOCTOR" ? doctorTabs : patientTabs;
+  const tabsToRender = role === "DOCTOR" ? doctorTabs : patientTabs;
 
   return (
     <Tab.Navigator

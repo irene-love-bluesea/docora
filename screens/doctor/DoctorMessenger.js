@@ -200,7 +200,7 @@ const DoctorMessenger = ({ navigation, route }) => {
         <TouchableOpacity
           className="mr-4"
           onPress={() =>
-            navigation.navigate("BottomTabs", { userType: "doctor" })
+            navigation.navigate("BottomTabs", { role: "doctor" })
           }
         >
           <Ionicons name="arrow-back" size={24} color="black" />

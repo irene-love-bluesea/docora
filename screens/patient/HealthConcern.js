@@ -252,7 +252,7 @@ export default function HealthConcern({navigation}) {
             title="Confirm"
             variant="primary"
             disabled={!isHealthFormValid}
-        onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
+        onPress={() => navigation.navigate("BottomTabs", { role: 'patient' })}
           />
         </View>
       </ScrollView>
