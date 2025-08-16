@@ -10,12 +10,12 @@ import {
 import CustomButton from "../../components/Buttons/CustomButton";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useLogInUser } from "../../api/hooks/useAuthenticate";
-import { saveAuthToken } from "../../storage/AuthStorage";
 import { useAuth } from "../../components/Providers/AuthProvider";
+import { userRoles } from "../../constant/data/role";
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("ayeminaung11.ama@gmail.com");
+  const [password, setPassword] = useState("password123");
   const [isChecked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const isFormValid = email !== "" && password !== "";

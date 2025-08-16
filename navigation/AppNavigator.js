@@ -8,6 +8,7 @@ import {
   patientTabs,
   stackScreens,
 } from "../constant/screens";
+import { userRoles } from "../constant/data/role";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -78,12 +79,23 @@ export default function AppNavigator() {
   );
 }
 
-export function AuthNavigator() {
+export function AuthNavigator({user}) {
+  let initialRouteName = "Auth";
+  
+  if (user) {
+    if (!user?.verifyEmail) {
+      initialRouteName = "Verify";
+    } else if (user?.role === userRoles.UNDEFINED) {
+      initialRouteName = "RoleSelector";
+    }
+  }
+
+  const navigatorKey = user ? `auth-${user._id || 'user'}-${user.verifyEmail}-${user.role}` : 'auth-no-user';
   return (
-    <Stack.Navigator initialRouteName="Auth">
+    <Stack.Navigator initialRouteName={initialRouteName}>
       {authScreens.map((screen) => (
         <Stack.Screen
-          key={screen.name}
+          key={navigatorKey}
           name={screen.name}
           component={screen.component}
           options={screen.options}

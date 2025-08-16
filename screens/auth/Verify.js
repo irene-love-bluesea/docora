@@ -2,10 +2,13 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import CustomButton from "../../components/Buttons/CustomButton";
 import { useVerifyOTP,useResendSignUpOTP } from "../../api/hooks/useAuthenticate";
+import { useAuth } from "../../components/Providers/AuthProvider";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function VerifyScreen({ navigation, route }) {
+  const {user}  = useAuth();
+  const { email ,name} = route?.params || user?.data; 
   const [otp, setOtp] = React.useState("");
-  const { email ,name} = route.params; 
   const verifyOTPMutation = useVerifyOTP();
   const resendOTPMutation = useResendSignUpOTP();
 
@@ -48,8 +51,10 @@ export default function VerifyScreen({ navigation, route }) {
     }
   };
 
+   const insets = useSafeAreaInsets();
+
   return (
-    <View className="flex-1 justify-start items-center px-5 bg-background">
+    <View style={{ flex: 1 , paddingTop: insets.top}}  className="flex-1 justify-start items-center px-5 bg-background">
       <View className="w-full mt-5">
         <Text className="text-xl font-semibold mb-1">Enter OTP</Text>
       </View>
