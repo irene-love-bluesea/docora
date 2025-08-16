@@ -3,8 +3,6 @@ import * as SecureStore from 'expo-secure-store';
 
 export const saveAuthToken = async (token) => {
     try{
-        console.log("save token", token);
-        
         const sessionString = JSON.stringify(token);
         await SecureStore.setItemAsync(TOKEN_KEY, sessionString);
         console.log('Token saved securely with Expo SecureStore!');

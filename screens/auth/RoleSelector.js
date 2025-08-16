@@ -1,28 +1,19 @@
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Doctor from "../../assets/icon/doctor.svg";
 import Health from "../../assets/icon/health.svg";
 import Icon from "../../assets/icon/person.svg";
 import CustomButton from "../../components/Buttons/CustomButton";
+import { useAuth } from "../../components/Providers/AuthProvider";
 
 export default function RoleSelector({ navigation }) {
   const [role, setRole] = useState("");
-
   const isSelected = role !== "";
 
-  // In screens/auth/RoleSelector.js
-
-  // function navigateNext() {
-  //   if (role === "Doctor") {
-  //     navigation.navigate("BottomTabs", { userType: 'doctor' });
-  //   } else if (role === "Patient") {
-  //     navigation.navigate("BottomTabs", { userType: 'patient' });
-  //   }
-  // }
-function navigateNext() {
+  function navigateNext() {
     if (role === "Doctor") {
-      navigation.navigate("VerifyIdentity",);
+      navigation.navigate("VerifyIdentity");
     } else if (role === "Patient") {
       navigation.navigate("PatientInfo");
     }
@@ -81,9 +72,12 @@ function navigateNext() {
           <FontAwesome5 name="info-circle" size={24} color="#CC5500" />
         </View>
         <View className="flex-shrink p-1 gap-0">
-          <Text className="text-lg text-[#CC5500] font-bold">Role Verification</Text>
+          <Text className="text-lg text-[#CC5500] font-bold">
+            Role Verification
+          </Text>
           <Text className="text-[#CC5500] font-normal">
-            Doctors will need to verify their credentials in the next step for account approval.
+            Doctors will need to verify their credentials in the next step for
+            account approval.
           </Text>
         </View>
       </View>
