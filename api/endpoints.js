@@ -37,7 +37,7 @@ export const API_ENDPOINTS = {
     getConsultationDetails: (id) => `/doctors/consultation/details/${id}`,
     cancelConsultation: (id) => `/doctors/consultations/cancel/${id}`,
     viewConsultationNotes: (id) => `/doctors/consultation/note/${id}`,
-    getProfileDate: "/doctors/profile",
+    profile: "/doctors/profile",
     // notifications: '/doctors/notifications',
     viewSchedule: (doctorId) => `/doctors/schedule/${doctorId}`,
     createSchedule: `/doctors/schedule/create`,

@@ -28,6 +28,8 @@ import {
   specialityRole,
 } from "../../constant/data/doctorDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
+import { useFetchDoctor } from "../../api/hooks/useDoctorData"; // Assuming this hook exists
+import { useAuth } from "../../components/Providers/AuthProvider";
 
 // Contact info configuration
 const getContactInfoConfig = (contactData) => [
@@ -36,7 +38,7 @@ const getContactInfoConfig = (contactData) => [
     title: "Email",
     icon: { name: "mail", library: "Ionicons", color: "#023E8A" },
     bgColor: "bg-secondary",
-    value: contactData.email,
+    value: contactData.email || "Not specified",
   },
   {
     id: "phone",
@@ -47,14 +49,14 @@ const getContactInfoConfig = (contactData) => [
       color: "#023E8A",
     },
     bgColor: "bg-secondary",
-    value: contactData.phone,
+    value: contactData.phone || "Not specified",
   },
   {
     id: "address",
     title: "Address",
     icon: { name: "home", library: "MaterialCommunityIcons", color: "#023E8A" },
     bgColor: "bg-secondary",
-    value: contactData.address,
+    value: contactData.address || "Not specified",
   },
 ];
 
@@ -65,28 +67,28 @@ const getProfessionalInfoConfig = (professionalData) => [
     title: "Year of Experience",
     icon: { name: "user-doctor", library: "FontAwesome6", color: "orange" },
     bgColor: "bg-orange-100",
-    value: professionalData.experience + " Years",
+    value: professionalData.experience ? `${professionalData.experience} Years` : "Not specified",
   },
   {
     id: "special",
     title: "Medical Specialty",
     icon: { name: "book-medical", library: "FontAwesome5", color: "red" },
     bgColor: "bg-red-100",
-    value: professionalData.specialty,
+    value: professionalData.specialty || "Not specified",
   },
   {
     id: "work",
     title: "Current Work Place",
     icon: { name: "work", library: "MaterialIcons", color: "blue" },
     bgColor: "bg-blue-100",
-    value: professionalData.workPlace,
+    value: professionalData.workPlace || "Not specified",
   },
   {
     id: "graduate",
     title: "Graduated From",
     icon: { name: "school", library: "Ionicons", color: "green" },
     bgColor: "bg-green-100",
-    value: professionalData.graduated,
+    value: professionalData.graduated || "Not specified",
   },
 ];
 
@@ -129,7 +131,7 @@ const InfoSection = ({ title, config, onEdit }) => (
   </ProfileEditCard>
 );
 
-export default function DoctorOwnProfile({ navigation }) {
+export default function DoctorOwnProfile({ navigation, session }) {
   const [profilePhoto, setProfilePhoto] = React.useState(null);
 
   // Modal states
@@ -139,23 +141,59 @@ export default function DoctorOwnProfile({ navigation }) {
     React.useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
-  // Form states
+  const { session: auth } = useAuth();
+  const { data: doctor, isLoading, isError, error } = useFetchDoctor(auth);
+
+  // Form states - Initialize with empty values first
   const [profileData, setProfileData] = React.useState({
-    name: "Ethan Carter",
+    name: "",
+    age: "",
+    gender: "",
   });
 
   const [contactData, setContactData] = React.useState({
-    email: "ethancarter@gmail.com",
-    phone: "+1 222 123-4567",
-    address: "123 Maple Street, Anytown, USA",
+    email: "",
+    phone: "",
+    address: "",
   });
 
   const [professionalData, setProfessionalData] = React.useState({
-    experience: "1-3",
-    specialty: "Cardiology",
-    workPlace: "New York Medical Center",
-    graduated: "Harvard Medical School",
+    experience: "",
+    specialty: "",
+    workPlace: "",
+    graduated: "",
   });
+
+  // Update states when doctor data is loaded
+  React.useEffect(() => {
+    if (doctor?.data) {
+      const doctorData = doctor.data;
+      
+      setProfileData({
+        name: doctorData.name || "",
+        age: doctorData.age || "",
+        gender: doctorData.gender || "",
+      });
+
+      setContactData({
+        email: doctorData.email || "",
+        phone: doctorData.phoneNumber || "",
+        address: doctorData.address || "",
+      });
+
+      setProfessionalData({
+        experience: doctorData.yearOfExp || "",
+        specialty: doctorData.specialty || "",
+        workPlace: doctorData.workPlace || doctorData.currentWorkPlace || "",
+        graduated: doctorData.graduateSchool || doctorData.education || "",
+      });
+
+      // Set profile photo if available
+      if (doctorData.profileUrl) {
+        setProfilePhoto({ uri: doctorData.profileUrl });
+      }
+    }
+  }, [doctor?.data]);
 
   const [genderOpen, setGenderOpen] = React.useState(false);
   const [birthOpen, setBirthOpen] = React.useState(false);
@@ -274,6 +312,22 @@ export default function DoctorOwnProfile({ navigation }) {
 
   const insets = useSafeAreaInsets();
 
+  if (isLoading) {
+    return (
+      <View style={{ paddingTop: insets.top }} className="bg-background flex-1 justify-center items-center">
+        <Text className="text-lg">Loading profile...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View style={{ paddingTop: insets.top }} className="bg-background flex-1 justify-center items-center">
+        <Text className="text-lg text-red-500">Error loading profile: {error?.message}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{ paddingTop: insets.top }} className="bg-background">
       <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
@@ -317,8 +371,13 @@ export default function DoctorOwnProfile({ navigation }) {
               </View>
               <View className="flex items-start justify-start">
                 <Text className="text-2xl text-center font-medium">
-                  Dr. {profileData.name}
+                  Dr. {profileData.name || "Loading..."}
                 </Text>
+                {profileData.age && profileData.gender && (
+                  <Text className="text-lg text-gray-500 font-medium">
+                    {profileData.age} years old, {profileData.gender}
+                  </Text>
+                )}
               </View>
             </View>
             <TouchableOpacity onPress={() => setProfileModalVisible(true)}>
@@ -358,6 +417,7 @@ export default function DoctorOwnProfile({ navigation }) {
         setGenderOpen={setGenderOpen}
         birthOpen={birthOpen}
         setBirthOpen={setBirthOpen}
+        userType="doctor"
       />
 
       <ProfessionalModal

@@ -7,12 +7,12 @@ import Dentist from "../../assets/icon/speciality/dentist.svg";
 
 
 const specialtyIconMap = {
-  "GeneralPhysician": GeneralPhysician,
-  "Dermatologist": Dermatologist,
+  "General Physician": GeneralPhysician,
+  "Dermatology": Dermatologist,
   "Pediatrician": Pediatrician,
-  "Cardiologist": Cardiologist,
-  "Psychiatrist": Psychiatrist,
-  "Dentist": Dentist,
+  "Cardiology": Cardiologist,
+  "Psychiatry": Psychiatrist,
+  "Dental": Dentist,
 };
 
 //export svg icons for doctor specialities
