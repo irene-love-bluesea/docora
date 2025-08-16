@@ -18,7 +18,6 @@ import * as ImagePicker from "expo-image-picker";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import MedicalEditModal from "../../components/modals/MedicalEditModal";
-import EmergencyContactModal from "../../components/modals/EmergencyContactModal";
 import {
   ProfileEditCard,
   SettingCard,
@@ -104,23 +103,6 @@ const getContactInfoConfig = (contactData) => [
   },
 ];
 
-// Emergency contact configuration
-const getEmergencyContactConfig = (emergencyData) => [
-  {
-    id: "name",
-    title: "Name",
-    icon: { name: "person", library: "Ionicons", color: "black" },
-    bgColor: "bg-secondary",
-    value: emergencyData.name,
-  },
-  {
-    id: "phone",
-    title: "Phone",
-    icon: { name: "phone", library: "MaterialCommunityIcons", color: "black" },
-    bgColor: "bg-secondary",
-    value: emergencyData.phone,
-  },
-];
 
 // Reusable Info Row Component
 const InfoRow = ({ item }) => {
@@ -165,36 +147,59 @@ export default function PatientOwnProfile({ navigation, session }) {
   const [contactModalVisible, setContactModalVisible] = React.useState(false);
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
-  const [emergencyModalVisible, setEmergencyModalVisible] =
-    React.useState(false);
 
   const { session: auth } = useAuth();
   const { data: user, isLoading, isError, error } = useFetchUser(auth);
 
-  // Form states
+  // Form states - Initialize with empty values first
   const [profileData, setProfileData] = React.useState({
-    name: user?.data?.name,
-    age: user?.data?.age,
-    gender: user?.data?.gender,
+    name: "",
+    age: "",
+    gender: "",
   });
 
   const [contactData, setContactData] = React.useState({
-    email: "sarahjames@gmail.com",
-    phone: "+1 555 123-4567",
-    address: "123 Maple Street, Anytown, USA",
+    email: "",
+    phone: "",
+    address: "",
   });
 
   const [medicalData, setMedicalData] = React.useState({
-    bloodType: "O",
-    allergies: ["Aspirin", "Penicillin"],
-    chronic: "",
+    bloodType: "",
+    allergies: [],
+    chronic: [],
     medications: "",
   });
+  // Update states when user data is loaded
+  React.useEffect(() => {
+    if (user?.data) {
+      const userData = user.data;
+      
+      setProfileData({
+        name: userData.name || "",
+        age: userData.age || "",
+        gender: userData.gender || "",
+      });
 
-  const [emergencyData, setEmergencyData] = React.useState({
-    name: "Harrington James",
-    phone: "+1 888 103-8035",
-  });
+      setContactData({
+        email: userData.email || "",
+        phone: userData.phoneNumber || "",
+        address: userData.address || "",
+      });
+
+      setMedicalData({
+        bloodType: userData.bloodType || "",
+        allergies: userData.allergies || [],
+        chronic: userData.chronicConditions || [],
+        medications: userData.currentMedications || "",
+      });
+
+      // Set profile photo if available
+      if (userData.profileUrl) {
+        setProfilePhoto({ uri: userData.profileUrl });
+      }
+    }
+  }, [user?.data]);
 
   const [genderOpen, setGenderOpen] = React.useState(false);
   const [bloodTypeOpen, setBloodTypeOpen] = React.useState(false);
@@ -299,9 +304,7 @@ export default function PatientOwnProfile({ navigation, session }) {
     setMedicalData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleEmergencyChange = (field, value) => {
-    setEmergencyData((prev) => ({ ...prev, [field]: value }));
-  };
+ 
 
   // Submit handlers
   const handleProfileSubmit = () => {
@@ -316,11 +319,16 @@ export default function PatientOwnProfile({ navigation, session }) {
     setMedicalModalVisible(false);
   };
 
-  const handleEmergencySubmit = () => {
-    setEmergencyModalVisible(false);
-  };
 
   const insets = useSafeAreaInsets();
+
+  if (isLoading) {
+    return (
+      <View style={{ paddingTop: insets.top }} className="bg-background flex-1 justify-center items-center">
+        <Text className="text-lg">Loading profile...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={{ paddingTop: insets.top }} className="bg-background">
@@ -363,8 +371,8 @@ export default function PatientOwnProfile({ navigation, session }) {
                 </TouchableOpacity>
               </View>
               <View className="flex items-start">
-                <Text className="text-2xl text-center font-medium">
-                  {profileData.name}
+                <Text className="text-xl text-center font-bold">
+                  {profileData.name || "Loading..."}
                 </Text>
                 <Text className="text-lg text-gray-500 font-medium">
                   {profileData.age} years old, {profileData.gender}
@@ -390,12 +398,6 @@ export default function PatientOwnProfile({ navigation, session }) {
             onEdit={() => setMedicalModalVisible(true)}
           />
 
-          {/* Emergency Contact */}
-          <InfoSection
-            title="Emergency Contact"
-            config={getEmergencyContactConfig(emergencyData)}
-            onEdit={() => setEmergencyModalVisible(true)}
-          />
 
           <SettingCard onLogoutPress={() => setLogoutModalVisible(true)} />
         </View>
@@ -439,14 +441,6 @@ export default function PatientOwnProfile({ navigation, session }) {
         chronicOptions={chronical}
         chronicOpen={chronicOpen}
         setChronicOpen={setChronicOpen}
-      />
-
-      <EmergencyContactModal
-        visible={emergencyModalVisible}
-        onClose={() => setEmergencyModalVisible(false)}
-        formData={emergencyData}
-        onFormChange={handleEmergencyChange}
-        onSubmit={handleEmergencySubmit}
       />
       <LogoutModal
         visible={logoutModalVisible}
