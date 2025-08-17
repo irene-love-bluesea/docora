@@ -62,6 +62,12 @@ export const usePatientDetailForm = () => {
     },
     onError: (error) => {
       console.log("Detail form Failed", error);
+      if(error.response) {
+        console.log("Status Code:", error.response.status);
+        console.log("Response Data:", error.response.data);
+      } else {
+        console.log("An unexpected error occurred:", error.message);
+      }
     },
   });
 }
