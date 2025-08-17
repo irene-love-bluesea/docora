@@ -86,7 +86,7 @@ export default function PatientInfo({ navigation }) {
 
   const confirmHandler = () => {
     const formData = {
-      gender: genderValue.toUpperCase(),
+      gender: genderValue,
       bloodType: bloodTypeValue,
       allergies: allergies,
       chronicConditions: chronic,
