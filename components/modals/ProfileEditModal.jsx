@@ -77,13 +77,15 @@ const ProfileEditModal = ({
     }
   };
 
-  const handleSubmit = () => {
-    onFormChange("name", localFormData.name);
-    onFormChange("age", calculateAge(bd));
-    onFormChange("birthday", bd.toISOString());
-    onFormChange("gender", localFormData.gender);
-    onSubmit();
-  };
+ const handleSubmit = () => {
+  onFormChange("name", localFormData.name);
+ 
+  onFormChange("birthday", bd.toISOString()); 
+  onFormChange("gender", localFormData.gender);
+  
+  onSubmit();
+};
+
 
   const handleClose = () => {
     setLocalFormData({

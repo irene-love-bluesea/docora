@@ -29,7 +29,7 @@ import {
   chronical,
 } from "./../../constant/data/patientDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
-import { useFetchUser } from "../../api/hooks/usePatientData";
+import { useFetchUser ,useUpdatePatientProfile} from "../../api/hooks/usePatientData";
 import { useAuth } from "../../components/Providers/AuthProvider";
 
 // Medical info configuration for reusable rendering
@@ -150,6 +150,13 @@ export default function PatientOwnProfile({ navigation, session }) {
 
   const { session: auth } = useAuth();
   const { data: user, isLoading, isError, error } = useFetchUser(auth);
+   const { 
+    mutate: updateProfile, 
+    mutateAsync: updateProfileAsync,
+    isPending: isUpdating, 
+    error: updateError 
+  } = useUpdatePatientProfile();
+
 
   // Form states - Initialize with empty values first
   const [profileData, setProfileData] = React.useState({
@@ -304,19 +311,90 @@ export default function PatientOwnProfile({ navigation, session }) {
     setMedicalData((prev) => ({ ...prev, [field]: value }));
   };
 
- 
+    // Submit handlers
 
-  // Submit handlers
   const handleProfileSubmit = () => {
-    setProfileModalVisible(false);
+  // Prepare update payload - map frontend fields to backend expected fields
+  const updatePayload = {
+    name: profileData.name,
+    gender: profileData.gender,
+    // Use date_of_birth instead of age, and get it from the birthday field
+    date_of_birth: profileData.birthday ? new Date(profileData.birthday) : undefined,
+    profile_url: profilePhoto?.uri || undefined,
+    // Remove age from the payload since backend doesn't accept it
   };
 
-  const handleContactSubmit = () => {
-    setContactModalVisible(false);
+  // Remove undefined fields
+  Object.keys(updatePayload).forEach(key => 
+    updatePayload[key] === undefined && delete updatePayload[key]
+  );
+
+  console.log("Profile Update Payload:", updatePayload); // Debug log
+
+  // Call the update mutation
+  updateProfile(updatePayload, {
+    onSuccess: () => {
+      setProfileModalVisible(false);
+      Alert.alert("Success", "Profile updated successfully!");
+    },
+    onError: (error) => {
+      console.error("Profile update error:", error);
+      Alert.alert("Error", "Failed to update profile. Please try again.");
+    }
+  });
+};
+
+const handleContactSubmit = () => {
+    // Map frontend fields to backend expected fields
+    const updatePayload = {
+      email: contactData.email,
+      phone: contactData.phone, // Backend expects 'phone', not 'phoneNumber'
+      address: contactData.address,
+    };
+
+    // Remove empty fields
+    Object.keys(updatePayload).forEach(key => 
+      !updatePayload[key] && delete updatePayload[key]
+    );
+
+    updateProfile(updatePayload, {
+      onSuccess: () => {
+        setContactModalVisible(false);
+        Alert.alert("Success", "Contact information updated successfully!");
+      },
+      onError: (error) => {
+        console.error("Contact update error:", error);
+        Alert.alert("Error", "Failed to update contact information. Please try again.");
+      }
+    });
   };
 
-  const handleMedicalSubmit = () => {
-    setMedicalModalVisible(false);
+   const handleMedicalSubmit = () => {
+    // Map frontend fields to backend expected fields
+    const updatePayload = {
+      bloodType: medicalData.bloodType,
+      allergies: medicalData.allergies,
+      chronicConditions: medicalData.chronic, // Backend expects 'chronicConditions'
+      currentMedications: medicalData.medications, // Backend expects 'currentMedications'
+    };
+
+    // Remove empty fields
+    Object.keys(updatePayload).forEach(key => {
+      if (!updatePayload[key] || (Array.isArray(updatePayload[key]) && updatePayload[key].length === 0)) {
+        delete updatePayload[key];
+      }
+    });
+
+    updateProfile(updatePayload, {
+      onSuccess: () => {
+        setMedicalModalVisible(false);
+        Alert.alert("Success", "Medical information updated successfully!");
+      },
+      onError: (error) => {
+        console.error("Medical update error:", error);
+        Alert.alert("Error", "Failed to update medical information. Please try again.");
+      }
+    });
   };
 
 
@@ -416,6 +494,7 @@ export default function PatientOwnProfile({ navigation, session }) {
         birthOpen={birthOpen}
         setBirthOpen={setBirthOpen}
         userType="patient"
+        isLoading={isUpdating}
       />
 
       <ContactEditModal
@@ -423,6 +502,7 @@ export default function PatientOwnProfile({ navigation, session }) {
         onClose={() => setContactModalVisible(false)}
         formData={contactData}
         onFormChange={handleContactChange}
+        isLoading={isUpdating}
         onSubmit={handleContactSubmit}
       />
 
@@ -441,6 +521,7 @@ export default function PatientOwnProfile({ navigation, session }) {
         chronicOptions={chronical}
         chronicOpen={chronicOpen}
         setChronicOpen={setChronicOpen}
+        isLoading={isUpdating}
       />
       <LogoutModal
         visible={logoutModalVisible}
