@@ -1,15 +1,13 @@
-import { Image, Text, Touchable, TouchableOpacity, View } from "react-native";
-import { specialtyIconMap } from "../../constant/data/doctorDetails";
-import {
-  addMinutesToTimeString,
-  getReadyTime,
-  getTodayOrTommorow,
-  isSessionEnd,
-} from "../../utils/helper";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import {
+    addMinutesToTimeString,
+    getReadyTime,
+    getTodayOrTommorow,
+    isSessionEnd,
+} from "../../utils/helper";
 import CustomButton from "../Buttons/CustomButton";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function AppointmentDCard({
   patientProfile,
@@ -22,7 +20,7 @@ export default function AppointmentDCard({
   mode,
   status,
 }) {
-  // const Icon = specialtyIconMap[speciality];
+  // const Icon = specialtyIconMap[specialty];
   const renderIcon = (channelType, color) => {
     switch (channelType) {
       case "Chat":

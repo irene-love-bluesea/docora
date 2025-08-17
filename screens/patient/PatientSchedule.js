@@ -1,9 +1,8 @@
 import { useMemo, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import {
-  useSafeAreaInsets,
+    useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import AppointmentPCard from "../../components/Card/AppointmentPCard";
 import { appointmentForPatient } from "../../constant/data/appointment";
 import { isSessionEnd, timeSortingAscending } from "../../utils/helper";
@@ -15,7 +14,7 @@ export default function PatientSchedule({ navigation }) {
     <AppointmentPCard
       drProfile={item.drProfile}
       drName={item.drName}
-      speciality={item.speciality}
+      specialty={item.specialty}
       date={item.date}
       time={item.time}
       channelType={item.channelType}
