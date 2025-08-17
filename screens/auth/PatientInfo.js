@@ -18,8 +18,8 @@ import {
   allergy,
   chronical,
 } from "./../../constant/data/patientDetails";
-import { usePatientInfoUpdate } from "../../api/hooks/usePatientData";
 import { useAuth } from "../../components/Providers/AuthProvider";
+import { usePatientDetailForm } from "./../../api/hooks/usePatientData";
 
 export default function PatientInfo({ navigation }) {
   const [genderValue, setGenderValue] = React.useState("");
@@ -43,8 +43,8 @@ export default function PatientInfo({ navigation }) {
   const isDetailCompleted =
     genderValue !== "" && bloodTypeValue !== "" && isVaildAge;
 
-  const { mutate, isLoading } = usePatientInfoUpdate();
-  const {session, setSession} = useAuth();
+  const { mutate, isLoading } = usePatientDetailForm();
+  const { session, setSession } = useAuth();
 
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {
@@ -90,13 +90,14 @@ export default function PatientInfo({ navigation }) {
       bloodType: bloodTypeValue,
       allergies: allergies,
       chronicConditions: chronic,
-      date_of_birth: bd,
+      dateOfBirth: bd,
     };
     mutate(formData, {
-      onSuccess: (data) => {
-        // console.log("Update successful!", data);
-        // navigation.navigate("BottomTabs", { role: "PATIENT" });
-        setSession({ ...session, user: data.user });
+      onSuccess: ({ data }) => {
+        const user = data?.user;  
+        console.log("Update successful!", user);
+        setSession({ ...session, user: user });
+        // navigation.replace("BottomTabs", { role: "PATIENT" });
       },
       onError: (error) => {
         console.error("Update failed:", error);

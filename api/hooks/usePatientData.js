@@ -17,19 +17,19 @@ export const useFetchUser = (userId) => {
 };
 
 
-const PatientInfoUpdate = async(formData) => {
-  const { data } = await axiosInstance.patch(API_ENDPOINTS.patients.patientInfoUpdate, formData);
+const patientDetailForm = async(formData) => {
+  const { data } = await axiosInstance.post(API_ENDPOINTS.patients.patientDetailForm, formData);
   return data;
 }
 
-export const usePatientInfoUpdate = () => {
+export const usePatientDetailForm = () => {
   return useMutation({
-    mutationFn: PatientInfoUpdate,
+    mutationFn: patientDetailForm,
     onSuccess: (data) => {
-      console.log("infoUpdate Successful", data);
+      console.log("Detail form Successful", data);
     },
     onError: (error) => {
-      console.log("infoUpdate Failed", error);
+      console.log("Detail form Failed", error);
     },
   });
 }

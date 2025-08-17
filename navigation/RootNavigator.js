@@ -10,7 +10,7 @@ export default function RootNavigator() {
 
   if (!session) return <AuthNavigator />;
 
-  const userData = session?.user?.data;
+  const userData = session?.user;
 
   if (!userData) {
     return <AuthNavigator />;
