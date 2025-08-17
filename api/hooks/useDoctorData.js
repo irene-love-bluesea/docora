@@ -1,7 +1,6 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
 import { API_ENDPOINTS } from "../endpoints";
-
 
 const fetchPopularDoctors = async () => {
   const res = await axiosInstance.get(API_ENDPOINTS.patients.popularDoctors);
@@ -31,8 +30,7 @@ export const usePopularDoctors = () =>
       ),
   });
 
-
-  const fetchDoctor = async (userId) => {
+const fetchDoctor = async (userId) => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.doctors.profile);
   console.log("profile data", data);
   return data;
@@ -40,8 +38,39 @@ export const usePopularDoctors = () =>
 
 export const useFetchDoctor = (userId) => {
   return useQuery({
-    queryKey: ['user', userId], 
-    queryFn: () => fetchDoctor(userId), 
+    queryKey: ["user", userId],
+    queryFn: () => fetchDoctor(userId),
     enabled: !!userId,
+  });
+};
+
+const updateDoctorProfile = async (profileData) => {
+  const { data } = await axiosInstance.put(
+    API_ENDPOINTS.doctors.updateProfile, // Assuming this endpoint exists
+    profileData
+  );
+  return data;
+};
+
+export const useUpdateDoctorProfile = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateDoctorProfile,
+    onSuccess: (data, variables) => {
+      console.log("Doctor profile updated successfully");
+
+      // Invalidate and refetch doctor profile queries
+      queryClient.invalidateQueries({ queryKey: ["doctor"] });
+
+      // Optionally update the cache directly
+      // queryClient.setQueryData(['doctor', userId], data);
+    },
+    onError: (error) => {
+      console.log(
+        "Doctor profile update failed",
+        error?.response?.data ?? error?.message ?? error
+      );
+    },
   });
 };
