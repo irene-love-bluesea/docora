@@ -28,6 +28,9 @@ const ProfileEditModal = ({
     gender: "",
   });
 
+  const [bd, setBd] = React.useState(new Date());
+  const [birthDateSelected, setBirthDateSelected] = React.useState(false);
+
   useEffect(() => {
     if (visible) {
       setLocalFormData({
@@ -66,27 +69,34 @@ const ProfileEditModal = ({
   };
 
   const handleBirthdayChange = (event, selectedDate) => {
-    const currentDate = selectedDate || bd;
     setBirthOpen(Platform.OS === "ios");
     if (selectedDate) {
-      setBd(currentDate);
+      setBd(selectedDate);
       setBirthDateSelected(true);
-      // Automatically update age when birthday changes
-      const calculatedAge = calculateAge(currentDate);
-      handleLocalChange("age", calculatedAge);
     }
   };
 
  const handleSubmit = () => {
-  onFormChange("name", localFormData.name);
- 
-  onFormChange("birthday", bd.toISOString()); 
-  onFormChange("gender", localFormData.gender);
+  // Prepare the data to send
+  const dataToSubmit = {
+    name: localFormData.name,
+    gender: localFormData.gender,
+    birthday: null, // default
+  };
+
+  // Only include birthday data if a valid date was actually selected
+  if (birthDateSelected && bd && !isNaN(bd.getTime())) {
+    dataToSubmit.birthday = bd.toISOString();
+  }
+
+  // Update parent form data
+  onFormChange("name", dataToSubmit.name);
+  onFormChange("gender", dataToSubmit.gender);
+  onFormChange("birthday", dataToSubmit.birthday);
   
-  onSubmit();
+  // Call parent submit handler with the data directly
+  onSubmit(dataToSubmit);
 };
-
-
   const handleClose = () => {
     setLocalFormData({
       name: formData.name || "",
@@ -110,100 +120,89 @@ const ProfileEditModal = ({
     onClose();
   };
 
-  const [bd, setBd] = React.useState(new Date());
-  const [birthDateSelected, setBirthDateSelected] = React.useState(false);
-  const isVaildAge = calculateAge(bd) >= 15;
+  const isValidAge = calculateAge(bd) >= 15;
 
   return (
     <View>
       {userType === "patient" ? (
         <BaseModal visible={visible} onClose={handleClose} title="Edit Profile">
-      <FormField
-        label="Name"
-        value={localFormData.name}
-        onChangeText={(text) => handleLocalChange("name", text)}
-        placeholder="Enter your name"
-      />
-
-      <View className="mb-3 w-full">
-        <Text className="text-lg font-medium mb-2">Birthday *</Text>
-        <TouchableOpacity
-          onPress={() => {
-            setGenderOpen(false);
-            setBirthOpen(true);
-          }}
-        >
-          <View className="p-5 bg-white rounded-xl">
-            <Text>{birthDateSelected ? formatDate(bd) : "mm/dd/yyyy"}</Text>
-          </View>
-        </TouchableOpacity>
-        {birthOpen && (
-          <DateTimePicker
-            value={bd}
-            mode="date"
-            onChange={(event, selectedDate) => {
-              setBirthOpen(Platform.OS === "ios");
-              if (selectedDate) {
-                setBd(selectedDate);
-                setBirthDateSelected(true);
-              }
-            }}
-            maximumDate={new Date()}
+          <FormField
+            label="Name"
+            value={localFormData.name}
+            onChangeText={(text) => handleLocalChange("name", text)}
+            placeholder="Enter your name"
           />
-        )}
-        {!isVaildAge && birthDateSelected && (
-          <Text className="text-md text-red-500 mt-2">
-            * You should be at least 15 years old.
-          </Text>
-        )}
-      </View>
 
-      <View className="px-2 w-full mb-2">
-        <Text className="text-lg font-medium mb-2">Gender</Text>
-        <Dropdown
-          data={genderOptions}
-          open={genderOpen}
-          setOpen={setGenderOpen}
-          value={localFormData.gender}
-          setValue={(callback) => {
-            const newValue =
-              typeof callback === "function"
-                ? callback(localFormData.gender)
-                : callback;
-            handleLocalChange("gender", newValue);
-          }}
-          placeholder="Select your gender"
-          onOpen={() => setBirthOpen(false)}
-        />
-      </View>
+          <View className="mb-3 w-full">
+            <Text className="text-lg font-medium mb-2">Birthday *</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setGenderOpen(false);
+                setBirthOpen(true);
+              }}
+            >
+              <View className="p-5 bg-white rounded-xl">
+                <Text>{birthDateSelected ? formatDate(bd) : "mm/dd/yyyy"}</Text>
+              </View>
+            </TouchableOpacity>
+            {birthOpen && (
+              <DateTimePicker
+                value={bd}
+                mode="date"
+                onChange={handleBirthdayChange}
+                maximumDate={new Date()}
+              />
+            )}
+            {!isValidAge && birthDateSelected && (
+              <Text className="text-md text-red-500 mt-2">
+                * You should be at least 15 years old.
+              </Text>
+            )}
+          </View>
 
-      <CustomButton
-        title="Confirm"
-        width="w-[60%]"
-        variant="green"
-        onPress={handleSubmit}
-        disabled={birthDateSelected && !isVaildAge}
-      />
-    </BaseModal>
-      ):(
+          <View className="px-2 w-full mb-2">
+            <Text className="text-lg font-medium mb-2">Gender</Text>
+            <Dropdown
+              data={genderOptions}
+              open={genderOpen}
+              setOpen={setGenderOpen}
+              value={localFormData.gender}
+              setValue={(callback) => {
+                const newValue =
+                  typeof callback === "function"
+                    ? callback(localFormData.gender)
+                    : callback;
+                handleLocalChange("gender", newValue);
+              }}
+              placeholder="Select your gender"
+              onOpen={() => setBirthOpen(false)}
+            />
+          </View>
+
+          <CustomButton
+            title="Confirm"
+            width="w-[60%]"
+            variant="green"
+            onPress={handleSubmit}
+            disabled={birthDateSelected && !isValidAge}
+          />
+        </BaseModal>
+      ) : (
         <BaseModal visible={visible} onClose={handleClose} title="Edit Name">
-      <FormField
-        label="Name"
-        value={localFormData.name}
-        onChangeText={(text) => handleLocalChange("name", text)}
-        placeholder="Enter your name"
-      />
-      <CustomButton
-        title="Confirm"
-        width="w-[60%]"
-        variant="green"
-        onPress={handleSubmit}
-        disabled={localFormData.name === ""}
-      />
-    </BaseModal>
-
-
-
+          <FormField
+            label="Name"
+            value={localFormData.name}
+            onChangeText={(text) => handleLocalChange("name", text)}
+            placeholder="Enter your name"
+          />
+          <CustomButton
+            title="Confirm"
+            width="w-[60%]"
+            variant="green"
+            onPress={handleSubmit}
+            disabled={localFormData.name === ""}
+          />
+        </BaseModal>
       )}
     </View>
   );
