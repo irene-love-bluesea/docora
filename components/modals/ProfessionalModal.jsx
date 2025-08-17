@@ -52,14 +52,18 @@ const ProfessionalModal = ({
   };
 
   const handleSubmit = () => {
+    // Update parent component's form data
     onFormChange("experience", localFormData.experience);
     onFormChange("specialty", localFormData.specialty);
     onFormChange("workPlace", localFormData.workPlace);
     onFormChange("graduated", localFormData.graduated);
-    onSubmit();
+    
+    // Call parent's submit handler with the modal data
+    onSubmit(localFormData);
   };
 
   const handleClose = () => {
+    // Reset local form data to match parent's form data
     setLocalFormData({
       experience: formData.experience || "",
       specialty: formData.specialty || "",
