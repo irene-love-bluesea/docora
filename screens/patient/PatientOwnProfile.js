@@ -84,7 +84,7 @@ const getContactInfoConfig = (contactData) => [
     title: "Email",
     icon: { name: "mail", library: "Ionicons", color: "#023E8A" },
     bgColor: "bg-secondary",
-    value: contactData.email,
+    value: contactData.email || "Not specified",
   },
   {
     id: "phone",
@@ -95,14 +95,14 @@ const getContactInfoConfig = (contactData) => [
       color: "#023E8A",
     },
     bgColor: "bg-secondary",
-    value: contactData.phone,
+    value: contactData.phone || "Not specified",
   },
   {
     id: "address",
     title: "Address",
     icon: { name: "home", library: "MaterialCommunityIcons", color: "#023E8A" },
     bgColor: "bg-secondary",
-    value: contactData.address,
+    value: contactData.address || "Not specified",
   },
 ];
 
@@ -219,7 +219,6 @@ export default function PatientOwnProfile({ navigation, session }) {
   const handleLogout = async () => {
     await logout();
 
-   
     await logout();
   };
 
@@ -349,20 +348,17 @@ export default function PatientOwnProfile({ navigation, session }) {
       updatePayload.age = calculatedAge;
     }
 
-    // Remove undefined fields
     Object.keys(updatePayload).forEach(
       (key) => updatePayload[key] === undefined && delete updatePayload[key]
     );
 
-    console.log("Profile Update Payload:", updatePayload); // Debug log
+    // console.log("Profile Update Payload:", updatePayload);
 
-    // Call the update mutation
     updateProfile(updatePayload, {
       onSuccess: (data) => {
         setProfileModalVisible(false);
         Alert.alert("Success", "Profile updated successfully!");
 
-        // Update local state with the response data if available
         if (data?.data) {
           const userData = data.data;
           setProfileData({
@@ -385,18 +381,17 @@ export default function PatientOwnProfile({ navigation, session }) {
 
     const updatePayload = {
       email: currentData.email || undefined,
-      phone: currentData.phone || undefined, // Backend expects 'phone', not 'phoneNumber'
+      phone: currentData.phone || undefined,
       address: currentData.address || undefined,
     };
 
-    // Remove empty/undefined fields
     Object.keys(updatePayload).forEach(
       (key) =>
         (!updatePayload[key] || updatePayload[key].trim() === "") &&
         delete updatePayload[key]
     );
 
-    console.log("Contact Update Payload:", updatePayload); // Debug log
+    // console.log("Contact Update Payload:", updatePayload);
 
     updateProfile(updatePayload, {
       onSuccess: (data) => {
@@ -447,7 +442,7 @@ export default function PatientOwnProfile({ navigation, session }) {
       }
     });
 
-    console.log("Medical Update Payload:", updatePayload); // Debug log
+    // console.log("Medical Update Payload:", updatePayload);
 
     updateProfile(updatePayload, {
       onSuccess: (data) => {

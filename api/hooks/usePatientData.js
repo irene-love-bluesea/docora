@@ -4,7 +4,7 @@ import { API_ENDPOINTS } from "../endpoints";
 
 const fetchUser = async () => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.patients.profile);
-  console.log("profile data", data);
+  // console.log("profile data", data);
   return data;
 };
 
@@ -21,7 +21,7 @@ const updatePatientProfile = async (profileData) => {
   const { data } = await axiosInstance.patch(
     API_ENDPOINTS.patients.patientInfoUpdate,
     profileData
-  );
+  ); 
   return data;
 };
 

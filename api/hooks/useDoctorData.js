@@ -22,17 +22,17 @@ const fetchPopularDoctors = async () => {
 export const usePopularDoctors = () =>
   useMutation({
     mutationFn: fetchPopularDoctors,
-    onSuccess: (arr) => console.log("Doctors Retrieved"),
+    onSuccess: (arr) => console.log("Doctors Fetched"),
     onError: (e) =>
       console.log(
-        "Doctor Retrieve Failed",
+        "Doctor Fetched Failed",
         e?.response?.data ?? e?.message ?? e
       ),
   });
 
 const fetchDoctor = async (userId) => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.doctors.profile);
-  console.log("profile data", data);
+  // console.log("profile data", data);
   return data;
 };
 
@@ -45,8 +45,8 @@ export const useFetchDoctor = (userId) => {
 };
 
 const updateDoctorProfile = async (profileData) => {
-  const { data } = await axiosInstance.put(
-    API_ENDPOINTS.doctors.updateProfile, // Assuming this endpoint exists
+  const { data } = await axiosInstance.patch(
+    API_ENDPOINTS.doctors.profileUpdate,
     profileData
   );
   return data;
@@ -61,7 +61,10 @@ export const useUpdateDoctorProfile = () => {
       console.log("Doctor profile updated successfully");
 
       // Invalidate and refetch doctor profile queries
-      queryClient.invalidateQueries({ queryKey: ["doctor"] });
+       queryClient.invalidateQueries({ 
+        queryKey: ['user'],
+        exact: false // This ensures all queries starting with ['user'] are invalidated
+      });
 
       // Optionally update the cache directly
       // queryClient.setQueryData(['doctor', userId], data);

@@ -28,7 +28,10 @@ import {
   specialityRole,
 } from "../../constant/data/doctorDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
-import { useFetchDoctor } from "../../api/hooks/useDoctorData"; // Assuming this hook exists
+import {
+  useFetchDoctor,
+  useUpdateDoctorProfile,
+} from "../../api/hooks/useDoctorData";
 import { useAuth } from "../../components/Providers/AuthProvider";
 
 // Contact info configuration
@@ -67,7 +70,9 @@ const getProfessionalInfoConfig = (professionalData) => [
     title: "Year of Experience",
     icon: { name: "user-doctor", library: "FontAwesome6", color: "orange" },
     bgColor: "bg-orange-100",
-    value: professionalData.experience ? `${professionalData.experience} Years` : "Not specified",
+    value: professionalData.experience
+      ? `${professionalData.experience} Years`
+      : "Not specified",
   },
   {
     id: "special",
@@ -141,8 +146,14 @@ export default function DoctorOwnProfile({ navigation, session }) {
     React.useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
-  const { session: auth } = useAuth();
+  const { session: auth, logout } = useAuth();
   const { data: doctor, isLoading, isError, error } = useFetchDoctor(auth);
+  const {
+    mutate: updateProfile,
+    mutateAsync: updateProfileAsync,
+    isPending: isUpdating,
+    error: updateError,
+  } = useUpdateDoctorProfile();
 
   // Form states - Initialize with empty values first
   const [profileData, setProfileData] = React.useState({
@@ -168,7 +179,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
   React.useEffect(() => {
     if (doctor?.data) {
       const doctorData = doctor.data;
-      
+
       setProfileData({
         name: doctorData.name || "",
         age: doctorData.age || "",
@@ -213,21 +224,161 @@ export default function DoctorOwnProfile({ navigation, session }) {
     setProfessionalData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Submit handlers
-  const handleProfileSubmit = () => {
-    setProfileModalVisible(false);
+  // Submit handlers - Updated to actually call API
+  const handleProfileSubmit = (modalData = null) => {
+    // Use modalData if provided (from modal), otherwise use current profileData
+    const currentData = modalData || profileData;
+
+    // Prepare update payload - use exact field names that backend expects
+    const updatePayload = {
+      name: currentData.name,
+      gender: currentData.gender,
+      profile_url: profilePhoto?.uri || undefined,
+    };
+
+    // Only include dateOfBirth and age if birthday is actually provided
+    if (currentData.birthday) {
+      // Calculate age from birthday
+      const today = new Date();
+      const birthDate = new Date(currentData.birthday);
+      let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        calculatedAge--;
+      }
+
+      updatePayload.dateOfBirth = new Date(currentData.birthday).toISOString();
+      updatePayload.age = calculatedAge;
+    }
+
+    Object.keys(updatePayload).forEach(
+      (key) => updatePayload[key] === undefined && delete updatePayload[key]
+    );
+
+    // console.log("Doctor Profile Update Payload:", updatePayload); 
+
+    updateProfile(updatePayload, {
+      onSuccess: (data) => {
+        setProfileModalVisible(false);
+        Alert.alert("Success", "Profile updated successfully!");
+
+        if (data?.data) {
+          const doctorData = data.data;
+          setProfileData({
+            name: doctorData.name || currentData.name,
+            age: doctorData.age || currentData.age,
+            gender: doctorData.gender || currentData.gender,
+            birthday: doctorData.dateOfBirth || currentData.birthday,
+          });
+        }
+      },
+      onError: (error) => {
+        console.error("Doctor profile update error:", error);
+        Alert.alert("Error", "Failed to update profile. Please try again.");
+      },
+    });
   };
 
-  const handleContactSubmit = () => {
-    setContactModalVisible(false);
+  const handleContactSubmit = (modalData = null) => {
+    const currentData = modalData || contactData;
+
+    const updatePayload = {
+      email: currentData.email || undefined,
+      phone: currentData.phone || undefined,
+      address: currentData.address || undefined,
+    };
+
+    Object.keys(updatePayload).forEach(
+      (key) =>
+        (!updatePayload[key] || updatePayload[key].trim() === "") &&
+        delete updatePayload[key]
+    );
+
+    // console.log("Doctor Contact Update Payload:", updatePayload);
+
+    updateProfile(updatePayload, {
+      onSuccess: (data) => {
+        setContactModalVisible(false);
+        Alert.alert("Success", "Contact information updated successfully!");
+
+        if (data?.data) {
+          const doctorData = data.data;
+          setContactData({
+            email: doctorData.email || currentData.email,
+            phone:
+              doctorData.phoneNumber || doctorData.phone || currentData.phone,
+            address: doctorData.address || currentData.address,
+          });
+        }
+      },
+      onError: (error) => {
+        console.error("Doctor contact update error:", error);
+        Alert.alert(
+          "Error",
+          "Failed to update contact information. Please try again."
+        );
+      },
+    });
   };
 
-  const handleProfessionalSubmit = () => {
-    setProfessionalModalVisible(false);
+  const handleProfessionalSubmit = (modalData = null) => {
+    const currentData = modalData || professionalData;
+
+    const updatePayload = {
+      yearOfExperience: currentData.experience || undefined,
+      speciality: currentData.specialty || undefined,
+      workPlace: currentData.workPlace || undefined,
+      graduateSchool: currentData.graduated || undefined,
+    };
+
+    // Remove empty/undefined fields
+    Object.keys(updatePayload).forEach(
+      (key) =>
+        (!updatePayload[key] || updatePayload[key].trim() === "") &&
+        delete updatePayload[key]
+    );
+
+    // console.log("Doctor Professional Update Payload:", updatePayload);
+
+    updateProfile(updatePayload, {
+      onSuccess: (data) => {
+        setProfessionalModalVisible(false);
+        Alert.alert(
+          "Success",
+          "Professional information updated successfully!"
+        );
+
+        if (data?.data) {
+          const doctorData = data.data;
+          setProfessionalData({
+            experience: doctorData.yearOfExp || currentData.experience,
+            specialty: doctorData.specialty || currentData.specialty,
+            workPlace:
+              doctorData.workPlace ||
+              doctorData.currentWorkPlace ||
+              currentData.workPlace,
+            graduated:
+              doctorData.graduateSchool ||
+              doctorData.education ||
+              currentData.graduated,
+          });
+        }
+      },
+      onError: (error) => {
+        console.error("Doctor professional update error:", error);
+        Alert.alert(
+          "Error",
+          "Failed to update professional information. Please try again."
+        );
+      },
+    });
   };
 
-  const handleLogout = () => {
-    console.log("User logged out");
+  const handleLogout = async () => {
+    await logout();
   };
 
   // Image picker functions
@@ -314,7 +465,10 @@ export default function DoctorOwnProfile({ navigation, session }) {
 
   if (isLoading) {
     return (
-      <View style={{ paddingTop: insets.top }} className="bg-background flex-1 justify-center items-center">
+      <View
+        style={{ paddingTop: insets.top }}
+        className="bg-background flex-1 justify-center items-center"
+      >
         <Text className="text-lg">Loading profile...</Text>
       </View>
     );
@@ -322,8 +476,13 @@ export default function DoctorOwnProfile({ navigation, session }) {
 
   if (isError) {
     return (
-      <View style={{ paddingTop: insets.top }} className="bg-background flex-1 justify-center items-center">
-        <Text className="text-lg text-red-500">Error loading profile: {error?.message}</Text>
+      <View
+        style={{ paddingTop: insets.top }}
+        className="bg-background flex-1 justify-center items-center"
+      >
+        <Text className="text-lg text-red-500">
+          Error loading profile: {error?.message}
+        </Text>
       </View>
     );
   }
@@ -405,6 +564,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
           />
         </View>
       </ScrollView>
+
       {/* Modals */}
       <ProfileEditModal
         visible={profileModalVisible}
@@ -418,6 +578,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
         birthOpen={birthOpen}
         setBirthOpen={setBirthOpen}
         userType="doctor"
+        isLoading={isUpdating}
       />
 
       <ProfessionalModal
@@ -432,6 +593,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
         specialtyOptions={specialityRole}
         specialtyOpen={specialtyOpen}
         setSpecialtyOpen={setSpecialtyOpen}
+        isLoading={isUpdating}
       />
 
       <ContactEditModal
@@ -440,7 +602,9 @@ export default function DoctorOwnProfile({ navigation, session }) {
         formData={contactData}
         onFormChange={handleContactChange}
         onSubmit={handleContactSubmit}
+        isLoading={isUpdating}
       />
+
       <LogoutModal
         visible={logoutModalVisible}
         onClose={() => setLogoutModalVisible(false)}
