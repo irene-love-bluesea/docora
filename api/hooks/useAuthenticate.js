@@ -16,10 +16,15 @@ export const useSignUpUser = () => {
     mutationFn: signUpUser,
     onSuccess: (data) => {
       console.log("SignUp Successful", data);
-      
     },
     onError: (error) => {
-      console.log("SignUp Failed", error);
+      if (error.response) {
+        console.log("SignUp Failed:", error.response.data);
+        console.log("Status Code:", error.response.status);
+      } else {
+        // Handle network errors or other issues where the server didn't respond
+        console.log("An unexpected error occurred:", error.message);
+      }
     },
   });
 };
