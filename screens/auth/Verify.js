@@ -26,7 +26,7 @@ export default function VerifyScreen({ navigation, route }) {
 
     try {
       await verifyOTPMutation.mutateAsync(otpData);
-      navigation.navigate("RoleSelector");
+      navigation.navigate("Login", { email: email });
     } catch (error) {
       const errorMessage =
         error.response?.data?.message ||

@@ -28,7 +28,7 @@ export default function SignUpScreen({ navigation }) {
       const data = await signupMutation.mutateAsync(userData);
 
       console.log("Sign up successful, navigating...", data);
-      navigation.navigate('Verify');
+      navigation.navigate('Verify', {email: email, name: fullName});
 
     } catch (error) {
       let message = "Sign up failed. Please try again.";
