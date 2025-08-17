@@ -6,16 +6,18 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useSignUpUser } from "../../api/hooks/useAuthenticate";
 
 export default function SignUpScreen({ navigation }) {
-  const [fullName, setFullName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [fullName, setFullName] = React.useState("aye aye");
+  const [email, setEmail] = React.useState("ayeminaung.mf@gmail.com");
+  const [password, setPassword] = React.useState("password123");
   const [isChecked, setChecked] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
   const isFormValid =
     fullName !== "" && email !== "" && password !== "" && isChecked === true;
   const signupMutation = useSignUpUser();
 
   const handleSignUp = async () => {
+    setErrorMessage("");
     const userData = {
       name: fullName.trim(),
       email: email.toLowerCase().trim(),
@@ -23,20 +25,36 @@ export default function SignUpScreen({ navigation }) {
     };
 
     try {
-      await signupMutation.mutateAsync(userData);
-      navigation.navigate("Verify", { email: userData.email, name: userData.name });
-    } catch (error) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong. Please try again.";
+      const data = await signupMutation.mutateAsync(userData);
 
-      Alert.alert("Signup Failed", errorMessage);
+      console.log("Sign up successful, navigating...", data);
+      navigation.navigate('Verify');
+
+    } catch (error) {
+      let message = "Sign up failed. Please try again.";
+      
+      if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        message = error.response.data.error;
+      } else if (error.message) {
+        message = error.message;
+      }
+      setErrorMessage(message);
     }
   };
 
   return (
     <View className="flex-1 justify-start items-center px-5 bg-background">
+      {/* Error Message Display */}
+      {errorMessage ? (
+        <View className="w-full mt-5">
+          <Text className="text-red-500 text-md text-center bg-red-50 px-3 py-2 rounded-lg border border-red-200">
+            {errorMessage}
+          </Text>
+        </View>
+      ) : null}
+
       <View className="w-full mt-5">
         <Text className="text-lg text-left font-medium mb-2">Full Name</Text>
       </View>
@@ -91,7 +109,7 @@ export default function SignUpScreen({ navigation }) {
           </Text>
         </TouchableOpacity>
       </View>
-       <CustomButton
+      <CustomButton
         title={signupMutation.isPending ? "Signing Up..." : "Sign Up"}
         variant="primary"
         disabled={!isFormValid || signupMutation.isPending}

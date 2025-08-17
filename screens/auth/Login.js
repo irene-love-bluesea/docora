@@ -18,6 +18,7 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("password123");
   const [isChecked, setChecked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const isFormValid = email !== "" && password !== "";
 
   const { login } = useAuth();
@@ -34,15 +35,38 @@ const LoginScreen = ({ navigation }) => {
   });
 
   const handleLogIn = async () => {
+    setErrorMessage("");
     const userData = {
       email: email.toLowerCase().trim(),
       password: password,
     };
-    await loginMutation.mutateAsync(userData);
+    try {
+      await loginMutation.mutateAsync(userData);
+    } catch (error) {
+      let message = "Login failed. Please try again.";
+      
+      if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.response?.data?.error) {
+        message = error.response.data.error;
+      } else if (error.message) {
+        message = error.message;
+      }
+      setErrorMessage(message);
+    }
   };
 
   return (
     <View className="  flex-1 justify-start items-center  px-5 bg-background ">
+      {/* Error Message Display */}
+      {errorMessage ? (
+        <View className="w-full mt-5">
+          <Text className="text-red-500 text-md text-center bg-red-50 px-3 py-2 rounded-lg border border-red-200">
+            {errorMessage}
+          </Text>
+        </View>
+      ) : null}
+
       <View className="mb-3 w-full mt-3">
         <Text className="text-lg font-medium mb-2">Email</Text>
         <TextInput

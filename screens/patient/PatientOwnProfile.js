@@ -151,6 +151,7 @@ export default function PatientOwnProfile({ navigation, session }) {
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
   const { session: auth, logout } = useAuth();
+
   const { data: user, isLoading, isError, error } = useFetchUser(auth);
   const {
     mutate: updateProfile,
@@ -217,7 +218,9 @@ export default function PatientOwnProfile({ navigation, session }) {
 
   const handleLogout = async () => {
     await logout();
-    console.log("User logged out");
+
+   
+    await logout();
   };
 
   // Image picker functions
