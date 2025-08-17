@@ -29,7 +29,10 @@ import {
   chronical,
 } from "./../../constant/data/patientDetails";
 import LogoutModal from "../../components/modals/LogOutModal";
-import { useFetchUser ,useUpdatePatientProfile} from "../../api/hooks/usePatientData";
+import {
+  useFetchUser,
+  useUpdatePatientProfile,
+} from "../../api/hooks/usePatientData";
 import { useAuth } from "../../components/Providers/AuthProvider";
 
 // Medical info configuration for reusable rendering
@@ -103,7 +106,6 @@ const getContactInfoConfig = (contactData) => [
   },
 ];
 
-
 // Reusable Info Row Component
 const InfoRow = ({ item }) => {
   const IconComponent =
@@ -148,15 +150,14 @@ export default function PatientOwnProfile({ navigation, session }) {
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
-  const { session: auth } = useAuth();
+  const { session: auth, logout } = useAuth();
   const { data: user, isLoading, isError, error } = useFetchUser(auth);
-   const { 
-    mutate: updateProfile, 
+  const {
+    mutate: updateProfile,
     mutateAsync: updateProfileAsync,
-    isPending: isUpdating, 
-    error: updateError 
+    isPending: isUpdating,
+    error: updateError,
   } = useUpdatePatientProfile();
-
 
   // Form states - Initialize with empty values first
   const [profileData, setProfileData] = React.useState({
@@ -181,7 +182,7 @@ export default function PatientOwnProfile({ navigation, session }) {
   React.useEffect(() => {
     if (user?.data) {
       const userData = user.data;
-      
+
       setProfileData({
         name: userData.name || "",
         age: userData.age || "",
@@ -214,7 +215,8 @@ export default function PatientOwnProfile({ navigation, session }) {
   const [chronicOpen, setChronicOpen] = React.useState(false);
   const [birthOpen, setBirthOpen] = React.useState(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
     console.log("User logged out");
   };
 
@@ -311,98 +313,173 @@ export default function PatientOwnProfile({ navigation, session }) {
     setMedicalData((prev) => ({ ...prev, [field]: value }));
   };
 
-    // Submit handlers
+  // Submit handlers
 
-  const handleProfileSubmit = () => {
-  // Prepare update payload - map frontend fields to backend expected fields
-  const updatePayload = {
-    name: profileData.name,
-    gender: profileData.gender,
-    // Use date_of_birth instead of age, and get it from the birthday field
-    date_of_birth: profileData.birthday ? new Date(profileData.birthday) : undefined,
-    profile_url: profilePhoto?.uri || undefined,
-    // Remove age from the payload since backend doesn't accept it
-  };
+  // Fixed handleProfileSubmit function in PatientOwnProfile.jsx
 
-  // Remove undefined fields
-  Object.keys(updatePayload).forEach(key => 
-    updatePayload[key] === undefined && delete updatePayload[key]
-  );
+  const handleProfileSubmit = (modalData = null) => {
+    // Use modalData if provided (from modal), otherwise use current profileData
+    const currentData = modalData || profileData;
 
-  console.log("Profile Update Payload:", updatePayload); // Debug log
-
-  // Call the update mutation
-  updateProfile(updatePayload, {
-    onSuccess: () => {
-      setProfileModalVisible(false);
-      Alert.alert("Success", "Profile updated successfully!");
-    },
-    onError: (error) => {
-      console.error("Profile update error:", error);
-      Alert.alert("Error", "Failed to update profile. Please try again.");
-    }
-  });
-};
-
-const handleContactSubmit = () => {
-    // Map frontend fields to backend expected fields
+    // Prepare update payload - use exact field names that backend expects
     const updatePayload = {
-      email: contactData.email,
-      phone: contactData.phone, // Backend expects 'phone', not 'phoneNumber'
-      address: contactData.address,
+      name: currentData.name,
+      gender: currentData.gender,
+      profile_url: profilePhoto?.uri || undefined,
     };
 
-    // Remove empty fields
-    Object.keys(updatePayload).forEach(key => 
-      !updatePayload[key] && delete updatePayload[key]
+    // Only include dateOfBirth and age if birthday is actually provided
+    if (currentData.birthday) {
+      // Calculate age from birthday
+      const today = new Date();
+      const birthDate = new Date(currentData.birthday);
+      let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+      const monthDiff = today.getMonth() - birthDate.getMonth();
+      if (
+        monthDiff < 0 ||
+        (monthDiff === 0 && today.getDate() < birthDate.getDate())
+      ) {
+        calculatedAge--;
+      }
+
+      updatePayload.dateOfBirth = new Date(currentData.birthday).toISOString();
+      updatePayload.age = calculatedAge;
+    }
+
+    // Remove undefined fields
+    Object.keys(updatePayload).forEach(
+      (key) => updatePayload[key] === undefined && delete updatePayload[key]
     );
 
+    console.log("Profile Update Payload:", updatePayload); // Debug log
+
+    // Call the update mutation
     updateProfile(updatePayload, {
-      onSuccess: () => {
-        setContactModalVisible(false);
-        Alert.alert("Success", "Contact information updated successfully!");
+      onSuccess: (data) => {
+        setProfileModalVisible(false);
+        Alert.alert("Success", "Profile updated successfully!");
+
+        // Update local state with the response data if available
+        if (data?.data) {
+          const userData = data.data;
+          setProfileData({
+            name: userData.name || currentData.name,
+            age: userData.age || currentData.age,
+            gender: userData.gender || currentData.gender,
+            birthday: userData.dateOfBirth || currentData.birthday,
+          });
+        }
       },
       onError: (error) => {
-        console.error("Contact update error:", error);
-        Alert.alert("Error", "Failed to update contact information. Please try again.");
-      }
+        console.error("Profile update error:", error);
+        Alert.alert("Error", "Failed to update profile. Please try again.");
+      },
     });
   };
 
-   const handleMedicalSubmit = () => {
-    // Map frontend fields to backend expected fields
+  const handleContactSubmit = (modalData = null) => {
+    const currentData = modalData || contactData;
+
     const updatePayload = {
-      bloodType: medicalData.bloodType,
-      allergies: medicalData.allergies,
-      chronicConditions: medicalData.chronic, // Backend expects 'chronicConditions'
-      currentMedications: medicalData.medications, // Backend expects 'currentMedications'
+      email: currentData.email || undefined,
+      phone: currentData.phone || undefined, // Backend expects 'phone', not 'phoneNumber'
+      address: currentData.address || undefined,
     };
 
-    // Remove empty fields
-    Object.keys(updatePayload).forEach(key => {
-      if (!updatePayload[key] || (Array.isArray(updatePayload[key]) && updatePayload[key].length === 0)) {
+    // Remove empty/undefined fields
+    Object.keys(updatePayload).forEach(
+      (key) =>
+        (!updatePayload[key] || updatePayload[key].trim() === "") &&
+        delete updatePayload[key]
+    );
+
+    console.log("Contact Update Payload:", updatePayload); // Debug log
+
+    updateProfile(updatePayload, {
+      onSuccess: (data) => {
+        setContactModalVisible(false);
+        Alert.alert("Success", "Contact information updated successfully!");
+
+        if (data?.data) {
+          const userData = data.data;
+          setContactData({
+            email: userData.email || currentData.email,
+            phone: userData.phoneNumber || userData.phone || currentData.phone,
+            address: userData.address || currentData.address,
+          });
+        }
+      },
+      onError: (error) => {
+        console.error("Contact update error:", error);
+        Alert.alert(
+          "Error",
+          "Failed to update contact information. Please try again."
+        );
+      },
+    });
+  };
+
+  const handleMedicalSubmit = (modalData = null) => {
+    const currentData = modalData || medicalData;
+
+    const updatePayload = {
+      bloodType: currentData.bloodType || undefined,
+      allergies:
+        currentData.allergies && currentData.allergies.length > 0
+          ? currentData.allergies
+          : undefined,
+      chronicConditions:
+        currentData.chronic && currentData.chronic.length > 0
+          ? currentData.chronic
+          : undefined,
+      currentMedications: currentData.medications || undefined,
+    };
+
+    Object.keys(updatePayload).forEach((key) => {
+      if (
+        !updatePayload[key] ||
+        (Array.isArray(updatePayload[key]) && updatePayload[key].length === 0)
+      ) {
         delete updatePayload[key];
       }
     });
 
+    console.log("Medical Update Payload:", updatePayload); // Debug log
+
     updateProfile(updatePayload, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setMedicalModalVisible(false);
         Alert.alert("Success", "Medical information updated successfully!");
+
+        if (data?.data) {
+          const patientData = data.data;
+          setMedicalData({
+            bloodType: patientData.bloodType || currentData.bloodType,
+            allergies: patientData.allergies || currentData.allergies,
+            chronic: patientData.chronicConditions || currentData.chronic,
+            medications:
+              patientData.currentMedications || currentData.medications,
+          });
+        }
       },
       onError: (error) => {
         console.error("Medical update error:", error);
-        Alert.alert("Error", "Failed to update medical information. Please try again.");
-      }
+        Alert.alert(
+          "Error",
+          "Failed to update medical information. Please try again."
+        );
+      },
     });
   };
-
 
   const insets = useSafeAreaInsets();
 
   if (isLoading) {
     return (
-      <View style={{ paddingTop: insets.top }} className="bg-background flex-1 justify-center items-center">
+      <View
+        style={{ paddingTop: insets.top }}
+        className="bg-background flex-1 justify-center items-center"
+      >
         <Text className="text-lg">Loading profile...</Text>
       </View>
     );
@@ -476,7 +553,6 @@ const handleContactSubmit = () => {
             onEdit={() => setMedicalModalVisible(true)}
           />
 
-
           <SettingCard onLogoutPress={() => setLogoutModalVisible(true)} />
         </View>
       </ScrollView>
@@ -502,8 +578,8 @@ const handleContactSubmit = () => {
         onClose={() => setContactModalVisible(false)}
         formData={contactData}
         onFormChange={handleContactChange}
-        isLoading={isUpdating}
         onSubmit={handleContactSubmit}
+        isLoading={isUpdating}
       />
 
       <MedicalEditModal

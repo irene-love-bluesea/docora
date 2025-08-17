@@ -19,7 +19,7 @@ export const useFetchUser = (userId) => {
 
 const updatePatientProfile = async (profileData) => {
   const { data } = await axiosInstance.patch(
-    API_ENDPOINTS.patients.patientInfoUpdate, // Assuming this endpoint exists
+    API_ENDPOINTS.patients.patientInfoUpdate,
     profileData
   );
   return data;
@@ -33,11 +33,12 @@ export const useUpdatePatientProfile = () => {
     onSuccess: (data, variables) => {
       console.log("Patient profile updated successfully");
       
-      // Invalidate and refetch user profile queries
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-      
-      // Optionally update the cache directly
-      // queryClient.setQueryData(['user', userId], data);
+      // Method 1: Invalidate all user queries (this will refetch the data)
+      queryClient.invalidateQueries({ 
+        queryKey: ['user'],
+        exact: false // This ensures all queries starting with ['user'] are invalidated
+      });
+    
     },
     onError: (error) => {
       console.log(
@@ -47,7 +48,6 @@ export const useUpdatePatientProfile = () => {
     },
   });
 };
-
 
 const patientDetailForm = async(formData) => {
   const { data } = await axiosInstance.post(API_ENDPOINTS.patients.patientDetailForm, formData);

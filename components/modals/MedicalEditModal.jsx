@@ -20,6 +20,7 @@ const MedicalEditModal = ({
   chronicOptions,
   chronicOpen,
   setChronicOpen,
+  isLoading,
 }) => {
   const [localFormData, setLocalFormData] = useState({
     bloodType: "",
@@ -27,48 +28,51 @@ const MedicalEditModal = ({
     chronic: [],
     medications: "",
   });
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    if (visible && !isInitialized) {
+    if (visible) {
       setLocalFormData({
         bloodType: formData.bloodType || "",
         allergies: Array.isArray(formData.allergies) ? formData.allergies : [],
         chronic: Array.isArray(formData.chronic) ? formData.chronic : [],
         medications: formData.medications || "",
       });
-      setIsInitialized(true);
-    } else if (!visible) {
-      setIsInitialized(false);
     }
-  }, [
-    visible,
-    formData.bloodType,
-    formData.allergies,
-    formData.chronic,
-    formData.medications,
-    isInitialized,
-  ]);
+  }, [visible, formData]);
 
   const handleLocalChange = (field, value) => {
     setLocalFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = () => {
-    onFormChange("bloodType", localFormData.bloodType);
-    onFormChange("allergies", localFormData.allergies);
-    onFormChange("chronic", localFormData.chronic);
-    onFormChange("medications", localFormData.medications);
-    onSubmit();
+    // Prepare the data to send
+    const dataToSubmit = {
+      bloodType: localFormData.bloodType,
+      allergies: localFormData.allergies,
+      chronic: localFormData.chronic,
+      medications: localFormData.medications,
+    };
+
+    // Update parent form data
+    onFormChange("bloodType", dataToSubmit.bloodType);
+    onFormChange("allergies", dataToSubmit.allergies);
+    onFormChange("chronic", dataToSubmit.chronic);
+    onFormChange("medications", dataToSubmit.medications);
+    
+    // Call parent submit handler with the data directly
+    onSubmit(dataToSubmit);
   };
 
   const handleClose = () => {
+    // Reset to original form data
     setLocalFormData({
       bloodType: formData.bloodType || "",
-      allergies: formData.allergies || [],
-      chronic: formData.chronic || [],
+      allergies: Array.isArray(formData.allergies) ? formData.allergies : [],
+      chronic: Array.isArray(formData.chronic) ? formData.chronic : [],
       medications: formData.medications || "",
     });
+    
+    // Close all dropdowns
     setBloodTypeOpen(false);
     setAllergyOpen(false);
     setChronicOpen(false);
@@ -158,6 +162,8 @@ const MedicalEditModal = ({
         value={localFormData.medications}
         onChangeText={(text) => handleLocalChange("medications", text)}
         placeholder="Enter current medications (comma separated)"
+        multiline={true}
+        numberOfLines={3}
       />
 
       <CustomButton
@@ -165,6 +171,7 @@ const MedicalEditModal = ({
         width="w-[60%]"
         variant="green"
         onPress={handleSubmit}
+        disabled={isLoading}
       />
     </BaseModal>
   );
