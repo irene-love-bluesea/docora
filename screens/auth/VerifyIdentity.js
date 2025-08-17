@@ -25,6 +25,7 @@ import {
   specialtyRole,
 } from "../../constant/data/doctorDetails";
 import { deleteFile, getFileURL, uploadFile } from "../../utils/fileUpload";
+import { useAuth } from "../../components/Providers/AuthProvider";
 
 const VerifyIdentity = ({ navigation }) => {
   const [licenseNo, setlicenseNo] = useState("US-MED-84321A");
@@ -51,12 +52,13 @@ const VerifyIdentity = ({ navigation }) => {
   const [medicalCertificatePath, setMedicalCertificatePath] = useState(null);
   const [governmentIdPath, setGovernmentIdPath] = useState(null);
   const { mutate, isLoading } = useVerifyIdentity();
+  const { session, setSession } = useAuth();
 
   const isFormValid =
     licenseNo !== "" &&
     countryValue !== null &&
     specialtyValue !== null &&
-    yearOfExperience !== null &&
+    yearOfExperience !== null &&v
     medicalCertificate !== null &&
     governmentId !== null;
 
