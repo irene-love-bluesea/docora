@@ -24,9 +24,10 @@ import {
 } from "../../constant/data/doctorDetails";
 import { deleteFile, getFileURL, uploadFile } from "../../utils/fileUpload";
 import LoadingOverlay from "../../components/Loading/LoadingOverlay";
+import { useVerifyIdentity } from "../../api/hooks/useDoctorData";
 
 const VerifyIdentity = ({ navigation }) => {
-  const [licenceNo, setLicenceNo] = useState("");
+  const [licenceNo, setLicenceNo] = useState("US-MED-84321A");
   const [countryValue, setCountryValue] = useState(null);
   const [specialtyValue, setSpecialtyValue] = useState(null);
   const [yearOfExperience, setYearOfExperience] = useState(null);
@@ -49,6 +50,7 @@ const VerifyIdentity = ({ navigation }) => {
   const [governmentIdUrl, setGovernmentIdUrl] = useState(null);
   const [medicalCertificatePath, setMedicalCertificatePath] = useState(null);
   const [governmentIdPath, setGovernmentIdPath] = useState(null);
+  const { mutate, isLoading } = useVerifyIdentity();
 
   const isFormValid =
     licenceNo !== "" &&
@@ -57,7 +59,6 @@ const VerifyIdentity = ({ navigation }) => {
     yearOfExperience !== null &&
     medicalCertificate !== null &&
     governmentId !== null;
-
 
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {
@@ -107,7 +108,7 @@ const VerifyIdentity = ({ navigation }) => {
           const userId = "092834343434"; // Replace with actual user ID
 
           const progressInterval = setInterval(() => {
-            setUploadProgress(prev => {
+            setUploadProgress((prev) => {
               if (prev >= 90) {
                 clearInterval(progressInterval);
                 return 90;
@@ -134,12 +135,11 @@ const VerifyIdentity = ({ navigation }) => {
               setGovernmentIdPath(uploadedData.path);
             }
 
-             setTimeout(() => {
+            setTimeout(() => {
               setIsUploading(false);
               setUploadingFile(null);
               setUploadProgress(0);
             }, 500);
-
           } else {
             throw new Error("Upload failed, returned data was null.");
           }
@@ -192,16 +192,28 @@ const VerifyIdentity = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-    console.log(
-      countryValue,
-      specialtyValue,
-      licenceNo,
-      yearOfExperience,
-      medicalCertificate,
-      governmentId
-    );
+    const formData = {
+      medicalLicenseNo: licenceNo,
+      issueCountry: countryValue,
+      specialty: specialtyValue,
+      yearsOfExperience: yearOfExperience,
+      medicalCertificate: medicalCertificateUrl?._j,
+      governmentId: governmentIdUrl?._j,
+    };
+    console.log("form data : " ,formData);
+    
+    mutate(formData, {
+      onSuccess: ({ data }) => {
+        const user = data?.user;
+        console.log("Update successful!", user);
+        setSession({ ...session, user: user });
+      },
+      onError: (error) => {
+        console.error("Update failed:", error);
+      },
+    });
 
-    navigation.navigate("BottomTabs", { role: "doctor" });
+    // navigation.navigate("BottomTabs", { role: "doctor" });
   };
 
   return (
@@ -338,8 +350,8 @@ const VerifyIdentity = ({ navigation }) => {
               )}
 
               {isUploading && uploadingFile === "medical_certificate" && (
-                <LoadingOverlay 
-                  message="Uploading medical certificate..." 
+                <LoadingOverlay
+                  message="Uploading medical certificate..."
                   progress={uploadProgress}
                 />
               )}
@@ -379,9 +391,10 @@ const VerifyIdentity = ({ navigation }) => {
                   </TouchableOpacity>
                 </View>
               ) : (
-                <TouchableOpacity onPress={() => pickFile("government_id")}
-                   disabled={isUploading || isDeleting}
-                   >
+                <TouchableOpacity
+                  onPress={() => pickFile("government_id")}
+                  disabled={isUploading || isDeleting}
+                >
                   <View className=" flex-row items-center justify-center  px-5 py-8 gap-5 border-dashed rounded-xl border-gray-300 border-2">
                     <FontAwesome
                       name="drivers-license-o"
@@ -403,8 +416,8 @@ const VerifyIdentity = ({ navigation }) => {
 
               {/* Loading overlay for government ID */}
               {isUploading && uploadingFile === "government_id" && (
-                <LoadingOverlay 
-                  message="Uploading government ID..." 
+                <LoadingOverlay
+                  message="Uploading government ID..."
                   progress={uploadProgress}
                 />
               )}
@@ -416,7 +429,6 @@ const VerifyIdentity = ({ navigation }) => {
               disabled={!isFormValid || isUploading || isDeleting}
               className=" mt-5"
             />
-            
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>

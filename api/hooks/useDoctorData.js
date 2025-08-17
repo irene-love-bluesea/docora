@@ -77,3 +77,23 @@ export const useUpdateDoctorProfile = () => {
     },
   });
 };
+
+const verifyIdentity = async (formData) => {
+  const { data } = await axiosInstance.post(
+    API_ENDPOINTS.doctors.verifyIdentity,
+    formData
+  );
+  return data;
+};
+
+export const useVerifyIdentity = () => {
+  return useMutation({
+    mutationFn: verifyIdentity,
+    onSuccess: (data) => {
+      console.log("Identity Verification Successful", data);
+    },
+    onError: (error) => {
+      console.log("Identity Verification Failed", error);
+    },
+  })
+}
