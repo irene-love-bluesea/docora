@@ -1,38 +1,35 @@
+import { FontAwesome5, FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import React from "react";
 import {
-  ScrollView,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Alert,
+    Alert,
+    Image,
+    ScrollView,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import {
-  SafeAreaInsetsContext,
-  SafeAreaView,
-  useSafeAreaInsets,
+    useSafeAreaInsets
 } from "react-native-safe-area-context";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Ionicons, FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import ProfileEditModal from "../../components/modals/ProfileEditModal";
-import ContactEditModal from "../../components/modals/ContactEditModal";
-import ProfessionalModal from "../../components/modals/ProfessionalModal";
 import {
-  ProfileEditCard,
-  SettingCard,
-} from "../../components/Card/ProfileEditCard";
-import { gender } from "./../../constant/data/patientDetails";
-import {
-  experienceYears,
-  specialityRole,
-} from "../../constant/data/doctorDetails";
-import LogoutModal from "../../components/modals/LogOutModal";
-import {
-  useFetchDoctor,
-  useUpdateDoctorProfile,
+    useFetchDoctor,
+    useUpdateDoctorProfile,
 } from "../../api/hooks/useDoctorData";
+import {
+    ProfileEditCard,
+    SettingCard,
+} from "../../components/Card/ProfileEditCard";
+import ContactEditModal from "../../components/modals/ContactEditModal";
+import LogoutModal from "../../components/modals/LogOutModal";
+import ProfessionalModal from "../../components/modals/ProfessionalModal";
+import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import { useAuth } from "../../components/Providers/AuthProvider";
+import {
+    experienceYears,
+    specialtyRole,
+} from "../../constant/data/doctorDetails";
+import { gender } from "./../../constant/data/patientDetails";
 
 // Contact info configuration
 const getContactInfoConfig = (contactData) => [
@@ -329,7 +326,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
 
     const updatePayload = {
       yearOfExperience: currentData.experience || undefined,
-      speciality: currentData.specialty || undefined,
+      specialty: currentData.specialty || undefined,
       workPlace: currentData.workPlace || undefined,
       graduateSchool: currentData.graduated || undefined,
     };
@@ -590,7 +587,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
         experienceOptions={experienceYears}
         experienceOpen={experienceOpen}
         setExperienceOpen={setExperienceOpen}
-        specialtyOptions={specialityRole}
+        specialtyOptions={specialtyRole}
         specialtyOpen={specialtyOpen}
         setSpecialtyOpen={setSpecialtyOpen}
         isLoading={isUpdating}

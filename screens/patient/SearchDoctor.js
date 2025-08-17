@@ -1,9 +1,8 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { TextInput } from "react-native";
-import { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useState } from "react";
+import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { popularDrs } from "../../constant/data/doctorDetails";
 
 export default function SearchDoctor({ navigation }) {
@@ -55,7 +54,7 @@ export default function SearchDoctor({ navigation }) {
                 <View className="flex-col items-start  justify-between gap-1  w-2/3">
                   <Text className=" text-lg font-semibold">{item?.name} </Text>
                   <View className="text-sm text-gray-500 flex-row gap-5 items-center justify-between  w-full ">
-                    <Text>{item?.speciality}</Text>
+                    <Text>{item?.specialty}</Text>
                     <View className="text-sm text-gray-500 flex-row gap-1 items-center ">
                       <AntDesign name="star" size={20} color="#FFC107" />
                       <Text className=" text-gray-500 ">{item.rating}</Text>

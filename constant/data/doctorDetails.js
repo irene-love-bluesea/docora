@@ -1,9 +1,9 @@
-import GeneralPhysician from "../../assets/icon/speciality/general.svg";
-import Dermatologist from "../../assets/icon/speciality/dermatologist.svg";
-import Pediatrician from "../../assets/icon/speciality/pediatrician.svg";
-import Cardiologist from "../../assets/icon/speciality/cardiologist.svg";
-import Psychiatrist from "../../assets/icon/speciality/psychiatrist.svg";
-import Dentist from "../../assets/icon/speciality/dentist.svg";
+import Cardiologist from "../../assets/icon/specialty/cardiologist.svg";
+import Dentist from "../../assets/icon/specialty/dentist.svg";
+import Dermatologist from "../../assets/icon/specialty/dermatologist.svg";
+import GeneralPhysician from "../../assets/icon/specialty/general.svg";
+import Pediatrician from "../../assets/icon/specialty/pediatrician.svg";
+import Psychiatrist from "../../assets/icon/specialty/psychiatrist.svg";
 
 
 const specialtyIconMap = {
@@ -16,9 +16,9 @@ const specialtyIconMap = {
 };
 
 //export svg icons for doctor specialities
-export {GeneralPhysician, Dermatologist, Pediatrician, Cardiologist, Psychiatrist, Dentist , specialtyIconMap};
+export { Cardiologist, Dentist, Dermatologist, GeneralPhysician, Pediatrician, Psychiatrist, specialtyIconMap };
 
-export const specialityRole = [
+export const specialtyRole = [
   { label: "General Physician", value: "GeneralPhysician" },
   { label: "Dermatologist", value: "Dermatologist" },
   { label: "Pediatrician", value: "Pediatrician" },
@@ -44,56 +44,56 @@ export const popularDrs = [
     id: 1,
     name: "Dr. John Doe",
     image: require("../../assets/profile/profile_m.png"),
-    speciality: "GeneralPhysician",
+    specialty: "GeneralPhysician",
     rating: 4.5,
   },
   {
     id: 2,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Cardiologist",
+    specialty: "Cardiologist",
     rating: 4.5,
   },
   {
     id: 3,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Psychiatrist",
+    specialty: "Psychiatrist",
     rating: 4.5,
   },
   {
     id: 4,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Psychiatrist",
+    specialty: "Psychiatrist",
     rating: 4.5,
   },
   {
     id: 5,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Psychiatrist",
+    specialty: "Psychiatrist",
     rating: 4.5,
   },
   {
     id: 6,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Psychiatrist",
+    specialty: "Psychiatrist",
     rating: 4.5,
   },
   {
     id: 7,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Psychiatrist",
+    specialty: "Psychiatrist",
     rating: 4.5,
   },
   {
     id: 8,
     name: "Dr. Irene",
     image: require("../../assets/profile/profile_f.png"),
-    speciality: "Psychiatrist",
+    specialty: "Psychiatrist",
     rating: 4.5,
   },
 ];

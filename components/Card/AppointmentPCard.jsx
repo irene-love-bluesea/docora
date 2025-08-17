@@ -1,19 +1,18 @@
-import { Image, Text, Touchable, TouchableOpacity, View } from "react-native";
-import { specialtyIconMap } from "../../constant/data/doctorDetails";
-import {
-  getReadyTime,
-  getTodayOrTommorow,
-  isSessionEnd,
-} from "../../utils/helper";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { Image, Text, TouchableOpacity, View } from "react-native";
+import { specialtyIconMap } from "../../constant/data/doctorDetails";
+import {
+    getReadyTime,
+    getTodayOrTommorow,
+    isSessionEnd,
+} from "../../utils/helper";
 import CustomButton from "../Buttons/CustomButton";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function AppointmentPCard({
   drProfile,
   drName,
-  speciality,
+  specialty,
   date,
   time,
   channelType,
@@ -21,7 +20,7 @@ export default function AppointmentPCard({
   status,
   navigation,
 }) {
-  const Icon = specialtyIconMap[speciality];
+  const Icon = specialtyIconMap[specialty];
   const renderIcon = (channelType, color) => {
     switch (channelType) {
       case "Chat":
@@ -45,7 +44,7 @@ export default function AppointmentPCard({
     const drProfile = {
       drProfile,
       drName,
-      speciality,
+      specialty,
       date,
       time,
       channelType,
@@ -67,7 +66,7 @@ export default function AppointmentPCard({
         <Text className=" text-xl font-semibold">{drName}</Text>
         <View className="flex-row items-center gap-1 mb-1 ">
           <Icon width={20} height={20} color="#023E8A" />
-          <Text className="text-md text-grey-500">{speciality}</Text>
+          <Text className="text-md text-grey-500">{specialty}</Text>
         </View>
         <View className=" flex-row items-center gap-2 mb-1">
           <FontAwesome name="calendar" size={16} color="#023E8A" />

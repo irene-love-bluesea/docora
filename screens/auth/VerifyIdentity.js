@@ -15,19 +15,19 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import * as DocumentPicker from "expo-document-picker";
+import { useVerifyIdentity } from "../../api/hooks/useDoctorData";
 import CustomButton from "../../components/Buttons/CustomButton";
 import Dropdown from "../../components/Form/Dropdown";
+import LoadingOverlay from "../../components/Loading/LoadingOverlay";
 import { countries } from "../../constant/data/countries";
 import {
   experienceYears,
-  specialityRole,
+  specialtyRole,
 } from "../../constant/data/doctorDetails";
 import { deleteFile, getFileURL, uploadFile } from "../../utils/fileUpload";
-import LoadingOverlay from "../../components/Loading/LoadingOverlay";
-import { useVerifyIdentity } from "../../api/hooks/useDoctorData";
 
 const VerifyIdentity = ({ navigation }) => {
-  const [licenceNo, setLicenceNo] = useState("US-MED-84321A");
+  const [licenseNo, setlicenseNo] = useState("US-MED-84321A");
   const [countryValue, setCountryValue] = useState(null);
   const [specialtyValue, setSpecialtyValue] = useState(null);
   const [yearOfExperience, setYearOfExperience] = useState(null);
@@ -53,7 +53,7 @@ const VerifyIdentity = ({ navigation }) => {
   const { mutate, isLoading } = useVerifyIdentity();
 
   const isFormValid =
-    licenceNo !== "" &&
+    licenseNo !== "" &&
     countryValue !== null &&
     specialtyValue !== null &&
     yearOfExperience !== null &&
@@ -193,7 +193,7 @@ const VerifyIdentity = ({ navigation }) => {
 
   const handleSubmit = () => {
     const formData = {
-      medicalLicenseNo: licenceNo,
+      medicalLicenseNo: licenseNo,
       issueCountry: countryValue,
       specialty: specialtyValue,
       yearsOfExperience: yearOfExperience,
@@ -234,14 +234,14 @@ const VerifyIdentity = ({ navigation }) => {
           <View className=" justify-start items-center px-5 ">
             <View className="mb-3 w-full mt-5">
               <Text className="text-lg font-medium mb-2">
-                Medical Licence Number *
+                Medical license Number *
               </Text>
               <TextInput
                 className="border border-white tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black h-[55px]"
-                placeholder="Enter your licence number"
+                placeholder="Enter your license number"
                 placeholderTextColor="#999"
-                value={licenceNo}
-                onChangeText={setLicenceNo}
+                value={licenseNo}
+                onChangeText={setlicenseNo}
               />
             </View>
             <View className="mb-3 w-full">
@@ -264,7 +264,7 @@ const VerifyIdentity = ({ navigation }) => {
                 Medical Specialty *
               </Text>
               <Dropdown
-                data={specialityRole}
+                data={specialtyRole}
                 open={specialtyOpen}
                 setOpen={setSpecialtyOpen}
                 zIndex={1000}
@@ -357,7 +357,7 @@ const VerifyIdentity = ({ navigation }) => {
               )}
             </View>
             <View className="mb-3 w-full">
-              <Text className="text-lg font-medium mb-2">Goverment ID *</Text>
+              <Text className="text-lg font-medium mb-2">Government ID *</Text>
               {governmentId ? (
                 <View>
                   <View className="flex-row items-center gap-2 mt-3 justify-between  border-2 border-gray-300 rounded-xl p-4">

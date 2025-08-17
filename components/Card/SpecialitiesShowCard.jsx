@@ -1,11 +1,11 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
 export default function SpecialitiesShowCard({ id, name, icon, navigation }) {
   return (
     <TouchableOpacity
       onPress={() => {
         navigation.navigate("SearchDoctor", {
-          speciality: name,
+          specialty: name,
         });
       }}
       key={id}

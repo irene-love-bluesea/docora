@@ -1,36 +1,30 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useEffect, useState } from "react";
 import {
-  Image,
-  Platform,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import {
-  SafeAreaView,
-  useSafeAreaInsets,
+    useSafeAreaInsets
 } from "react-native-safe-area-context";
-import { ScrollView } from "react-native";
+import { usePopularDoctors } from "../../api/hooks/useDoctorData";
 import Logo from "../../assets/logo/docora_hospital.svg";
-import {
-  Cardiologist,
-  Dentist,
-  Dermatologist,
-  GeneralPhysician,
-  Pediatrician,
-  popularDrs,
-  Psychiatrist,
-} from "../../constant/data/doctorDetails";
 import PopularDoctorsCard from "../../components/Card/PopularDoctorsCard";
 import SpecialitiesShowCard from "../../components/Card/SpecialitiesShowCard";
-import { useAuth } from "../../components/Providers/AuthProvider";
-import { usePopularDoctors } from "../../api/hooks/useDoctorData";
+import {
+    Cardiologist,
+    Dentist,
+    Dermatologist,
+    GeneralPhysician,
+    Pediatrician,
+    Psychiatrist
+} from "../../constant/data/doctorDetails";
 
 export default function PatientHome({ navigation }) {
-  const speciality = [
+  const specialty = [
     {
       id: 1,
       name: "General Physician",
@@ -63,7 +57,7 @@ export default function PatientHome({ navigation }) {
     },
   ];
 
-  const [specialityData, setSpecialityData] = useState(speciality);
+  const [specialtyData, setspecialtyData] = useState(specialty);
   const [popularDoctors, setPopularDoctors] = useState([]);
   const [search, setSearch] = useState("");
   // const { user, logout } = useAuth();
@@ -120,9 +114,9 @@ export default function PatientHome({ navigation }) {
             />
           </View>
 
-          {/* speciality box  */}
+          {/* specialty box  */}
           <View className="flex-row justify-center items-center flex-wrap gap-2 mt-4 mx-5">
-            {specialityData?.map((item) => (
+            {specialtyData?.map((item) => (
               <SpecialitiesShowCard
                 key={item.id}
                 id={item.id}

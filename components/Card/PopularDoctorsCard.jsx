@@ -1,9 +1,9 @@
-import { Image, Text, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Image, Text, View } from "react-native";
 import { specialtyIconMap } from "../../constant/data/doctorDetails";
 
 export default function PopularDoctorsCard({ item }) {
-  const Icon = specialtyIconMap[item?.speciality] || (() => null); // Fallback if no icon is found
+  const Icon = specialtyIconMap[item?.specialty] || (() => null); // Fallback if no icon is found
 
   return (
     <View
@@ -18,7 +18,7 @@ export default function PopularDoctorsCard({ item }) {
         <View className="text-sm text-gray-500 flex-row gap-5 items-center justify-between  w-full ">
           <View className="flex-row items-center gap-1">
               <Icon width={20} height={20} color="#023E8A" />
-              <Text>{item?.speciality}</Text>
+              <Text>{item?.specialty}</Text>
           </View>
           <View className="text-sm text-gray-500 flex-row gap-1 items-center ">
             <AntDesign name="star" size={20} color="#FFC107" />
