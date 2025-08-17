@@ -25,12 +25,12 @@ export default function AuthScreen({ navigation }) {
       <CustomButton
         variant="primary"
         title="Go to doctor Profile"
-        onPress={() => navigation.navigate("BottomTabs", { userType: 'doctor' })}
+        onPress={() => navigation.navigate("BottomTabs", { role: 'doctor' })}
       />
       <CustomButton
         variant="primary"
         title="Go to patient Profile"
-        onPress={() => navigation.navigate("BottomTabs", { userType: 'patient' })}
+        onPress={() => navigation.navigate("BottomTabs", { role: 'patient' })}
       />
 
       <CustomButton

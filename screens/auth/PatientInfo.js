@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -12,7 +12,14 @@ import CustomButton from "../../components/Buttons/CustomButton";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Dropdown from "../../components/Form/Dropdown";
 import { RadioButton } from "react-native-paper";
-import { gender, bloodType, allergy , chronical} from './../../constant/data/patientDetails';
+import {
+  gender,
+  bloodType,
+  allergy,
+  chronical,
+} from "./../../constant/data/patientDetails";
+import { useAuth } from "../../components/Providers/AuthProvider";
+import { usePatientDetailForm } from "./../../api/hooks/usePatientData";
 
 export default function PatientInfo({ navigation }) {
   const [genderValue, setGenderValue] = React.useState("");
@@ -35,6 +42,9 @@ export default function PatientInfo({ navigation }) {
   const isVaildAge = new Date().getFullYear() - bd.getFullYear() >= 15;
   const isDetailCompleted =
     genderValue !== "" && bloodTypeValue !== "" && isVaildAge;
+
+  const { mutate, isLoading } = usePatientDetailForm();
+  const { session, setSession } = useAuth();
 
   const handleDropdownOpen = (dropdownName) => {
     switch (dropdownName) {
@@ -72,6 +82,27 @@ export default function PatientInfo({ navigation }) {
 
   const formatDate = (date) => {
     return date.toLocaleDateString();
+  };
+
+  const confirmHandler = () => {
+    const formData = {
+      gender: genderValue.toUpperCase(),
+      bloodType: bloodTypeValue,
+      allergies: allergies,
+      chronicConditions: chronic,
+      dateOfBirth: bd,
+    };
+    mutate(formData, {
+      onSuccess: ({ data }) => {
+        const user = data?.user;  
+        console.log("Update successful!", user);
+        setSession({ ...session, user: user });
+        // navigation.replace("BottomTabs", { role: "PATIENT" });
+      },
+      onError: (error) => {
+        console.error("Update failed:", error);
+      },
+    });
   };
 
   return (
@@ -113,11 +144,7 @@ export default function PatientInfo({ navigation }) {
               }}
             >
               <View className="p-5 bg-white rounded-xl">
-                <Text>
-                  {birthDateSelected
-                    ? formatDate(bd)
-                    : "mm/dd/yyyy"}
-                </Text>
+                <Text>{birthDateSelected ? formatDate(bd) : "mm/dd/yyyy"}</Text>
               </View>
             </TouchableOpacity>
             {birthOpen && (
@@ -134,7 +161,7 @@ export default function PatientInfo({ navigation }) {
                 maximumDate={new Date()}
               />
             )}
-            {(!isVaildAge && birthDateSelected )&& (
+            {!isVaildAge && birthDateSelected && (
               <Text className="text-md text-red-500 mt-2">
                 * You should be at least 15 years old to use this app.
               </Text>
@@ -226,8 +253,8 @@ export default function PatientInfo({ navigation }) {
           <CustomButton
             title="Confirm"
             variant="primary"
-            disabled={!isDetailCompleted} 
-            onPress={() => navigation.navigate("BottomTabs",{userType: 'patient'})}
+            disabled={!isDetailCompleted}
+            onPress={confirmHandler}
           />
         </View>
       </TouchableWithoutFeedback>

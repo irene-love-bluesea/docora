@@ -15,7 +15,7 @@ export const API_ENDPOINTS = {
   patients: {
     profile: "/patients/profile",
     patientDetailForm: "/patients/patientDetailForm",
-    patientInfoUpdate: "/patients/patientInfoUpdate",
+    patientInfoUpdate: "/patients/info/update",
     popularDoctors: "/patients/popularDoctors",
     searchDoctorByName: "/patients/search/doctors/name",
     searchDoctorBySpecialty: (specialty) =>

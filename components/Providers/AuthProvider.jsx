@@ -23,7 +23,8 @@ export default function AuthProvider({ children }) {
           const { data: user } = await axiosInstance.get(
             API_ENDPOINTS.auth.getMe
           );
-          setSession({ token: storedSession, user: user });
+
+          setSession({ token: storedSession, user: user?.data });
         }
       } catch (e) {
         await deleteAuthToken();
@@ -34,7 +35,7 @@ export default function AuthProvider({ children }) {
     };
 
     loadSession();
-  }, []);
+  }, [setSession]);
 
   const login = async (token, user) => {
     try {
@@ -47,10 +48,10 @@ export default function AuthProvider({ children }) {
         const { data: freshUserData } = await axiosInstance.get(
           API_ENDPOINTS.auth.getMe
         );
-        setSession({ token, user: freshUserData });
+
+        setSession({ token, user: freshUserData?.data });
 
         if (freshUserData) {
-          console.log("user: ", freshUserData);
           if (!freshUserData?.data.verifyEmail) {
             navigation.navigate("Verify");
           } else if (freshUserData?.data.role === userRoles.UNDEFINED) {
@@ -85,6 +86,7 @@ export default function AuthProvider({ children }) {
 
   const value = {
     session,
+    setSession,
     isLoading,
     login,
     logout,

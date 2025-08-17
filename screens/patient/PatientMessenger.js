@@ -1,20 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useEffect, useRef, useState } from "react";
 import {
-  View,
+  Alert,
+  Dimensions,
+  FlatList,
+  Image,
+  Keyboard,
+  Platform,
   Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
-  Image,
-  SafeAreaView,
-  Alert,
-  Keyboard,
-  Dimensions,
+  View
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 const { height: screenHeight } = Dimensions.get('window');
 
@@ -243,7 +241,7 @@ const {name,image} = route.params;
         <TouchableOpacity
           className="mr-4"
           onPress={() =>
-            navigation.navigate("BottomTabs", { userType: "patient" })
+            navigation.navigate("BottomTabs", { role: "patient" })
           }
         >
           <Ionicons name="arrow-back" size={24} color="black" />

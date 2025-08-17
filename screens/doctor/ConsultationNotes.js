@@ -102,7 +102,7 @@ export default function ConsultationNotes({navigation}) {
               variant="primary"
               disabled={shouldDisableConfirm}
               onPress={() =>
-                navigation.navigate("BottomTabs", { userType: "doctor" })
+                navigation.navigate("BottomTabs", { role: "doctor" })
               }
             />
           </View>
