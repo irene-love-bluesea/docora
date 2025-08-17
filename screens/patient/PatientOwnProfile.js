@@ -148,7 +148,7 @@ export default function PatientOwnProfile({ navigation, session }) {
   const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
 
-  const { session: auth } = useAuth();
+  const { session: auth , logout} = useAuth();
   const { data: user, isLoading, isError, error } = useFetchUser(auth);
    const { 
     mutate: updateProfile, 
@@ -214,8 +214,10 @@ export default function PatientOwnProfile({ navigation, session }) {
   const [chronicOpen, setChronicOpen] = React.useState(false);
   const [birthOpen, setBirthOpen] = React.useState(false);
 
-  const handleLogout = () => {
+  
+  const handleLogout = async() => {
     console.log("User logged out");
+    await logout();
   };
 
   // Image picker functions
