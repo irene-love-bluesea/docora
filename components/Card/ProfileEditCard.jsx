@@ -1,9 +1,8 @@
-import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { FontAwesome6, Ionicons } from "@expo/vector-icons";
-import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export const ProfileEditCard = ({
   title,
@@ -72,10 +71,10 @@ const settingsOptions = [
 
 export const SettingCard = ({
   backgroundColor = "bg-secondary",
-  
+
   onLogoutPress,
 }) => {
-   const navigation = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <View className="mt-4 w-full bg-white rounded-lg" style={{ elevation: 1 }}>
@@ -85,7 +84,12 @@ export const SettingCard = ({
 
       {settingsOptions.map((item, index) => (
         <TouchableOpacity
-          key={index} onPress={item.route === "" ? onLogoutPress : ()=> navigation.navigate(item.route)}
+          key={index}
+          onPress={
+            item.route === ""
+              ? onLogoutPress
+              : () => navigation.navigate(item.route)
+          }
         >
           <View className="px-3 py-4 flex-row justify-between items-center">
             <View className="flex-row gap-3 items-center">

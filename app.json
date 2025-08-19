@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/logo/docora.png",
+      "image": "./assets/logo/docora_hospital.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
@@ -17,27 +17,32 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo/docora.png",
+        "foregroundImage": "./assets/icon/app_icon/playstore.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon/app_icon/playstore.png"
     },
     "plugins": [
+      "expo-document-picker",
       [
-        "expo-document-picker",
+        "expo-splash-screen",
         {
-          "mimeType": "Production"
+          "backgroundColor": "#232323",
+          "image": "./assets/logo/docora_hospital.png",
+          "dark": {
+            "image": "./assets/logo/docora_hospital.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
         }
-      ],
-      "expo-secure-store"
-    ],
-    "permissions": [
-      "CAMERA",
-      "CAMERA_ROLL",
-      "READ_EXTERNAL_STORAGE"
+      ]
     ]
   }
 }

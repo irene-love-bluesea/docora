@@ -58,7 +58,7 @@ const VerifyIdentity = ({ navigation }) => {
     licenseNo !== "" &&
     countryValue !== null &&
     specialtyValue !== null &&
-    yearOfExperience !== null &&v
+    yearOfExperience !== null &&
     medicalCertificate !== null &&
     governmentId !== null;
 
@@ -107,7 +107,7 @@ const VerifyIdentity = ({ navigation }) => {
         setUploadingFile(fileType);
         setUploadProgress(0);
         try {
-          const userId = "092834343434"; // Replace with actual user ID
+          const userId = session?.user?._id; // Replace with actual user ID
 
           const progressInterval = setInterval(() => {
             setUploadProgress((prev) => {
@@ -207,7 +207,7 @@ const VerifyIdentity = ({ navigation }) => {
     mutate(formData, {
       onSuccess: ({ data }) => {
         const user = data?.user;
-        console.log("Update successful!", user);
+        console.log("Update successful!", data);
         setSession({ ...session, user: user });
       },
       onError: (error) => {
