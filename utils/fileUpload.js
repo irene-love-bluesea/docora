@@ -15,7 +15,7 @@ export async function uploadFile(
     .from(bucketName)
     .upload(filePath, fileBody, {
       contentType: file.mimeType || "application/octet-stream",
-      upsert: false,
+      upsert: true,
     });
 
   if (error) {
@@ -28,17 +28,33 @@ export async function uploadFile(
 }
 
 export async function getFileURL(
-  userID,
-  fileName,
+  filePath,
   bucketName = SUPABASE_FILE_BUCKET_NAME
 ) {
-  const filePath = `${userID}/${fileName}`;
+  try {
+    if (!filePath || typeof filePath !== 'string' || filePath.trim() === '') {
+      console.error("Invalid file path provided to getFileURL");
+      return null;
+    }
 
-  const { data } = await supabase.storage
-    .from(bucketName)
-    .getPublicUrl(filePath);
+    const { data } = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(filePath.trim());
 
-  return data.publicUrl;
+    if (data?.publicUrl && typeof data.publicUrl === 'string') {
+      const cleanUrl = data.publicUrl.trim();
+      // Validate URL format
+      if (cleanUrl.startsWith('http://') || cleanUrl.startsWith('https://')) {
+        return cleanUrl;
+      }
+    }
+
+    console.error("Invalid URL returned from Supabase:", data?.publicUrl);
+    return null;
+  } catch (error) {
+    console.error("Get file URL error:", error);
+    return null;
+  }
 }
 
 export async function deleteFile(filePath, bucketName = SUPABASE_FILE_BUCKET_NAME) {

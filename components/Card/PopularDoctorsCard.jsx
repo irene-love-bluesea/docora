@@ -4,7 +4,6 @@ import { specialtyIconMap } from "../../constant/data/doctorDetails";
 
 export default function PopularDoctorsCard({ item }) {
   const Icon = specialtyIconMap[item?.specialty] || (() => null); // Fallback if no icon is found
-
   return (
     <View
       className="flex-row  items-center my-2 gap-5 bg-white border border-secondary p-5 rounded-lg shadow-sm elevation-sm"

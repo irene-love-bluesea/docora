@@ -39,6 +39,7 @@ const LoginScreen = ({ navigation}) => {
     const userData = {
       email: email.toLowerCase().trim(),
       password: password,
+      rememberMe: isChecked,
     };
     try {
       await loginMutation.mutateAsync(userData);

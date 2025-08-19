@@ -5,7 +5,7 @@ import { userRoles } from "../constant/data/role";
 
 export default function RootNavigator() {
   const { session, isLoading, user } = useAuth();
-
+  
   if (isLoading) return <SplashScreen />;
 
   if (!session) return <AuthNavigator />;

@@ -1,24 +1,28 @@
-import { FontAwesome5, FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  FontAwesome6,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-    Alert,
-    Image,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-    useSafeAreaInsets
-} from "react-native-safe-area-context";
-import {
-    useFetchDoctor,
-    useUpdateDoctorProfile,
+  useFetchDoctor,
+  useUpdateDoctorProfile,
 } from "../../api/hooks/useDoctorData";
 import {
-    ProfileEditCard,
-    SettingCard,
+  ProfileEditCard,
+  SettingCard,
 } from "../../components/Card/ProfileEditCard";
 import ContactEditModal from "../../components/modals/ContactEditModal";
 import LogoutModal from "../../components/modals/LogOutModal";
@@ -26,10 +30,11 @@ import ProfessionalModal from "../../components/modals/ProfessionalModal";
 import ProfileEditModal from "../../components/modals/ProfileEditModal";
 import { useAuth } from "../../components/Providers/AuthProvider";
 import {
-    experienceYears,
-    specialtyRole,
+  experienceYears,
+  specialtyRole,
 } from "../../constant/data/doctorDetails";
 import { gender } from "./../../constant/data/patientDetails";
+import { getFileURL, uploadFile } from "../../utils/fileUpload";
 
 // Contact info configuration
 const getContactInfoConfig = (contactData) => [
@@ -100,12 +105,12 @@ const InfoRow = ({ item }) => {
     item.icon.library === "MaterialCommunityIcons"
       ? MaterialCommunityIcons
       : item.icon.library === "FontAwesome5"
-      ? FontAwesome5
-      : item.icon.library === "FontAwesome6"
-      ? FontAwesome6
-      : item.icon.library === "MaterialIcons"
-      ? MaterialIcons
-      : Ionicons;
+        ? FontAwesome5
+        : item.icon.library === "FontAwesome6"
+          ? FontAwesome6
+          : item.icon.library === "MaterialIcons"
+            ? MaterialIcons
+            : Ionicons;
 
   return (
     <View className="flex-row gap-4 px-3 my-2 items-center">
@@ -134,14 +139,16 @@ const InfoSection = ({ title, config, onEdit }) => (
 );
 
 export default function DoctorOwnProfile({ navigation, session }) {
-  const [profilePhoto, setProfilePhoto] = React.useState(null);
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [isUploading, setIsUploading] = useState(false); // file upload loading
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Modal states
-  const [profileModalVisible, setProfileModalVisible] = React.useState(false);
-  const [contactModalVisible, setContactModalVisible] = React.useState(false);
+  const [profileModalVisible, setProfileModalVisible] = useState(false);
+  const [contactModalVisible, setContactModalVisible] = useState(false);
   const [professionalModalVisible, setProfessionalModalVisible] =
-    React.useState(false);
-  const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
+    useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
 
   const { session: auth, logout } = useAuth();
   const { data: doctor, isLoading, isError, error } = useFetchDoctor(auth);
@@ -153,19 +160,19 @@ export default function DoctorOwnProfile({ navigation, session }) {
   } = useUpdateDoctorProfile();
 
   // Form states - Initialize with empty values first
-  const [profileData, setProfileData] = React.useState({
+  const [profileData, setProfileData] = useState({
     name: "",
     age: "",
     gender: "",
   });
 
-  const [contactData, setContactData] = React.useState({
+  const [contactData, setContactData] = useState({
     email: "",
     phone: "",
     address: "",
   });
 
-  const [professionalData, setProfessionalData] = React.useState({
+  const [professionalData, setProfessionalData] = useState({
     experience: "",
     specialty: "",
     workPlace: "",
@@ -173,7 +180,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
   });
 
   // Update states when doctor data is loaded
-  React.useEffect(() => {
+  useEffect(() => {
     if (doctor?.data) {
       const doctorData = doctor.data;
 
@@ -196,9 +203,21 @@ export default function DoctorOwnProfile({ navigation, session }) {
         graduated: doctorData.graduateSchool || doctorData.education || "",
       });
 
-      // Set profile photo if available
-      if (doctorData.profileUrl) {
+      // Set profile photo if available - Use profile_url from database
+      if (doctorData.profile_url) {
         setProfilePhoto({ uri: doctorData.profileUrl });
+      }
+
+      if (
+        doctorData.profileUrl &&
+        typeof doctorData.profileUrl === "string" &&
+        doctorData.profileUrl.trim() !== "" &&
+        (doctorData.profileUrl.startsWith("http://") ||
+          doctorData.profileUrl.startsWith("https://"))
+      ) {
+        setProfilePhoto({ uri: doctorData.profileUrl.trim() });
+      } else {
+        setProfilePhoto(null); // Reset to null if invalid URL
       }
     }
   }, [doctor?.data]);
@@ -230,8 +249,12 @@ export default function DoctorOwnProfile({ navigation, session }) {
     const updatePayload = {
       name: currentData.name,
       gender: currentData.gender,
-      profile_url: profilePhoto?.uri || undefined,
     };
+
+    // Only include profile_url if we have a valid URL
+    if (profilePhoto?.uri && profilePhoto.uri.startsWith("http")) {
+      updatePayload.profile_url = profilePhoto.uri;
+    }
 
     // Only include dateOfBirth and age if birthday is actually provided
     if (currentData.birthday) {
@@ -255,7 +278,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
       (key) => updatePayload[key] === undefined && delete updatePayload[key]
     );
 
-    // console.log("Doctor Profile Update Payload:", updatePayload); 
+    // console.log("Doctor Profile Update Payload:", updatePayload);
 
     updateProfile(updatePayload, {
       onSuccess: (data) => {
@@ -270,6 +293,11 @@ export default function DoctorOwnProfile({ navigation, session }) {
             gender: doctorData.gender || currentData.gender,
             birthday: doctorData.dateOfBirth || currentData.birthday,
           });
+
+          // Update profile photo state with the saved URL
+          if (doctorData.profile_url) {
+            setProfilePhoto({ uri: doctorData.profile_url });
+          }
         }
       },
       onError: (error) => {
@@ -378,75 +406,168 @@ export default function DoctorOwnProfile({ navigation, session }) {
     await logout();
   };
 
-  // Image picker functions
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Permission Required",
-        "Sorry, we need camera roll permissions to select a profile photo."
-      );
-      return;
+  // Image upload function
+  const uploadImageToSupabase = async (asset) => {
+    const userId = auth?.user?._id;
+    if (!userId) {
+      throw new Error("User ID not found");
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-      base64: false,
-    });
+    setIsUploading(true);
+    setUploadProgress(0);
 
-    if (!result.canceled && result.assets && result.assets[0]) {
-      const asset = result.assets[0];
-      if (asset.fileSize && asset.fileSize > 5 * 1024 * 1024) {
+    try {
+      // Simulate upload progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
+      // Upload file to Supabase - using 'avatars' bucket for profile images
+      const uploadedData = await uploadFile(userId, asset, "avatars");
+      clearInterval(progressInterval);
+
+      if (!uploadedData?.path) {
+        throw new Error("Upload failed - no path returned");
+      }
+
+      // Get the public URL
+      const publicUrl = await getFileURL(uploadedData.path, "avatars");
+
+      if (
+        !publicUrl ||
+        typeof publicUrl !== "string" ||
+        publicUrl.trim() === ""
+      ) {
+        throw new Error("Failed to get valid public URL");
+      }
+
+      setUploadProgress(100);
+      console.log("File available at:", publicUrl);
+
+      // Validate URL before setting
+      const cleanUrl = publicUrl.trim();
+      if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) {
+        // Update the profile photo state immediately with the new URL
+        setProfilePhoto({ uri: cleanUrl });
+
+        // Update the profile in the database with the new image URL
+        const updatePayload = { profile_url: cleanUrl };
+
+        await updateProfileAsync(updatePayload);
+
+        Alert.alert("Success", "Profile picture updated successfully!");
+      } else {
+        throw new Error("Invalid URL format received");
+      }
+    } catch (error) {
+      console.error("Upload profile error:", error);
+      Alert.alert("Error", `Failed to upload image: ${error.message}`);
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
+  };
+
+  // Image picker functions
+  const pickImage = async () => {
+    try {
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
         Alert.alert(
-          "File Too Large",
-          "Please select an image smaller than 5MB."
+          "Permission Required",
+          "Sorry, we need camera roll permissions to select a profile photo."
         );
         return;
       }
-      setProfilePhoto({
-        uri: asset.uri,
-        name: asset.fileName || "profile_photo.jpg",
-        type: asset.mimeType || "image/jpeg",
-        size: asset.fileSize,
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+        base64: false,
       });
+
+      if (!result.canceled && result.assets && result.assets[0]) {
+        const asset = result.assets[0];
+
+        // Check file size
+        if (asset.fileSize && asset.fileSize > 5 * 1024 * 1024) {
+          Alert.alert(
+            "File Too Large",
+            "Please select an image smaller than 5MB."
+          );
+          return;
+        }
+
+        // Prepare asset object for upload
+        const fileAsset = {
+          uri: asset.uri,
+          name: asset.fileName || "profile_photo.jpg",
+          type: asset.mimeType || "image/jpeg",
+          size: asset.fileSize,
+        };
+
+        // Upload the image
+        await uploadImageToSupabase(fileAsset);
+      }
+    } catch (error) {
+      console.error("Pick image error:", error);
+      Alert.alert("Error", "Failed to pick image. Please try again.");
     }
   };
 
   const pickImageFromCamera = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Permission Required",
-        "Sorry, we need camera permissions to take a photo."
-      );
-      return;
-    }
-
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.8,
-      base64: false,
-    });
-
-    if (!result.canceled && result.assets && result.assets[0]) {
-      const asset = result.assets[0];
-      if (asset.fileSize && asset.fileSize > 5 * 1024 * 1024) {
+    try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
+      if (status !== "granted") {
         Alert.alert(
-          "File Too Large",
-          "Please take a photo with smaller file size."
+          "Permission Required",
+          "Sorry, we need camera permissions to take a photo."
         );
         return;
       }
-      setProfilePhoto({
-        uri: asset.uri,
-        name: asset.fileName || "profile_photo.jpg",
-        type: asset.mimeType || "image/jpeg",
-        size: asset.fileSize,
+
+      const result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.8,
+        base64: false,
       });
+
+      if (!result.canceled && result.assets && result.assets[0]) {
+        const asset = result.assets[0];
+
+        // Check file size
+        if (asset.fileSize && asset.fileSize > 5 * 1024 * 1024) {
+          Alert.alert(
+            "File Too Large",
+            "Please take a photo with smaller file size."
+          );
+          return;
+        }
+
+        // Prepare asset object for upload
+        const fileAsset = {
+          uri: asset.uri,
+          name: asset.fileName || "profile_photo.jpg",
+          type: asset.mimeType || "image/jpeg",
+          size: asset.fileSize,
+        };
+
+        // Upload the image
+        await uploadImageToSupabase(fileAsset);
+      }
+    } catch (error) {
+      console.error("Camera pick error:", error);
+      Alert.alert("Error", "Failed to take photo. Please try again.");
     }
   };
 
@@ -484,6 +605,7 @@ export default function DoctorOwnProfile({ navigation, session }) {
     );
   }
 
+  console.log(profilePhoto?.uri);
   return (
     <View style={{ paddingTop: insets.top }} className="bg-background">
       <Text className="text-2xl font-semibold font-alata mt-6 mb-2 mx-5">
@@ -502,15 +624,29 @@ export default function DoctorOwnProfile({ navigation, session }) {
           >
             <View className="flex-row items-center gap-3">
               <View>
-                <TouchableOpacity onPress={showImageOptions}>
+                <TouchableOpacity
+                  onPress={showImageOptions}
+                  disabled={isUploading} // Disable when uploading
+                >
+                  {/* Fixed: Image source logic */}
                   <Image
                     className="w-[70px] h-[70px] border border-gray-600 rounded-full"
                     source={
-                      profilePhoto
+                      profilePhoto?.uri
                         ? { uri: profilePhoto.uri }
                         : require("../../assets/profile/profile_m.png")
                     }
                   />
+
+                  {/* Show upload progress */}
+                  {isUploading && (
+                    <View className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                      <Text className="text-white text-xs">
+                        {uploadProgress}%
+                      </Text>
+                    </View>
+                  )}
+
                   <Ionicons
                     className="border rounded-full"
                     style={{
