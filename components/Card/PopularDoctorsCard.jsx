@@ -1,11 +1,16 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { specialtyIconMap } from "../../constant/data/doctorDetails";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PopularDoctorsCard({ item }) {
   const Icon = specialtyIconMap[item?.specialty] || (() => null); // Fallback if no icon is found
+  const navigation = useNavigation();
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate("DoctorProfile", { doctorId: item?.userId?._id })}
+      key={item.id}
       className="flex-row  items-center my-2 gap-5 bg-white border border-secondary p-5 rounded-lg shadow-sm elevation-sm"
     >
       <Image
@@ -25,6 +30,6 @@ export default function PopularDoctorsCard({ item }) {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

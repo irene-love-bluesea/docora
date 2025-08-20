@@ -4,7 +4,6 @@ import { API_ENDPOINTS } from "../endpoints";
 
 const fetchUser = async () => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.patients.profile);
-  // console.log("profile data", data);
   return data;
 };
 
@@ -72,3 +71,16 @@ export const usePatientDetailForm = () => {
   });
 }
 
+const fetchDoctorProfile = async (doctorId) => {
+  const { data } = await axiosInstance.get(API_ENDPOINTS.patients.viewDoctorProfile(doctorId));
+  return data;
+}
+
+
+export const useFetchDoctorProfile = (doctorId) => {
+  return useQuery({
+    queryKey: ['doctor', doctorId],
+    queryFn: () => fetchDoctorProfile(doctorId),
+    enabled: !!doctorId, 
+  });
+};

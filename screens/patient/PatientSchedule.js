@@ -24,7 +24,7 @@ export default function PatientSchedule({ navigation }) {
     />
   );
 
-  //after time appointment time  -> mode change to past integrate API
+  // Fix 1: Use appointmentForPatient consistently in the dependency array
   const appointmentsMode = useMemo(() => {
     return appointmentForPatient.map((appointment) => ({
       ...appointment,
@@ -35,8 +35,8 @@ export default function PatientSchedule({ navigation }) {
   }, [appointmentForPatient]);
 
   const filterAppointments = useMemo(() => {
-    const sortedAppoinments = timeSortingAscending(appointmentForPatient);
-    return sortedAppoinments.filter((appointment) => appointment.mode === mode);
+    const sortedAppointments = timeSortingAscending(appointmentsMode);
+    return sortedAppointments.filter((appointment) => appointment.mode === mode);
   }, [appointmentsMode, mode]);
 
   const insets = useSafeAreaInsets();

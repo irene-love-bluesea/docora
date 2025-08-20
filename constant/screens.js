@@ -12,7 +12,6 @@ import VerifyIdentity from "../screens/auth/VerifyIdentity";
 import DoctorChatScreen from "../screens/doctor/Chat";
 import HomeScreen from "../screens/doctor/Home";
 import PatientProfile from "../screens/doctor/PatientProfile";
-import DoctorScheduleScreen from "../screens/doctor/Schedule";
 import PatientHome from "../screens/patient/PatientHome";
 import PatientOwnProfile from "../screens/patient/PatientOwnProfile";
 import PatientSchedule from "../screens/patient/PatientSchedule";
@@ -32,11 +31,12 @@ import DoctorMessenger from "../screens/doctor/DoctorMessenger";
 import ViewConsultationNote from "../screens/common/ViewConsultationNote";
 import PrivacyPolicy from "../screens/common/PrivacyPolicy";
 import ChangePassword from "../screens/common/ChangePassword";
+import Schedule from "../screens/doctor/Schedule";
 
 // Tab screen configurations
 export const doctorTabs = [
   { name: "Home", component: HomeScreen, icon: "home" },
-  { name: "Schedule", component: DoctorScheduleScreen, icon: "calendar" },
+  { name: "Schedule", component: Schedule, icon: "calendar" },
   { name: "Chat", component: DoctorChatScreen, icon: "chatbox" },
   { name: "Profile", component: DoctorOwnProfile, icon: "person" },
 ];
@@ -333,3 +333,12 @@ export const authScreens =[
     }),
   },
 ]
+
+console.log("\nPatient Tabs:");
+patientTabs.forEach((tab, index) => {
+  console.log(`${index + 1}. ${tab.name}:`, {
+    hasComponent: !!tab.component,
+    componentName: tab.component?.name || 'UNDEFINED',
+    componentType: typeof tab.component
+  });
+});
