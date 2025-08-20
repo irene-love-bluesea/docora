@@ -13,7 +13,7 @@ import AppointmentDCard from "../../components/Card/AppointmentDCard";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FilterModal from "../../components/modals/FilterModal";
 
-export default function PatientSchedule() {
+export default function Schedule() {
   const [mode, setMode] = useState("upcoming");
   const [filterModalVisible, setFilterModalVisible] = useState(false);
 

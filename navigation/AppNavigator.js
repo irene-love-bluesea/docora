@@ -26,6 +26,12 @@ function BottomTabs({ route }) {
   // Select the correct set of tabs based on the user type
   const tabsToRender = role === "DOCTOR" ? doctorTabs : patientTabs;
 
+  console.log("Tabs to render:", tabsToRender.map(tab => ({ 
+    name: tab.name, 
+    hasComponent: !!tab.component,
+    componentName: tab.component?.name || 'undefined'
+  })));
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
