@@ -8,16 +8,17 @@ const ContactEditModal = ({
   visible, 
   onClose, 
   formData, 
-  onFormChange, 
   onSubmit,
   isLoading
 }) => {
-
   const [localFormData, setLocalFormData] = useState({
     email: "",
     phone: "",
     address: ""
   });
+
+  // State to track which fields have been changed
+  const [changedFields, setChangedFields] = useState({});
 
   useEffect(() => {
     if (visible) {
@@ -26,28 +27,42 @@ const ContactEditModal = ({
         phone: formData.phone || "",
         address: formData.address || ""
       });
+      // Reset changed fields when the modal opens
+      setChangedFields({}); 
     }
   }, [visible, formData]);
 
   const handleLocalChange = (field, value) => {
-    setLocalFormData(prev => ({ ...prev, [field]: value }));
+    setLocalFormData(prev => {
+      // Check if the value is different from the original data
+      if (prev[field] !== value) {
+        setChangedFields(prevChanged => ({ ...prevChanged, [field]: true }));
+      } else {
+        // If the user reverts the change, remove the field from changedFields
+        setChangedFields(prevChanged => {
+          const newChanged = { ...prevChanged };
+          delete newChanged[field];
+          return newChanged;
+        });
+      }
+      return { ...prev, [field]: value };
+    });
   };
 
   const handleSubmit = () => {
-    // Prepare the data to send
-    const dataToSubmit = {
-      email: localFormData.email,
-      phone: localFormData.phone,
-      address: localFormData.address,
-    };
+    // Prepare the payload with ONLY the changed data
+    const payload = {};
+    Object.keys(changedFields).forEach(field => {
+      payload[field] = localFormData[field];
+    });
 
-    // Update parent form data
-    onFormChange("email", dataToSubmit.email);
-    onFormChange("phone", dataToSubmit.phone);
-    onFormChange("address", dataToSubmit.address);
-    
-    // Call parent submit handler with the data directly
-    onSubmit(dataToSubmit);
+    // You can also add a check to make sure at least one field was changed
+    if (Object.keys(payload).length > 0) {
+      onSubmit(payload);
+    } else {
+      // If no changes, simply close the modal
+      onClose();
+    }
   };
 
   const handleClose = () => {
@@ -57,6 +72,7 @@ const ContactEditModal = ({
       phone: formData.phone || "",
       address: formData.address || ""
     });
+    setChangedFields({});
     onClose();
   };
 
@@ -66,13 +82,6 @@ const ContactEditModal = ({
     return email === "" || emailRegex.test(email);
   };
 
-  // Check if form has valid data
-  const isFormValid = () => {
-    return isValidEmail(localFormData.email) && 
-           localFormData.phone.trim() !== "" && 
-           localFormData.address.trim() !== "";
-  };
-  
   return (
     <BaseModal
       visible={visible}
@@ -115,7 +124,7 @@ const ContactEditModal = ({
         width="w-[60%]"
         variant="green"
         onPress={handleSubmit}
-        disabled={!isFormValid() || isLoading}
+        disabled={isLoading || Object.keys(changedFields).length === 0}
       />
     </BaseModal>
   );

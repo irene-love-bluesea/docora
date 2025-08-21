@@ -4,7 +4,7 @@ export default function SpecialitiesShowCard({ id, name, icon, navigation }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("SearchDoctor", {
+        navigation.navigate("FilterBySpecialty", {
           specialty: name,
         });
       }}

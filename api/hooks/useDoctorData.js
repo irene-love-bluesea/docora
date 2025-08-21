@@ -6,7 +6,6 @@ const fetchPopularDoctors = async () => {
   const res = await axiosInstance.get(API_ENDPOINTS.patients.popularDoctors);
   const payload = res.data;
 
-  // Support both { doctors: [...] } OR { data: [...] } OR raw array
   const list = Array.isArray(payload?.doctors)
     ? payload.doctors
     : Array.isArray(payload?.data)
@@ -15,7 +14,6 @@ const fetchPopularDoctors = async () => {
     ? payload
     : [];
 
-  // Optionally drop items with missing user (avoids nulls in UI)
   return list;
 };
 
@@ -30,6 +28,8 @@ export const usePopularDoctors = () =>
       ),
   });
 
+
+//profile data
 const fetchDoctor = async (userId) => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.doctors.profile);
   // console.log("profile data", data);
@@ -44,7 +44,10 @@ export const useFetchDoctor = (userId) => {
   });
 };
 
+
+//update profile
 const updateDoctorProfile = async (profileData) => {
+  
   const { data } = await axiosInstance.patch(
     API_ENDPOINTS.doctors.profileUpdate,
     profileData
@@ -60,14 +63,13 @@ export const useUpdateDoctorProfile = () => {
     onSuccess: (data, variables) => {
       console.log("Doctor profile updated successfully");
 
-      // Invalidate and refetch doctor profile queries
+
        queryClient.invalidateQueries({ 
         queryKey: ['user'],
-        exact: false // This ensures all queries starting with ['user'] are invalidated
+        exact: false
       });
 
-      // Optionally update the cache directly
-      // queryClient.setQueryData(['doctor', userId], data);
+
     },
     onError: (error) => {
       console.log(
@@ -97,3 +99,29 @@ export const useVerifyIdentity = () => {
     },
   })
 }
+
+const filterBySpecialty = async (specialty) => {
+  const res = await axiosInstance.get(API_ENDPOINTS.patients.filterBySpecialty(specialty));
+  const payload = res.data;
+  
+  const list = Array.isArray(payload?.doctors)
+    ? payload.doctors
+    : Array.isArray(payload?.data)
+    ? payload.data
+    : Array.isArray(payload)
+    ? payload
+    : [];
+
+  return list;
+};
+
+export const useFilterBySpecialty = () =>
+  useMutation({
+    mutationFn: filterBySpecialty,
+    onSuccess: (arr) => console.log("Doctors Fetched"),
+    onError: (e) =>
+      console.log(
+        "Doctor Fetched Failed",
+        e?.response?.data ?? e?.message ?? e
+      ),
+  });
