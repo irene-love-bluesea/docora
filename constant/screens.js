@@ -31,7 +31,11 @@ import DoctorMessenger from "../screens/doctor/DoctorMessenger";
 import ViewConsultationNote from "../screens/common/ViewConsultationNote";
 import PrivacyPolicy from "../screens/common/PrivacyPolicy";
 import ChangePassword from "../screens/common/ChangePassword";
+
+import FilterBySpecialty from "../screens/patient/FilterBySpecialty";
+
 import Schedule from "../screens/doctor/Schedule";
+
 
 // Tab screen configurations
 export const doctorTabs = [
@@ -66,6 +70,13 @@ export const stackScreens = [
   {
     name: "SearchDoctor",
     component: SearchDoctor,
+    options: ({ navigation }) => ({
+      headerShown: false,
+    }),
+  },
+   {
+    name: "FilterBySpecialty",
+    component: FilterBySpecialty,
     options: ({ navigation }) => ({
       headerShown: false,
     }),

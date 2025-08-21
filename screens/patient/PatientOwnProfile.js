@@ -402,7 +402,7 @@ export default function PatientOwnProfile({ navigation, session }) {
           const userData = data.data;
           setContactData({
             email: userData.email || currentData.email,
-            phone: userData.phoneNumber || userData.phone || currentData.phone,
+            phone: userData.phoneNumber || currentData.phone,
             address: userData.address || currentData.address,
           });
         }
