@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ScrollView,
   Text,
@@ -34,6 +34,7 @@ import {
   useUpdatePatientProfile,
 } from "../../api/hooks/usePatientData";
 import { useAuth } from "../../components/Providers/AuthProvider";
+import { getFileURL, uploadFile } from "../../utils/fileUpload";
 
 // Medical info configuration for reusable rendering
 const getMedicalInfoConfig = (medicalData) => [
@@ -112,8 +113,8 @@ const InfoRow = ({ item }) => {
     item.icon.library === "MaterialCommunityIcons"
       ? MaterialCommunityIcons
       : item.icon.library === "FontAwesome5"
-      ? FontAwesome5
-      : Ionicons;
+        ? FontAwesome5
+        : Ionicons;
 
   return (
     <View className="flex-row gap-4 px-3 my-2 items-center">
@@ -142,13 +143,15 @@ const InfoSection = ({ title, config, onEdit }) => (
 );
 
 export default function PatientOwnProfile({ navigation, session }) {
-  const [profilePhoto, setProfilePhoto] = React.useState(null);
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [isUploading, setIsUploading] = useState(false); // file upload loading
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Modal states
-  const [profileModalVisible, setProfileModalVisible] = React.useState(false);
-  const [contactModalVisible, setContactModalVisible] = React.useState(false);
-  const [medicalModalVisible, setMedicalModalVisible] = React.useState(false);
-  const [logoutModalVisible, setLogoutModalVisible] = React.useState(false);
+  const [profileModalVisible, setProfileModalVisible] = useState(false);
+  const [contactModalVisible, setContactModalVisible] = useState(false);
+  const [medicalModalVisible, setMedicalModalVisible] = useState(false);
+  const [logoutModalVisible, setLogoutModalVisible] = useState(false);
 
   const { session: auth, logout } = useAuth();
 
@@ -161,26 +164,26 @@ export default function PatientOwnProfile({ navigation, session }) {
   } = useUpdatePatientProfile();
 
   // Form states - Initialize with empty values first
-  const [profileData, setProfileData] = React.useState({
+  const [profileData, setProfileData] = useState({
     name: "",
     age: "",
     gender: "",
   });
 
-  const [contactData, setContactData] = React.useState({
+  const [contactData, setContactData] = useState({
     email: "",
     phone: "",
     address: "",
   });
 
-  const [medicalData, setMedicalData] = React.useState({
+  const [medicalData, setMedicalData] = useState({
     bloodType: "",
     allergies: [],
     chronic: [],
     medications: "",
   });
   // Update states when user data is loaded
-  React.useEffect(() => {
+  useEffect(() => {
     if (user?.data) {
       const userData = user.data;
 
@@ -234,7 +237,7 @@ export default function PatientOwnProfile({ navigation, session }) {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      // mediaTypes:  ImagePicker.MediaType.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
@@ -256,6 +259,17 @@ export default function PatientOwnProfile({ navigation, session }) {
         type: asset.mimeType || "image/jpeg",
         size: asset.fileSize,
       });
+      const fileAsset = {
+        uri: asset.uri,
+        name: asset.fileName || "profile_photo.jpg",
+        type: asset.mimeType || "image/jpeg",
+        size: asset.fileSize,
+      };
+
+      console.log("fileAsset ->>>", fileAsset);
+
+      // Upload the image
+      await uploadImageToSupabase(fileAsset);
     }
   };
 
@@ -291,6 +305,16 @@ export default function PatientOwnProfile({ navigation, session }) {
         type: asset.mimeType || "image/jpeg",
         size: asset.fileSize,
       });
+
+      const fileAsset = {
+        uri: asset.uri,
+        name: asset.fileName || "profile_photo.jpg",
+        type: asset.mimeType || "image/jpeg",
+        size: asset.fileSize,
+      };
+      console.log("fileAsset", fileAsset);
+      // Upload the image
+      await uploadImageToSupabase(fileAsset);
     }
   };
 
@@ -300,6 +324,73 @@ export default function PatientOwnProfile({ navigation, session }) {
       { text: "🖼️ Gallery", onPress: pickImage },
       { text: "❌ Cancel", style: "cancel" },
     ]);
+  };
+
+  const uploadImageToSupabase = async (asset) => {
+    const userId = auth?.user?._id;
+    if (!userId) {
+      throw new Error("User ID not found");
+    }
+
+    setIsUploading(true);
+    setUploadProgress(0);
+
+    try {
+      // Simulate upload progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return 90;
+          }
+          return prev + 10;
+        });
+      }, 200);
+
+      // Upload file to Supabase - using 'avatars' bucket for profile images
+      const uploadedData = await uploadFile(userId, asset, "avatars");
+      clearInterval(progressInterval);
+
+      if (!uploadedData?.path) {
+        throw new Error("Upload failed - no path returned");
+      }
+
+      // Get the public URL
+      const publicUrl = await getFileURL(uploadedData.path, "avatars");
+
+      if (
+        !publicUrl ||
+        typeof publicUrl !== "string" ||
+        publicUrl.trim() === ""
+      ) {
+        throw new Error("Failed to get valid public URL");
+      }
+
+      setUploadProgress(100);
+      console.log("File available at:", publicUrl);
+
+      // Validate URL before setting
+      const cleanUrl = publicUrl.trim();
+      if (cleanUrl.startsWith("http://") || cleanUrl.startsWith("https://")) {
+        // Update the profile photo state immediately with the new URL
+        setProfilePhoto({ uri: cleanUrl });
+
+        // Update the profile in the database with the new image URL
+        const updatePayload = { profile_url: cleanUrl };
+
+        await updateProfileAsync(updatePayload);
+
+        Alert.alert("Success", "Profile picture updated successfully!");
+      } else {
+        throw new Error("Invalid URL format received");
+      }
+    } catch (error) {
+      console.error("Upload profile error:", error);
+      Alert.alert("Error", `Failed to upload image: ${error.message}`);
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
   };
 
   // Form handlers
@@ -504,11 +595,21 @@ export default function PatientOwnProfile({ navigation, session }) {
                   <Image
                     className="w-[70px] h-[70px] border border-gray-600 rounded-full"
                     source={
-                      profilePhoto
+                      profilePhoto?.uri
                         ? { uri: profilePhoto.uri }
-                        : require("../../assets/profile/patient_f.png")
+                        : require("../../assets/profile/profile_m.png")
                     }
                   />
+
+                  {/* Show upload progress */}
+                  {isUploading && (
+                    <View className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                      <Text className="text-white text-xs">
+                        {uploadProgress}%
+                      </Text>
+                    </View>
+                  )}
+
                   <Ionicons
                     className="border rounded-full"
                     style={{

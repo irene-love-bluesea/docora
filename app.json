@@ -42,7 +42,8 @@
           },
           "imageWidth": 200
         }
-      ]
+      ],
+      "expo-image-picker"
     ]
   }
 }
