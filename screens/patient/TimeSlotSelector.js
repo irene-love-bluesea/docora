@@ -9,7 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { addMinutesToTimeString, getUpcomingDays } from "../../utils/helper";
 import ModalChannel from "../../components/modals/ModalChannel";
 
-export default function TimeSlotSelector() {
+export default function TimeSlotSelector({route}) {
   const [selectedTime, setSelectedTime] = useState(null);
   const [timeSlots, setTimeSlots] = useState(allTimeSlots);
 

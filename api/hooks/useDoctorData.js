@@ -32,7 +32,6 @@ export const usePopularDoctors = () =>
 //profile data
 const fetchDoctor = async (userId) => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.doctors.profile);
-  // console.log("profile data", data);
   return data;
 };
 
