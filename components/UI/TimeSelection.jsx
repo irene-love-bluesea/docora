@@ -1,6 +1,11 @@
 import { Text, View, TouchableOpacity } from "react-native";
+import { convertApiTimeToDisplayTime } from "../../utils/helper";
 
-export default function TimeSelection({ title, timeSlots, handleTime }) {
+function isSameStartTime(startTime1, startTime2) {
+  if (!startTime1 || !startTime2) return false;
+  return new Date(startTime1).getTime() === new Date(startTime2).getTime();
+}
+export default function TimeSelection({ title, timeSlots, handleTime, selectedTime }) {
   const allSlotsDisabled = timeSlots?.every((slot) => slot?.disabled);
 
   return (
@@ -12,20 +17,19 @@ export default function TimeSelection({ title, timeSlots, handleTime }) {
             (time) =>
               !time?.disabled && (
                 <TouchableOpacity
-                  key={time?.id}
-                  onPress={() => time.available && handleTime(time)}
+                  key={time?.startTime}
+                  onPress={() => !time.isBooked && handleTime(time)}
                   className={`${
-                    time?.selected ? "bg-primary text-white" : "bg-white"
-                  }
-                  ${time?.available ? "opacity-100 " : "opacity-50 bg-gray-400"}
-                   text-md border border-secondary rounded-full px-3 py-2 items-center justify-center`}
+                    isSameStartTime(selectedTime, time?.startTime) ? "bg-primary" : "bg-white"
+                  } ${!time?.isBooked ? "opacity-100" : "opacity-50 bg-gray-400"}
+                   border border-secondary rounded-full px-3 py-2 items-center justify-center`}
                 >
                   <Text
-                    className={`  w-[80px] text-center ${
-                      time?.selected ? "text-white" : "text-gray-700"
+                    className={`w-[80px] text-center ${
+                      isSameStartTime(selectedTime, time?.startTime) ? "text-white" : "text-gray-700"
                     }`}
                   >
-                    {time?.value}
+                    {convertApiTimeToDisplayTime(time?.startTime)}
                   </Text>
                 </TouchableOpacity>
               )

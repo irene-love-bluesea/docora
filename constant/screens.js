@@ -344,12 +344,3 @@ export const authScreens =[
     }),
   },
 ]
-
-console.log("\nPatient Tabs:");
-patientTabs.forEach((tab, index) => {
-  console.log(`${index + 1}. ${tab.name}:`, {
-    hasComponent: !!tab.component,
-    componentName: tab.component?.name || 'UNDEFINED',
-    componentType: typeof tab.component
-  });
-});

@@ -122,7 +122,7 @@ export default function DoctorProfile({ navigation , route }) {
             icon={
               <Ionicons name="calendar-outline" size={24} color={"white"} />
             }
-            onPress={() => navigation.navigate("TimeSlotSelector", { doctor })}
+            onPress={() => navigation.navigate("TimeSlotSelector", { doctor , doctorId })}
             className=" !w-[45%]"
           />
         </View>
