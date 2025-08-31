@@ -6,41 +6,61 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import CustomButton from "../../components/Buttons/CustomButton";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { addMinutesToTimeString, getUpcomingDays } from "../../utils/helper";
+import { addMinutesToTimeString, convertApiTimeToDisplayTime, getTimeSlotsForDate, getUpcomingDays } from "../../utils/helper";
 import ModalChannel from "../../components/modals/ModalChannel";
+import { useFetchDoctorSchedule } from "../../api/hooks/useSchedule";
 
 export default function TimeSlotSelector({route}) {
   const [selectedTime, setSelectedTime] = useState(null);
-  const [timeSlots, setTimeSlots] = useState(allTimeSlots);
-
+  
   const [selectedDate, setSelectedDate] = useState(null);
   const [upComingDays, setUpComingDays] = useState([]);
-  const [updatedSlots, setUpdatedSlots] = useState(allTimeSlots);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState(null);
-
   const isValid = selectedTime && selectedDate;
+  
+  const {doctor , doctorId} = route?.params;
+  const {data: schedule} = useFetchDoctorSchedule(doctorId);
+  
+  const [timeSlots, setTimeSlots] = useState(allTimeSlots);
+  const [updatedSlots, setUpdatedSlots] = useState(allTimeSlots);
+  const scheduleData  = schedule?.data;
 
   useEffect(() => {
-    const upComingDays = getUpcomingDays();
+    const dateArr = scheduleData?.map((item) => item.date);
+    const upComingDays = getUpcomingDays(dateArr);
+    
     setUpComingDays(upComingDays);
     if (upComingDays && upComingDays.length > 0) {
       setSelectedDate(upComingDays[0]);
     }
-  }, []);
+  }, [scheduleData]);
+
+  useEffect(() => {
+    if (selectedDate && scheduleData) {
+      const updatedSlots = getTimeSlotsForDate(scheduleData, selectedDate);
+      setTimeSlots(updatedSlots); // time slot updated
+      // Reset selected time when date changes
+      setSelectedTime(null);
+    }
+  }, [selectedDate, scheduleData]);
 
   const handleTime = (selectedSlot) => {
-    setSelectedTime(selectedSlot);
-    setTimeSlots((prevTimeSlots) => {
-      const newTimeSlots = {};
-      for (const period in prevTimeSlots) {
-        newTimeSlots[period] = prevTimeSlots[period].map((slot) => ({
-          ...slot,
-          selected: slot.id === selectedSlot.id,
-        }));
-      }
-      return newTimeSlots;
-    });
+    if (!selectedSlot?.startTime) {
+      console.warn('Invalid slot selected');
+      return;
+    }
+  
+    if (selectedSlot.disabled || selectedSlot.isBooked) {
+      return;
+    }
+  
+    setSelectedTime(selectedSlot.startTime); // Store the ISO string
+  };
+
+  const handleDateChange = (day) => {
+    setSelectedDate(day);
+    setSelectedTime(null); // Reset time selection when date changes
   };
 
   const confirmHandler = () => {
@@ -48,6 +68,24 @@ export default function TimeSlotSelector({route}) {
     setSelectedChannel(null);
     setModalVisible(true);
   };
+
+  // Loading state
+  if (!scheduleData) {
+    return (
+      <SafeAreaView className="flex-1 bg-background px-5 justify-center items-center">
+        <Text className="text-lg text-gray-500">Loading schedule...</Text>
+      </SafeAreaView>
+    );
+  }
+
+   // No available dates
+  if (upComingDays.length === 0) {
+    return (
+      <SafeAreaView className="flex-1 bg-background px-5 justify-center items-center">
+        <Text className="text-lg text-gray-500">No available dates</Text>
+      </SafeAreaView>
+    );
+  }
 
 
   return (
@@ -77,7 +115,7 @@ export default function TimeSlotSelector({route}) {
                         : " bg-white"
                     }`}
                     key={day?.id}
-                    onPress={() => setSelectedDate(day)}
+                    onPress={() => handleDateChange(day)}
                   >
                     <Text
                       className={`text-lg  ${
@@ -95,7 +133,7 @@ export default function TimeSlotSelector({route}) {
                           : "text-black"
                       } text-2xl font-bold `}
                     >
-                      {day?.dateFormat.substring(0, 2)}
+                      {day?.dateFormat?.substring(0, 2)}
                     </Text>
                     <Text
                       className={`text-lg  ${
@@ -104,7 +142,7 @@ export default function TimeSlotSelector({route}) {
                           : "text-black"
                       }`}
                     >
-                      {day?.dateFormat.substring(3, 6)}
+                      {day?.dateFormat?.substring(2, 6)}
                     </Text>
                   </TouchableOpacity>
                 )
@@ -112,15 +150,37 @@ export default function TimeSlotSelector({route}) {
           </View>
         </ScrollView>
         <View className=" mt-10">
-          {Object.keys(timeSlots).map((period) => (
-            <TimeSelection
-              key={period}
-              title={period}
-              timeSlots={timeSlots[period]}
-              handleTime={handleTime}
-            />
-          ))}
+          {Object.keys(timeSlots).map((period) => {
+            // Only show periods that have available slots
+            const availableSlots = timeSlots[period].filter(slot => 
+              !slot.disabled || slot.isBooked
+            );
+            
+            if (availableSlots.length === 0) {
+              return null; // Don't render empty periods
+            }
+
+            return (
+              <TimeSelection
+                key={period}
+                title={period}
+                timeSlots={timeSlots[period]}
+                handleTime={handleTime}
+                selectedTime={selectedTime}
+              />
+            );
+          })}
         </View>
+         {/* Show message if no slots available for selected date */}
+        {Object.values(timeSlots).every(slots => 
+          slots.every(slot => slot.disabled && !slot.available)
+        ) && (
+          <View className="mt-10 p-4 bg-gray-100 rounded-lg">
+            <Text className="text-center text-gray-600">
+              No available time slots for this date
+            </Text>
+          </View>
+        )}
       </ScrollView>
       <View className="flex-row items-center gap-5 justify-between mb-5 border-t border-t-gray-300 pt-3">
         <View className=" flex-col gap-3 w-[45%] ">
@@ -133,12 +193,11 @@ export default function TimeSlotSelector({route}) {
           <View className=" flex-row  items-center  gap-2 ">
             <AntDesign name="clockcircleo" size={24} color={"#023E8A"} />
             {selectedTime ? (
-              <Text className=" text-lg  font-semibold text-primary">
-                {selectedTime?.value} -{" "}
-                {addMinutesToTimeString(selectedTime?.value, 15)}
+              <Text className="text-lg font-semibold text-primary">
+                {convertApiTimeToDisplayTime(selectedTime)} - {addMinutesToTimeString(convertApiTimeToDisplayTime(selectedTime), 15)}
               </Text>
             ) : (
-              <Text className=" text-lg  font-semibold text-primary">
+              <Text className="text-lg font-semibold text-primary">
                 Select Time
               </Text>
             )}
