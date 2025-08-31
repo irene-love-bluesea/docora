@@ -1,7 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as DocumentPicker from "expo-document-picker";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -14,14 +14,24 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from "../../components/Buttons/CustomButton";
 import Dropdown from "../../components/Form/Dropdown";
 import MedicationInput from "../../components/Form/MedicationInput";
-import { Cardiologist } from "../../constant/data/doctorDetails";
+import { Cardiologist, specialtyIconMap } from "../../constant/data/doctorDetails";
+import { addMinutesToTimeString, convertApiTimeToDisplayTime } from "../../utils/helper";
+import { renderChannelIcon } from "../../components/modals/ModalChannel";
 
-export default function HealthConcern({navigation}) {
-  const [symptom, setSymptom] = React.useState("");
-  const [durationValue, setDurationValue] = React.useState("");
-  const [durationOpen, setDurationOpen] = React.useState(false);
-  const [medications, setMedications] = React.useState([]);
-  const [photoSymptom, setPhotoSymptom] = React.useState([]);
+export default function HealthConcern({navigation , route}) {
+  const [symptom, setSymptom] = useState("");
+  const [durationValue, setDurationValue] = useState("");
+  const [durationOpen, setDurationOpen] = useState(false);
+  const [medications, setMedications] = useState([]);
+  const [photoSymptom, setPhotoSymptom] = useState([]);
+  const bookingDetails = route.params;
+
+  const doctor = bookingDetails?.doctor;
+  const Icon = specialtyIconMap[doctor?.specialty];
+  const convertedTime = convertApiTimeToDisplayTime(bookingDetails?.time);
+  const [date, setDate] = useState(bookingDetails?.date?.dateFormat);
+  const [time, setTime] = useState(convertedTime);
+  const [channel, setChannel] = useState(bookingDetails?.channel);
 
   const duration = [
     { label: "1-3 Days", value: "1-3 Days" },
@@ -100,16 +110,16 @@ export default function HealthConcern({navigation}) {
           <View className="w-full flex-row items-center gap-5 mb-2">
             <Image
               className="w-[60px] h-[60px] border border-gray-600 rounded-full"
-              source={require("../../assets/profile/profile_m.png")}
+              source={{ uri: doctor?.profileUrl }}
             />
             <View>
               <Text className="text-2xl text-center font-medium">
-                Dr. Ethan Carter
+                Dr. {doctor?.name}
               </Text>
               <View className="flex-row items-center gap-1">
-                <Cardiologist width={20} height={20} />
+                {Icon && <Icon width={20} height={20} color="#023E8A" />}
                 <Text className="text-lg text-gray-500 font-medium">
-                  Cardiologist
+                  {doctor?.specialty}
                 </Text>
               </View>
             </View>
@@ -126,15 +136,18 @@ export default function HealthConcern({navigation}) {
                   color="#023E8A"
                 />
                 <Text className="text-md font-normal text-gray-600">
-                  14 July 2025{"\n"}09:00 AM - 09:15 AM
+                  {bookingDetails?.date?.dateFormat}{"\n"}
+                  {convertedTime} - {addMinutesToTimeString(convertApiTimeToDisplayTime(bookingDetails?.time), 15)}
                 </Text>
               </View>
             </View>
             <View className="mt-3 pb-5 border-l border-gray-300 w-[48%] flex items-center">
               <Text className="text-lg font-semibold">Channel</Text>
-              <View className="flex-row items-start gap-2 mt-3">
-                <MaterialIcons name="chat" size={22} color="#023E8A" />
-                <Text className="text-md font-normal text-gray-600">Chat</Text>
+              <View className="flex-row items-center gap-2 mt-3">
+                {
+                  renderChannelIcon(channel?.iconName, channel?.iconLibrary, channel?.iconColor)
+                }
+                <Text className="text-md font-normal text-gray-600">{channel?.title}</Text>
               </View>
             </View>
           </View>

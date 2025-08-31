@@ -13,6 +13,19 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import CustomButton from "../Buttons/CustomButton";
 import { useNavigation } from "@react-navigation/native";
 
+
+export const renderChannelIcon = (iconName, iconLibrary, iconColor) => {
+  switch (iconLibrary) {
+    case "MaterialIcons":
+      return <MaterialIcons name={iconName} size={28} color={iconColor} />;
+    case "MaterialCommunityIcons":
+      return (
+        <MaterialCommunityIcons name={iconName} size={28} color={iconColor} />
+      );
+    default:
+      return <Ionicons name={iconName} size={28} color={iconColor} />;
+  }
+};
 export default function ModalChannel({
   modalVisible,
   setModalVisible,
@@ -20,22 +33,19 @@ export default function ModalChannel({
   selectedTime,
   selectedChannel,
   setSelectedChannel,
+  doctorProfile
 }) {
   const navigtion = useNavigation();
   const handleConfirmConsultation = () => {
     if (!selectedChannel) return;
 
     // Handle the consultation booking logic here
-    console.log("Booking consultation:", {
-      date: selectedDate,
-      time: selectedTime,
-      channel: selectedChannel,
-    });
     
     const bookingDetails = {
       date: selectedDate, 
       time: selectedTime,
       channel: selectedChannel,
+      doctor: doctorProfile
     };
 
     setModalVisible(false);
@@ -43,18 +53,7 @@ export default function ModalChannel({
     navigtion.navigate("HealthConcern", bookingDetails)
   };
 
-  const renderIcon = (iconName, iconLibrary, iconColor) => {
-    switch (iconLibrary) {
-      case "MaterialIcons":
-        return <MaterialIcons name={iconName} size={28} color={iconColor} />;
-      case "MaterialCommunityIcons":
-        return (
-          <MaterialCommunityIcons name={iconName} size={28} color={iconColor} />
-        );
-      default:
-        return <Ionicons name={iconName} size={28} color={iconColor} />;
-    }
-  };
+
 
   const closeModal = () => {
     setModalVisible(false);
@@ -93,7 +92,7 @@ export default function ModalChannel({
                       }`}
                     >
                       <View className="flex-row items-center gap-3 p-3 rounded-lg">
-                        {renderIcon(
+                        {renderChannelIcon(
                           channel.iconName,
                           channel.iconLibrary,
                           selectedChannel?.id === channel.id

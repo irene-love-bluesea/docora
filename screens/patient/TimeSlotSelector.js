@@ -20,6 +20,7 @@ export default function TimeSlotSelector({route}) {
   const isValid = selectedTime && selectedDate;
   
   const {doctor , doctorId} = route?.params;
+  // console.log("doctor >",doctor);
   const {data: schedule} = useFetchDoctorSchedule(doctorId);
   
   const [timeSlots, setTimeSlots] = useState(allTimeSlots);
@@ -228,6 +229,7 @@ export default function TimeSlotSelector({route}) {
           selectedTime={selectedTime}
           selectedChannel={selectedChannel}
           setSelectedChannel={setSelectedChannel}
+          doctorProfile={doctor}
         />
       </Modal>
     </SafeAreaView>
