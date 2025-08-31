@@ -8,10 +8,10 @@ import Psychiatrist from "../../assets/icon/specialty/psychiatrist.svg";
 
 const specialtyIconMap = {
   "General Physician": GeneralPhysician,
-  "Dermatology": Dermatologist,
+  "Dermatologist": Dermatologist,
   "Pediatrician": Pediatrician,
-  "Cardiology": Cardiologist,
-  "Psychiatry": Psychiatrist,
+  "Cardiologist": Cardiologist,
+  "Psychiatrist": Psychiatrist,
   "Dental": Dentist,
 };
 
