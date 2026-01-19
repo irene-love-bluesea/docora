@@ -75,9 +75,18 @@ export const usePatientDetailForm = () => {
 }
 
 const fetchDoctorProfile = async (doctorId) => {
-  const { data } = await axiosInstance.get(API_ENDPOINTS.patients.viewDoctorProfile(doctorId));
-  return data;
-}
+  if (!doctorId) throw new Error("doctorId is required");
+  const url = API_ENDPOINTS.patients.viewDoctorProfile(doctorId);
+  // console.log("Fetching doctor profile from", url);
+  try {
+    const res = await axiosInstance.get(url);
+    console.log("Doctor profile response", res?.data);
+    return res?.data;
+  } catch (err) {
+    // console.log("Doctor profile fetch failed", err?.response?.status, err?.response?.data || err?.message || err);
+    throw err;
+  }
+};
 
 
 export const useFetchDoctorProfile = (doctorId) => {

@@ -240,12 +240,9 @@ export default function DoctorOwnProfile({ navigation, session }) {
     setProfessionalData((prev) => ({ ...prev, [field]: value }));
   };
 
-  // Submit handlers - Updated to actually call API
   const handleProfileSubmit = (modalData = null) => {
-    // Use modalData if provided (from modal), otherwise use current profileData
     const currentData = modalData || profileData;
 
-    // Prepare update payload - use exact field names that backend expects
     const updatePayload = {
       name: currentData.name,
       gender: currentData.gender,
