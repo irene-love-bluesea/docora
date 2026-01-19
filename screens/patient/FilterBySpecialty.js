@@ -11,7 +11,7 @@ import {
     useSafeAreaInsets
 } from "react-native-safe-area-context";
 // Import the correct hook
-import { useFilterBySpecialty } from "../../api/hooks/useDoctorData";
+import { useFilterBySpecialty, useFilterByName} from "../../api/hooks/useDoctorData";
 import Logo from "../../assets/logo/docora_hospital.svg";
 import PopularDoctorsCard from "../../components/Card/PopularDoctorsCard";
 import SpecialitiesShowCard from "../../components/Card/SpecialitiesShowCard";
@@ -62,7 +62,8 @@ export default function FilterBySpecialty({ navigation, route }) {
 
     const [specialtyData, setSpecialtyData] = useState(specialtyMap);
     const [search, setSearch] = useState("");
-    
+
+
     const { mutate, data: doctors, isLoading, isError } = useFilterBySpecialty();
     console.log("Doctors",doctors);
     useEffect(() => {
@@ -72,7 +73,20 @@ export default function FilterBySpecialty({ navigation, route }) {
     }, [specialty, mutate]);
 
     const insets = useSafeAreaInsets();
-    
+
+    const { mutate: searchByName } = useFilterByName();
+
+    const handleSearch = () => {
+        searchByName(search, {
+            onSuccess: (data) => {
+                navigation.navigate("SearchDoctor", {
+                    results: data,
+                    initialQuery: search
+                });
+            },
+        });
+    };
+
     return (
         <View
             style={{ flex: 1, paddingTop: insets.top }}
@@ -96,9 +110,11 @@ export default function FilterBySpecialty({ navigation, route }) {
                         <Ionicons name="search" size={20} color="#999" />
                         <TextInput
                             className="border border-white tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black h-[55px]"
-                            placeholder="Search by specialty or doctor name"
+                            placeholder="Search by doctor name"
                             value={search}
                             onChangeText={setSearch}
+                            returnKeyType="search"
+                                onSubmitEditing={handleSearch}
                         />
                     </View>
 
