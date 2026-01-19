@@ -7,6 +7,7 @@ import { popularDrs } from "../../constant/data/doctorDetails";
 
 export default function SearchDoctor({ navigation }) {
   const [search, setSearch] = useState("");
+
   const [popularDoctors, setPopularDoctors] = useState(popularDrs);
 
   return (
@@ -19,7 +20,7 @@ export default function SearchDoctor({ navigation }) {
           <Ionicons name="search" size={20} color="#999" className="" />
           <TextInput
             className="border border-white h-full tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black "
-            placeholder="Search  by specialty or name"
+            placeholder="Search  by doctor name"
             value={search}
             onChangeText={setSearch}
           />

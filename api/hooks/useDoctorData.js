@@ -28,7 +28,6 @@ export const usePopularDoctors = () =>
       ),
   });
 
-
 //profile data
 const fetchDoctor = async (userId) => {
   const { data } = await axiosInstance.get(API_ENDPOINTS.doctors.profile);
@@ -43,10 +42,8 @@ export const useFetchDoctor = (userId) => {
   });
 };
 
-
 //update profile
 const updateDoctorProfile = async (profileData) => {
-  
   const { data } = await axiosInstance.patch(
     API_ENDPOINTS.doctors.profileUpdate,
     profileData
@@ -62,13 +59,10 @@ export const useUpdateDoctorProfile = () => {
     onSuccess: (data, variables) => {
       console.log("Doctor profile updated successfully");
 
-
-       queryClient.invalidateQueries({ 
-        queryKey: ['user'],
-        exact: false
+      queryClient.invalidateQueries({
+        queryKey: ["user"],
+        exact: false,
       });
-
-
     },
     onError: (error) => {
       console.log(
@@ -96,13 +90,15 @@ export const useVerifyIdentity = () => {
     onError: (error) => {
       console.log("Identity Verification Failed", error);
     },
-  })
-}
+  });
+};
 
 const filterBySpecialty = async (specialty) => {
-  const res = await axiosInstance.get(API_ENDPOINTS.patients.filterBySpecialty(specialty));
+  const res = await axiosInstance.get(
+    API_ENDPOINTS.patients.filterBySpecialty(specialty)
+  );
   const payload = res.data;
-  
+
   const list = Array.isArray(payload?.doctors)
     ? payload.doctors
     : Array.isArray(payload?.data)
@@ -123,4 +119,29 @@ export const useFilterBySpecialty = () =>
         "Doctor Fetched Failed",
         e?.response?.data ?? e?.message ?? e
       ),
+  });
+
+const filterByName = async (name) => {
+  const res = await axiosInstance.get(
+    API_ENDPOINTS.patients.searchDoctorByName,
+    { params: { searchTerm: name } }
+  );
+  const payload = res.data;
+
+  const list = Array.isArray(payload?.doctors)
+    ? payload.doctors
+    : Array.isArray(payload?.data)
+    ? payload.data
+    : Array.isArray(payload)
+    ? payload
+    : [];
+
+  return list;
+};
+
+export const useFilterByName = () =>
+  useMutation({
+    mutationFn: (name) => filterByName(name), // Pass only name
+    onSuccess: (data) => console.log("Doctors fetched:", data.length),
+    onError: (e) => console.log("Doctor Fetched Failed", e),
   });

@@ -1,29 +1,40 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useEffect, useState } from "react";
 import {
-    ScrollView,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import {
-    useSafeAreaInsets
-} from "react-native-safe-area-context";
-import { usePopularDoctors } from "../../api/hooks/useDoctorData";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { usePopularDoctors , useFilterByName} from "../../api/hooks/useDoctorData";
 import Logo from "../../assets/logo/docora_hospital.svg";
 import PopularDoctorsCard from "../../components/Card/PopularDoctorsCard";
 import SpecialitiesShowCard from "../../components/Card/SpecialitiesShowCard";
 import {
-    Cardiologist,
-    Dentist,
-    Dermatologist,
-    GeneralPhysician,
-    Pediatrician,
-    Psychiatrist
+  Cardiologist,
+  Dentist,
+  Dermatologist,
+  GeneralPhysician,
+  Pediatrician,
+  Psychiatrist,
 } from "../../constant/data/doctorDetails";
 
 export default function PatientHome({ navigation }) {
+  const { mutate: searchByName, isPending: isSearching } = useFilterByName();
+  const handleSearch = () => {
+    if (search.trim() === "") return;
+
+    searchByName(search, {
+      onSuccess: (data) => {
+        navigation.navigate("SearchDoctor", {
+          results: data,
+          initialQuery: search,
+        });
+      },
+    });
+  };
   const specialty = [
     {
       id: 1,
@@ -108,9 +119,11 @@ export default function PatientHome({ navigation }) {
             <Ionicons name="search" size={20} color="#999" className="" />
             <TextInput
               className="border border-white tracking-wider rounded-xl px-4 py-2 text-base bg-white text-black h-[55px]"
-              placeholder="Search  by specialty or doctor name"
+              placeholder="Search  by doctor name"
               value={search}
               onChangeText={setSearch}
+              returnKeyType="search"
+              onSubmitEditing={handleSearch}
             />
           </View>
 
