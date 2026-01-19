@@ -1,4 +1,5 @@
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { useEffect } from "react";
 import { Cardiologist, specialtyIconMap } from "../../constant/data/doctorDetails";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -10,12 +11,31 @@ import { useFetchDoctorProfile } from "../../api/hooks/usePatientData";
 
 export default function DoctorProfile({ navigation , route }) {
   const insets = useSafeAreaInsets();
-  const { doctorId } = route?.params;
-  const { data : doctorData } = useFetchDoctorProfile(doctorId);
-  const doctor = doctorData?.data;
+  const { doctorId } = route?.params || {};
+
+  const { data, isLoading, isError, error } = useFetchDoctorProfile(doctorId);
+  console.log("Fetched doctor profile data:", data);
+  const doctor = data?.data || data;
   const Icon = specialtyIconMap[doctor?.specialty] || (() => null);
   
-  
+
+  if (isLoading) {
+    return (
+      <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-background px-5 items-center justify-center">
+        <Text className="text-lg text-gray-500">Loading doctor profile...</Text>
+      </View>
+    );
+  }
+
+  if (isError) {
+    return (
+      <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }} className="flex-1 bg-background px-5 items-center justify-center">
+        <Text className="text-lg text-red-500">Failed to load doctor profile</Text>
+        <Text className="text-sm text-gray-500">{error?.message}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}  className=" flex-1 bg-background px-5">
       <ScrollView
@@ -28,13 +48,13 @@ export default function DoctorProfile({ navigation , route }) {
         <View className="flex-1  bg-background">
           <View className="flex-col items-center gap-3 justify-center">
             <Image
-              source={ { uri: doctor?.profileUrl } || require("../../assets/profile/profile_m.png")}
+              source={ doctor?.profileUrl ? { uri: doctor.profileUrl } : require("../../assets/profile/profile_m.png")}
               className="w-[140px] h-[140px] rounded-full border border-primary"
             />
-            <Text className="text-2xl font-bold ">{"Dr."} {doctor?.name}</Text>
+            <Text className="text-2xl font-bold ">{"Dr."} {doctor?.name || doctor?.userId?.name}</Text>
             <View className=" flex-row  items-center">
               <Icon width={24} height={24} color="#023E8A" />
-              <Text className="text-lg ">{doctor?.specialty}</Text>
+              <Text className="text-lg ">{doctor?.specialty || doctor?.userId?.specialty}</Text>
             </View>
             <TouchableOpacity className="text-sm  flex-row gap-5 items-center justify-center  w-full ">
               <View className="text-sm  flex-row gap-1 items-center ">
@@ -43,7 +63,7 @@ export default function DoctorProfile({ navigation , route }) {
                   onPress={() => navigation.navigate("DoctorReview")}
                 >
                   <Text className="text-primary underline ">
-                  {doctor?.averageRating}
+                  {doctor?.averageRating ?? doctor?.userId?.averageRating}
                   (200 reviews)
                   </Text>
                 </TouchableOpacity>

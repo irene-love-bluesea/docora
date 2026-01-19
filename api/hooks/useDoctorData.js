@@ -2,19 +2,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../axiosInstance";
 import { API_ENDPOINTS } from "../endpoints";
 
+// Normalize varying backend shapes into an array of doctors
+const extractDoctorList = (payload) => {
+  if (Array.isArray(payload?.doctors)) return payload.doctors;
+  if (Array.isArray(payload?.data?.doctors)) return payload.data.doctors;
+  if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload)) return payload;
+  return [];
+};
+
 const fetchPopularDoctors = async () => {
   const res = await axiosInstance.get(API_ENDPOINTS.patients.popularDoctors);
-  const payload = res.data;
-
-  const list = Array.isArray(payload?.doctors)
-    ? payload.doctors
-    : Array.isArray(payload?.data)
-    ? payload.data
-    : Array.isArray(payload)
-    ? payload
-    : [];
-
-  return list;
+  return extractDoctorList(res.data);
 };
 
 export const usePopularDoctors = () =>
@@ -97,17 +96,7 @@ const filterBySpecialty = async (specialty) => {
   const res = await axiosInstance.get(
     API_ENDPOINTS.patients.filterBySpecialty(specialty)
   );
-  const payload = res.data;
-
-  const list = Array.isArray(payload?.doctors)
-    ? payload.doctors
-    : Array.isArray(payload?.data)
-    ? payload.data
-    : Array.isArray(payload)
-    ? payload
-    : [];
-
-  return list;
+  return extractDoctorList(res.data);
 };
 
 export const useFilterBySpecialty = () =>
@@ -126,17 +115,7 @@ const filterByName = async (name) => {
     API_ENDPOINTS.patients.searchDoctorByName,
     { params: { searchTerm: name } }
   );
-  const payload = res.data;
-
-  const list = Array.isArray(payload?.doctors)
-    ? payload.doctors
-    : Array.isArray(payload?.data)
-    ? payload.data
-    : Array.isArray(payload)
-    ? payload
-    : [];
-
-  return list;
+  return extractDoctorList(res.data);
 };
 
 export const useFilterByName = () =>
@@ -144,4 +123,21 @@ export const useFilterByName = () =>
     mutationFn: (name) => filterByName(name), // Pass only name
     onSuccess: (data) => console.log("Doctors fetched:", data.length),
     onError: (e) => console.log("Doctor Fetched Failed", e),
+  });
+
+
+const searchDoctorBySpecialtyAndName = async (specialty, name) => {
+  const safeSpecialty = encodeURIComponent(String(specialty || ""));
+  const res = await axiosInstance.get(
+    API_ENDPOINTS.patients.searchDoctorBySpecialtyAndName(safeSpecialty),
+    { params: { searchTerm: name } }
+  );
+  return extractDoctorList(res.data);
+};
+
+export const useSearchBySpecialtyAndName = () =>
+  useMutation({
+    mutationFn: ({specialty, name}) => searchDoctorBySpecialtyAndName(specialty, name),
+    onSuccess: (data) => console.log("Doctors Specialty+Name fetched:", data.length),
+    onError: (e) => console.log("Doctors Specialty+Name Fetched Failed", e),
   });

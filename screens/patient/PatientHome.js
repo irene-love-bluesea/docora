@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useEffect, useState } from "react";
 import {
+  Alert,
   ScrollView,
   Text,
   TextInput,
@@ -23,17 +24,27 @@ import {
 
 export default function PatientHome({ navigation }) {
   const { mutate: searchByName, isPending: isSearching } = useFilterByName();
-  const handleSearch = () => {
-    if (search.trim() === "") return;
+  const performSearch = (term) => {
+    const value = term.trim();
+    if (!value) return;
 
-    searchByName(search, {
+    searchByName(value, {
       onSuccess: (data) => {
+        console.log("Search results count", Array.isArray(data) ? data.length : 0, data);
         navigation.navigate("SearchDoctor", {
           results: data,
-          initialQuery: search,
+          initialQuery: value,
         });
       },
+      onError: (error) => {
+        const message = error?.response?.data?.message || error?.message || "Search failed";
+        Alert.alert("Unable to search", message);
+      },
     });
+  };
+
+  const handleSearch = () => {
+    performSearch(search);
   };
   const specialty = [
     {
